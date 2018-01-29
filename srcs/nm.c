@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../libft/includes/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -27,40 +28,6 @@ int		ft_error(char *message)
 	printf("%s\n", message);
 	return (1);
 }
-
-
-// UTOB
-static int	ft_len_num_unsigned(unsigned long long value, int base)
-{
-	int		len;
-
-	len = 0;
-	while (value / base > 0)
-	{
-		value /= base;
-		len++;
-	}
-	return (len + 1);
-}
-
-char		*ft_utob(unsigned long long value, int base, char *base_str)
-{
-	char	*str;
-	int		len;
-
-	len = ft_len_num_unsigned(value, base);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	str[len] = '\0';
-	len--;
-	while (len >= 0)
-	{
-		str[len] = base_str[value % base];
-		value /= base;
-		len--;
-	}
-	return (str);
-}
-//
 
 void	types_help(void)
 {
