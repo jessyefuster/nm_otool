@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   nm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 15:30:05 by jfuster           #+#    #+#             */
-/*   Updated: 2018/01/25 16:18:39 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/01/29 17:12:01 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -27,14 +28,81 @@ int		ft_error(char *message)
 	return (1);
 }
 
-// n_list.h  line 109 - 136
-char	symbol_type(int type)
+
+// UTOB
+static int	ft_len_num_unsigned(unsigned long long value, int base)
 {
-	if (type == N_UNDF)
-		return ('C');
-	if (type == N_ABS)
-		return ('A');
-	return ('X');
+	int		len;
+
+	len = 0;
+	while (value / base > 0)
+	{
+		value /= base;
+		len++;
+	}
+	return (len + 1);
+}
+
+char		*ft_utob(unsigned long long value, int base, char *base_str)
+{
+	char	*str;
+	int		len;
+
+	len = ft_len_num_unsigned(value, base);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	str[len] = '\0';
+	len--;
+	while (len >= 0)
+	{
+		str[len] = base_str[value % base];
+		value /= base;
+		len--;
+	}
+	return (str);
+}
+//
+
+void	types_help(void)
+{
+	printf("%s  -  %15s\n", "N_STAB", ft_utob(N_STAB, 2, "01"));
+	printf("%s  -  %15s\n", "N_PEXT", ft_utob(N_PEXT, 2, "01"));
+	printf("%s  -  %15s\n", "N_TYPE", ft_utob(N_TYPE, 2, "01"));
+	printf("%s  -  %15s\n\n", "N_EXT ", ft_utob(N_EXT, 2, "01"));
+	printf("   N_TYPE :\n\n");
+	printf("%s  -  %15s\n", "N_UNDF", ft_utob(N_UNDF, 2, "01"));
+	printf("%s  -  %15s\n", "N_ABS ", ft_utob(N_ABS, 2, "01"));
+	printf("%s  -  %15s\n", "N_SECT", ft_utob(N_SECT, 2, "01"));
+	printf("%s  -  %15s\n", "N_PBUD", ft_utob(N_PBUD, 2, "01"));
+	printf("%s  -  %15s\n\n", "N_INDR", ft_utob(N_INDR, 2, "01"));
+}
+
+
+// n_list.h  line 109 - 136
+char	*symbol_type(int type, int sect, int value)
+{
+	if (type == N_EXT)
+	{
+		if (value)
+			return ("C");
+		return ("U");
+	}
+	if (type == N_STAB)
+		return ("-");
+	if (type & N_SECT)
+	{
+		printf("%d - ", sect);
+		if (type & 1)
+			return ("ext_sect");
+		return ("loc_sect");
+	}
+	// if (type )
+	// if (type & N_UNDF)
+	// 	return ('U');
+	// if (type & N_ABS)
+	// 	return ('A');
+	// printf("%s\n", ft_utob(type, 2, "01"));
+	// return ("X");
+	return (ft_utob(type, 2, "01"));
 }
 
 void	display_symbols(char *file, struct symtab_command *symtab_cmd)
@@ -52,9 +120,9 @@ void	display_symbols(char *file, struct symtab_command *symtab_cmd)
 	{
 		string_index = sym_table->n_un.n_strx;
 		if (sym_table->n_value != 0)
-			printf("%016llx %c %s\n", sym_table->n_value, symbol_type(sym_table->n_type), string_table + string_index);
+			printf("%016llx  %s  %s\n", sym_table->n_value, symbol_type(sym_table->n_type, sym_table->n_sect, sym_table->n_value), string_table + string_index);
 		else
-			printf("%18c %s\n", symbol_type(sym_table->n_type), string_table + string_index);
+			printf("                   %s  %s\n", symbol_type(sym_table->n_type, sym_table->n_sect, sym_table->n_value),string_table + string_index);
 		sym_table = sym_table + 1;
 		i++;
 	}
@@ -75,7 +143,6 @@ void	handle64(char *file)
 	{
 		if (load_cmds->cmd == LC_SYMTAB)
 		{
-			printf("LC_SYMTAB load command\n");
 			display_symbols(file, (struct symtab_command *)load_cmds);
 			// symtab_cmd = (struct symtab_command *)load_cmds;
 			// printf("number of symbols : %d\n", symtab_cmd->nsyms);
@@ -109,6 +176,9 @@ int		main(int argc, char **argv)
 	int				fd;
 	char			*file;
 	struct stat		file_info;
+
+	// printf("%s\n", ft_utob(45, 2, "01"));
+	types_help();
 
 	if (argc != 2)
 		return (ft_error("Error\n"));
