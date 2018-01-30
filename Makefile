@@ -1,31 +1,32 @@
-NAME = ft_nm
+CURRENT_DIR = $(PWD)
 
-FLAGS = -Wall -Wextra -Werror
+LIBFT_DIR = libft/
 
-LIBFT = -L./libft/ -lft
+NM_DIR = _nm/
+OTOOL_DIR = _otool/
 
-SRCS = srcs/nm.c
+NM = nm
+OTOOL = otool
 
-SRCO = $(SRCS:.c=.o)
+all: $(NM) $(OTOOL)
 
-%.o:%.c
-	gcc -c $< -o $@
-
-all: $(NAME)
-
-$(NAME): $(SRCO)
+nm:
 	make -C libft/
-	gcc -o $(NAME) $(LIBFT) $(SRCO)
+	make -C $(NM_DIR)
+	cp $(NM_DIR)ft_nm ./
 
-# $(SRCO):
-# 	gcc -c $(SRCS) $<
+otool:
+	make -C $(LIBFT_DIR)
+	make -C $(OTOOL_DIR)
+	cp $(OTOOL_DIR)ft_nm ./
 
 clean:
 	make -C libft/ clean
-	rm -f $(SRCO)
+	make -C $(NM_DIR) clean
 
 fclean: clean
 	make -C libft/ fclean
-	rm -f $(NAME)
+	make -C $(NM_DIR) fclean
+	rm -rf ./ft_nm
 
 re: fclean all
