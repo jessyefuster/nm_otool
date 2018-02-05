@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm.c                                               :+:      :+:    :+:   */
+/*   lol.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 15:30:05 by jfuster           #+#    #+#             */
-/*   Updated: 2018/01/29 17:12:01 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/01/31 15:31:30 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/includes/libft.h"
+#include "./libft/includes/libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -105,15 +105,22 @@ void	handle64(char *file)
 	header = (struct mach_header_64 *)file;
 	load_cmds = (struct load_command *)(header + 1);
 
+	printf("%d\n", header->ncmds);
 	i = 0;
 	while (i < header->ncmds)
 	{
+		printf("NEW COMMAND\n");
 		if (load_cmds->cmd == LC_SYMTAB)
 		{
+			printf("SEGMENT FOUND :  symtab_command");
 			display_symbols(file, (struct symtab_command *)load_cmds);
 			// symtab_cmd = (struct symtab_command *)load_cmds;
 			// printf("number of symbols : %d\n", symtab_cmd->nsyms);
-			break ;
+			// break ;
+		}
+		if (load_cmds->cmd == LC_SEGMENT_64)
+		{
+			printf("SEGMENT FOUND :  n_sects -> %d,  segment_name -> %s\n", ((struct segment_command_64 *)load_cmds)->nsects, ((struct segment_command_64 *)load_cmds)->segname);
 		}
 		load_cmds = (void *)load_cmds + load_cmds->cmdsize;
 		i++;

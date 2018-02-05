@@ -20,12 +20,21 @@
 enum	file_flags
 {
 	F_NONE =	0x0,
-	F_OBJECT =	0x1,
-	F_EXECUTE = 0x2,
-	F_ARCHIVE =	0x4,
+	F_ARCHIVE = 0x1,
+	F_FAT = 	0x2,
+	F_MACHO = 	0x4,
 
-	F_32 =		0x10,
-	F_64 =		0x20
+	F_OBJECT =	0x10,
+	F_EXECUTE = 0x20,
+	F_FMVLIB =	0x30,
+	F_CORE =	0x40,
+	F_PRELOAD =	0x50,
+	F_DYLIB =	0x60,
+	F_DYLINKER =0x70,
+	F_BUNDLE =	0x80,
+
+	F_32 =		0x100,
+	F_64 =		0x200
 };
 
 /*
