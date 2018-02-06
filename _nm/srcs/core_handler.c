@@ -1,19 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   core_handler.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
+/*   Updated: 2018/02/06 15:42:20 by jfuster          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_nm.h"
 
-void	ft_handle_object(char *file, uint8_t file_type)
+void		ft_handle_macho(char *file, uint32_t file_type)
 {
 	if (file_type & F_32)
-		ft_handle_object_64(file);
-	else
-		ft_handle_object_32(file);
-}
-
-void	ft_handle_execute(char *file, uint8_t file_type)
-{
-	
-}
-
-void	ft_handle_archive(char *file, uint8_t file_type)
-{
-	
+		ft_handle_macho_32(file);
+	else if (file_type & F_64)
+		ft_handle_macho_64(file);
 }

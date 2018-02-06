@@ -4,7 +4,7 @@ FLAGS = -Wall -Wextra -Werror
 
 LIBFT = -L../libft/ -lft
 
-SRCS = srcs/main.c srcs/tools.c srcs/core_handler.c srcs/object_handler.c
+SRCS = srcs/main.c srcs/tools.c srcs/macho_handler.c srcs/core_handler.c
 
 SRCO = $(SRCS:.c=.o)
 

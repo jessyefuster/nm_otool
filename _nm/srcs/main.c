@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/05 16:51:28 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/06 15:41:32 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,21 @@
 
 void	ft_nm(char *file)
 {
-	uint8_t		file_type;
+	uint32_t	file_type;
 
 	file_type = get_file_type(file);
-	if (file_type & F_OBJECT)
+	if (file_type & F_MACHO)
 	{
-		ft_putendl("File type:   OBJECT FILE");
-		ft_handle_object(file, file_type);
+		ft_putendl("File type:   MACHO FILE");
+		ft_handle_macho(file, file_type);
 	}
-	else if (file_type & F_EXECUTE)
+	else if (file_type & F_FAT)
 	{
-		ft_putendl("File type:   EXECUTABLE");
-		ft_handle_execute(file, file_type);
+		ft_putendl("File type:   FAT FILE");
 	}
 	else if (file_type & F_ARCHIVE)
 	{
-		ft_putendl("File type:   ARCHIVE");
-		ft_handle_archive(file, file_type);
+		ft_putendl("File type:   ARCHIVE FILE");
 	}
 	else
 		ft_putendl("File type:   NONE");
