@@ -44,6 +44,7 @@ enum	file_flags
 **	tools.c
 */
 int			ft_error(char *message);
+char		section_letter(char *segname);
 char		*symbol_type(int type, int sect, int value);
 uint32_t	get_file_type(char *file);
 
@@ -51,12 +52,26 @@ uint32_t	get_file_type(char *file);
 **	core_handler.c
 */
 void		ft_handle_macho(char *file, uint32_t file_type);
+void		ft_handle_fat(char *file, uint32_t file_type);
+void		ft_handle_archive(char *file, uint32_t file_type);
 
 /*
-**	macho_handler.c
+**	macho_32_handler.c
 */
 void		ft_handle_macho_32(char *file);
+
+/*
+**	macho_64_handler.c
+*/
+void		display_symbols_64(char *file, struct symtab_command *symtab_cmd);
 void		ft_handle_macho_64(char *file);
+
+/*
+**	print_symbols.c
+*/
+char		**get_sections_64(char *file);
+char		section_letter(char *segname);
+char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *string_table);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/06 15:39:17 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/07 16:07:41 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,16 @@ int			ft_error(char *message)
 	return (1);
 }
 
-char	*symbol_type(int type, int sect, int value)
+char		section_letter(char *segname)
 {
-	if (type == N_EXT)
-	{
-		if (value)
-			return ("C");
-		return ("U");
-	}
-	if (type == N_STAB)
-		return ("-");
-	if (type & N_SECT)
-	{
-		printf("%d - ", sect);
-		if (type & 1)
-			return ("ext_sect");
-		return ("loc_sect");
-	}
-	// if (type )
-	// if (type & N_UNDF)
-	// 	return ('U');
-	// if (type & N_ABS)
-	// 	return ('A');
-	// printf("%s\n", ft_utob(type, 2, "01"));
-	// return ("X");
-	return (ft_utob(type, 2, "01"));
+	if (ft_strcmp(segname, "__TEXT") == 0)
+		return ('T');
+	else if (ft_strcmp(segname, "__DATA") == 0)
+		return ('D');
+	else if (ft_strcmp(segname, "__BSS") == 0)
+		return ('B');
+	return ('S');
 }
-
 
 static	uint32_t	get_macho_type(uint32_t file_type)
 {
