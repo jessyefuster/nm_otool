@@ -6,13 +6,13 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:14 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/07 16:05:15 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/08 14:14:04 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-void		display_symbols_64(char *file, struct symtab_command *symtab_cmd)
+void		display_symbols_64(char *file, struct mach_header_64 *header, struct symtab_command *symtab_cmd)
 {
 	int					i;
 	int					string_index;
@@ -22,7 +22,7 @@ void		display_symbols_64(char *file, struct symtab_command *symtab_cmd)
 
 	sym_table = (struct nlist_64 *)(file + symtab_cmd->symoff);
 	string_table = file + symtab_cmd->stroff;
-	sections = get_sections_64(file);
+	sections = get_sections_64(header, (struct load_command *)(header + 1));
 	i = 0;
 	while (i < symtab_cmd->nsyms)
 	{
@@ -50,7 +50,7 @@ void		ft_handle_macho_64(char *file)
 	{
 		if (load_cmds->cmd == LC_SYMTAB)
 		{
-			display_symbols_64(file, (struct symtab_command *)load_cmds);
+			display_symbols_64(file, header, (struct symtab_command *)load_cmds);
 			break ;
 		}
 		load_cmds = (void *)load_cmds + load_cmds->cmdsize;

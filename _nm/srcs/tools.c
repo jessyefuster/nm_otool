@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/07 16:07:41 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/08 15:19:35 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int			ft_error(char *message)
 
 char		section_letter(char *segname)
 {
-	if (ft_strcmp(segname, "__TEXT") == 0)
+	if (ft_strcmp(segname, "__text") == 0)
 		return ('T');
-	else if (ft_strcmp(segname, "__DATA") == 0)
+	else if (ft_strcmp(segname, "__data") == 0)
 		return ('D');
-	else if (ft_strcmp(segname, "__BSS") == 0)
+	else if (ft_strcmp(segname, "__bss") == 0)
 		return ('B');
 	return ('S');
 }
