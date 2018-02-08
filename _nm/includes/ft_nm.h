@@ -58,6 +58,7 @@ void		ft_handle_archive(char *file, uint32_t file_type);
 /*
 **	macho_32_handler.c
 */
+void		display_symbols_32(char *file, struct mach_header *header, struct symtab_command *symtab_cmd);
 void		ft_handle_macho_32(char *file);
 
 /*
@@ -69,8 +70,9 @@ void		ft_handle_macho_64(char *file);
 /*
 **	print_symbols.c
 */
+char		**get_sections_32(struct mach_header *header, struct load_command *load_cmds);
 char		**get_sections_64(struct mach_header_64 *header, struct load_command *load_cmds);
-char		section_letter(char *segname);
+char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_table);
 char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *string_table);
 
 
