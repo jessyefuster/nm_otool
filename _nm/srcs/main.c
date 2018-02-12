@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/06 15:41:32 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/12 15:43:16 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_nm(char *file)
 	else if (file_type & F_FAT)
 	{
 		ft_putendl("File type:   FAT FILE");
+		ft_handle_fat(file, file_type);
 	}
 	else if (file_type & F_ARCHIVE)
 	{

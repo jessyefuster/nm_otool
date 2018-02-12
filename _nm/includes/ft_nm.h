@@ -13,6 +13,7 @@
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
+# include <mach/machine.h>
 
 
 // TO IMPLEMENT
@@ -44,6 +45,7 @@ enum	file_flags
 **	tools.c
 */
 int			ft_error(char *message);
+uint32_t	swap_endian(uint32_t num);
 char		section_letter(char *segname);
 char		*symbol_type(int type, int sect, int value);
 uint32_t	get_file_type(char *file);

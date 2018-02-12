@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/08 15:19:35 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/12 15:42:57 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,21 @@ int			ft_error(char *message)
 {
 	ft_putstr(message);
 	return (1);
+}
+
+uint32_t	swap_endian(uint32_t num)
+{
+	uint32_t b0;
+	uint32_t b1;
+	uint32_t b2;
+	uint32_t b3;
+
+	b0 = (num & 0x000000ff) << 24u;
+	b1 = (num & 0x0000ff00) << 8u;
+	b2 = (num & 0x00ff0000) >> 8u;
+	b3 = (num & 0xff000000) >> 24u;
+
+	return (b0 | b1 | b2 | b3);
 }
 
 char		section_letter(char *segname)

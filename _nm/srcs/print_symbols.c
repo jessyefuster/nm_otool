@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 15:56:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/08 17:15:30 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/12 13:11:00 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ static void	store_sections_64(struct segment_command_64 *segment, char **section
 
 char		**get_sections_64(struct mach_header_64 *header, struct load_command *load_cmds)
 {
-	size_t					i = 0;
-	size_t					i_sect = 1;
+	size_t					i;
+	size_t					i_sect;
 	char					**sections;
 	struct section_64		*section;
 
+	i_sect = 1;
 	sections = (char **)malloc(sizeof(char *) * 256);
+	i = 0;
 	while (i < header->ncmds)
 	{
 		if (load_cmds->cmd == LC_SEGMENT_64)
@@ -72,12 +74,14 @@ static void	store_sections_32(struct segment_command *segment, char **sections, 
 
 char		**get_sections_32(struct mach_header *header, struct load_command *load_cmds)
 {
-	size_t					i = 0;
-	size_t					i_sect = 1;
+	size_t					i;
+	size_t					i_sect;
 	char					**sections;
 	struct section			*section;
 
+	i_sect = 1;
 	sections = (char **)malloc(sizeof(char *) * 256);
+	i = 0;
 	while (i < header->ncmds)
 	{
 		if (load_cmds->cmd == LC_SEGMENT)
