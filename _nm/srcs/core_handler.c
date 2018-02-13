@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/12 17:09:58 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/12 22:28:05 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,20 @@ void		ft_handle_fat(char *file, uint32_t file_type)
 	struct fat_arch		*fat_arch;
 
 	fat_header = (struct fat_header *)file;
-	fat_arch = (struct fat_arch *)(fat_header + 1);
-	i = 0;
-	while (i < swap_endian(fat_header->nfat_arch))
+
+	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
+		ft_nm(file + swap_endian(fat_arch->offset));
+	else
 	{
-		printf("cpu type : %d\n", swap_endian(fat_arch->cputype));
-		if (swap_endian(fat_arch->cputype) == CPU_TYPE_X86_64)
-			printf("ARCH FOUND (%zu)\n", i);
-		fat_arch++;
-		i++;
+		fat_arch = (struct fat_arch *)(fat_header + 1);
+		i = 0;
+		while (i < swap_endian(fat_header->nfat_arch))
+		{
+			ft_nm(file + swap_endian(fat_arch->offset));
+			printf("\n");
+			fat_arch++;
+			i++;
+		}
 	}
 }
 

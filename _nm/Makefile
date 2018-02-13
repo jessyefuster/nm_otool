@@ -9,6 +9,7 @@ SRCS = srcs/main.c \
 		srcs/macho_32_handler.c \
 		srcs/macho_64_handler.c \
 		srcs/core_handler.c \
+		srcs/fat_handler.c \
 		srcs/print_symbols.c
 
 SRCO = $(SRCS:.c=.o)

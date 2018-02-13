@@ -16,18 +16,21 @@
 # include <mach/machine.h>
 
 
-// TO IMPLEMENT
-//     00           0000
-//  32 or 64     file type
+# define F_TYPE(type) (type & 0xF)
+# define F_MACHO_TYPE(type) (type & 0xF0)
+# define F_ARCH(type) (type & 0x300)
+# define F_ENDIAN(type) (type & 0xC00)
+/*
+**	  00 	   00		   0000			  0000
+**	endian   32 / 64	macho type		file type
+*/
 enum	file_flags
 {
-	F_TYPE =		0xF,
 	F_NONE =		0x0,
 	F_ARCHIVE = 	0x1,
 	F_FAT = 		0x2,
 	F_MACHO = 		0x4,
 
-	F_MACHO_TYPE =	0xF0,
 	F_OBJECT =		0x10,
 	F_EXECUTE = 	0x20,
 	F_FVMLIB =		0x30,
@@ -38,7 +41,9 @@ enum	file_flags
 	F_BUNDLE =		0x80,
 
 	F_32 =			0x100,
-	F_64 =			0x200
+	F_64 =			0x200,
+	F_LITTLE =		0x400,
+	F_BIG =			0x800,
 };
 
 /*
@@ -70,6 +75,11 @@ void		display_symbols_64(char *file, struct mach_header_64 *header, struct symta
 void		ft_handle_macho_64(char *file);
 
 /*
+**	fat_handler.c
+*/
+struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
+
+/*
 **	print_symbols.c
 */
 char		**get_sections_32(struct mach_header *header, struct load_command *load_cmds);
@@ -77,5 +87,7 @@ char		**get_sections_64(struct mach_header_64 *header, struct load_command *load
 char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_table);
 char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *string_table);
 
+
+void	ft_nm(char *file);
 
 #endif
