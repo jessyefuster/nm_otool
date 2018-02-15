@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/12 15:42:57 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/15 15:35:48 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ uint32_t			get_file_type(char *file)
 
 	file_type = 0;
 	magic = *(int *)file;
-	printf("magic:  %x\n", magic);
+	// printf("magic:  %x\n", magic);
 	if (magic == MH_MAGIC)
 		file_type |= F_32 | F_MACHO;
 	else if (magic == MH_MAGIC_64)
@@ -87,7 +87,7 @@ uint32_t			get_file_type(char *file)
 	if (file_type & F_MACHO)
 		file_type |= get_macho_type(((struct mach_header *)file)->filetype);
 	
-	printf("filetype: %s\n", ft_utob(file_type, 2, "01"));
+	// printf("filetype: %s\n", ft_utob(file_type, 2, "01"));
 	// printf("arch: %04s\n", ft_utob((file_type & 0xF00) >> 8, 2, "01"));
 
 

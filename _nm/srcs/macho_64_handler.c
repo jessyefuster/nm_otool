@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:14 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/08 14:14:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/15 15:43:30 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void		display_symbols_64(char *file, struct mach_header_64 *header, struct symta
 	{
 		string_index = sym_table->n_un.n_strx;
 		if (sym_table->n_value != 0)
-			printf("%016llx  %c  %s\n", sym_table->n_value, symbol_64(file, sections, sym_table, string_table), string_table + string_index);
+			printf("%016llx %c %s\n", sym_table->n_value, symbol_64(file, sections, sym_table, string_table), string_table + string_index);
 		else
-			printf("%19c  %s\n", symbol_64(file, sections, sym_table, string_table), string_table + string_index);
+			printf("%18c %s\n", symbol_64(file, sections, sym_table, string_table), string_table + string_index);
 		sym_table = sym_table + 1;
 		i++;
 	}

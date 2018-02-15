@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_symbols.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 15:56:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/12 23:49:36 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/15 15:40:12 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	store_sections_64(struct segment_command_64 *segment, char **section
 	while (i < segment->nsects)
 	{
 		sections[(*i_sect)] = ft_strdup(section->sectname);
-		printf("%s\n", sections[(*i_sect)]);
 		(*i_sect)++;
 		section++;
 		i++;
@@ -65,7 +64,6 @@ static void	store_sections_32(struct segment_command *segment, char **sections, 
 	while (i < segment->nsects)
 	{
 		sections[(*i_sect)] = ft_strdup(section->sectname);
-		printf("%s\n", sections[(*i_sect)]);
 		(*i_sect)++;
 		section++;
 		i++;
@@ -96,12 +94,12 @@ char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_
 {
 	static char		type_letter = ' ';
 
-	printf("flags %s\n", ft_utob(symbol->n_type, 2, "01"));
+	// printf("flags %s\n", ft_utob(symbol->n_type, 2, "01"));
 
 	if (symbol->n_type & N_STAB)
 		return ('-');
-	// else if (symbol->n_type & N_PEXT)
-	// 	return ('u');
+	else if (symbol->n_type & N_PEXT)
+		return ('u');
 	else if ((symbol->n_type & N_TYPE) == N_ABS)
 		type_letter = 'A';
 	else if ((symbol->n_type & N_TYPE) == N_INDR)

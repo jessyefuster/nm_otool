@@ -2,6 +2,7 @@
 # define FT_NM_H
 # include "../../libft/includes/libft.h"
 # include <stdio.h>
+# include <stdbool.h>
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -15,6 +16,12 @@
 # include <mach-o/fat.h>
 # include <mach/machine.h>
 
+
+// typedef enum	e_bool
+// {
+// 	false = 0,
+// 	true = 1
+// }				t_bool;
 
 # define F_TYPE(type) (type & 0xF)
 # define F_MACHO_TYPE(type) (type & 0xF0)
@@ -88,6 +95,6 @@ char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_
 char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *string_table);
 
 
-void	ft_nm(char *file);
+bool		ft_nm(char *file, char *filename);
 
 #endif
