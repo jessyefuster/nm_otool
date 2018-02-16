@@ -4,13 +4,12 @@ FLAGS = -Wall -Wextra -Werror
 
 LIBFT = -L../libft/ -lft
 
-SRCS = srcs/main.c \
-		srcs/tools.c \
-		srcs/macho_32.c \
-		srcs/macho_64.c \
+SRCS =	srcs/archive.c \
 		srcs/core.c \
 		srcs/fat.c \
-		srcs/print_symbols.c
+		srcs/macho.c \
+		srcs/main.c \
+		srcs/tools.c \
 
 SRCO = $(SRCS:.c=.o)
 

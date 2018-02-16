@@ -3,25 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/16 16:42:09 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/16 22:00:11 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-void		ft_handle_macho(char *file, uint32_t file_type, t_symbols *symbols)
+/*
+**	Search for SYMTAB load command in Mach-o file
+**	note : this function handles both 32bit and 64bit arch
+*/
+void		handle_macho(char *file, uint32_t file_type, t_symbols *symbols)
 {
-	//to do : add in symbols list rather than print
-	if (file_type & F_32)
-		ft_handle_macho_32(file);
-	else if (file_type & F_64)
-		ft_handle_macho_64(file);
+	size_t					i;
+	size_t					ncmds;
+	struct load_command		*load_cmds;
+
+	ncmds = ((struct mach_header *)file)->ncmds;
+	load_cmds = (struct load_command *)(((struct mach_header_64 *)file) + 1);
+	if (F_ARCH(file_type) == F_32)
+		load_cmds = (struct load_command *)(((struct mach_header *)file) + 1);
+
+	i = 0;
+	while (i < ncmds)
+	{
+		if (load_cmds->cmd == LC_SYMTAB)
+		{
+			store_symbols(file, file_type, (struct symtab_command *)load_cmds, symbols);
+			break ;
+		}
+		load_cmds = (void *)load_cmds + load_cmds->cmdsize;
+		i++;
+	}	
 }
 
-void		ft_handle_fat(char *file, uint32_t file_type, char *filename)
+/*
+**	Iterate over arch headers in FAT file and nm each binary
+*/
+void		handle_fat(char *file, uint32_t file_type, char *filename)
 {
 	size_t				i;
 	char				*name;
@@ -48,8 +70,9 @@ void		ft_handle_fat(char *file, uint32_t file_type, char *filename)
 	}
 	free(name);
 }
-
-void		ft_handle_archive(char *file, uint32_t file_type)
+// https://code.woboq.org/llvm/include/ar.h.html
+// https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+void		handle_archive(char *file, uint32_t file_type)
 {
 
 }
