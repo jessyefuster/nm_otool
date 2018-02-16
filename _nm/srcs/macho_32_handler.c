@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho_32_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 16:04:54 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/15 15:41:36 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/16 02:05:22 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ void		display_symbols_32(char *file, struct mach_header *header, struct symtab_c
 	while (i < symtab_cmd->nsyms)
 	{
 		string_index = sym_table->n_un.n_strx;
-		if (sym_table->n_value != 0)
-			printf("%08x %c %s\n", sym_table->n_value, symbol_32(file, sections, sym_table, string_table), string_table + string_index);
-		else
-			printf("%10c %s\n", symbol_32(file, sections, sym_table, string_table), string_table + string_index);
+		if (!(sym_table->n_type & N_STAB))
+		{
+			if (sym_table->n_value != 0)
+				printf("%08x %c %s\n", sym_table->n_value, symbol_32(file, sections, sym_table, string_table), string_table + string_index);
+			else
+				printf("%10c %s\n", symbol_32(file, sections, sym_table, string_table), string_table + string_index);
+		}
 		sym_table = sym_table + 1;
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_symbols.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/07 15:56:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/15 15:40:12 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/16 02:09:32 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_
 
 	if (symbol->n_type & N_STAB)
 		return ('-');
-	else if (symbol->n_type & N_PEXT)
-		return ('u');
+	// else if (symbol->n_type & N_PEXT)
+	// 	return ('u');
 	else if ((symbol->n_type & N_TYPE) == N_ABS)
 		type_letter = 'A';
 	else if ((symbol->n_type & N_TYPE) == N_INDR)
@@ -121,10 +121,12 @@ char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *stri
 {
 	static char		type_letter = ' ';
 
+	// printf("flags %s\n", ft_utob(symbol->n_type, 2, "01"));
+
 	if (symbol->n_type & N_STAB)
 		return ('-');
-	else if (symbol->n_type & N_PEXT)
-		return ('u');
+	// else if (symbol->n_type & N_PEXT)
+	// 	return ('u');
 	else if ((symbol->n_type & N_TYPE) == N_ABS)
 		type_letter = 'A';
 	else if ((symbol->n_type & N_TYPE) == N_INDR)

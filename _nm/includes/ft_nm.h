@@ -66,7 +66,7 @@ uint32_t	get_file_type(char *file);
 **	core_handler.c
 */
 void		ft_handle_macho(char *file, uint32_t file_type);
-void		ft_handle_fat(char *file, uint32_t file_type);
+void		ft_handle_fat(char *file, uint32_t file_type, char *filename);
 void		ft_handle_archive(char *file, uint32_t file_type);
 
 /*
