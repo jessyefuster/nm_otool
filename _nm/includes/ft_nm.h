@@ -53,6 +53,18 @@ enum	file_flags
 	F_BIG =			0x800,
 };
 
+
+typedef struct	s_symbols
+{
+	//bool		is_32;
+	char		*name;
+	uint64_t	value;
+	uint8_t		type;
+	char		type_letter;
+
+	struct s_symbols	*next;
+}				t_symbols;
+
 /*
 **	tools.c
 */
@@ -65,7 +77,7 @@ uint32_t	get_file_type(char *file);
 /*
 **	core_handler.c
 */
-void		ft_handle_macho(char *file, uint32_t file_type);
+void		ft_handle_macho(char *file, uint32_t file_type, t_symbols *symbols);
 void		ft_handle_fat(char *file, uint32_t file_type, char *filename);
 void		ft_handle_archive(char *file, uint32_t file_type);
 

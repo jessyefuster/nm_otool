@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/16 00:10:47 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/16 16:39:14 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,21 @@
 bool	ft_nm(char *file, char *filename)
 {
 	uint32_t	file_type;
+	t_symbols	*symbols;
 
+	symbols = NULL;
 	file_type = get_file_type(file);
 	if (file_type & F_MACHO)
 	{
 		printf("\n%s:\n", filename);
-		ft_handle_macho(file, file_type);
+		ft_handle_macho(file, file_type, symbols);
 	}
 	else if (file_type & F_FAT)
 		ft_handle_fat(file, file_type, filename);
 	else if (file_type & F_ARCHIVE)
-	{
 		ft_putendl("File type:   ARCHIVE FILE");
-	}
 	else
-	{
-		ft_putendl("File type:   NONE");
 		return (TRUE);
-	}
 	return (FALSE);
 }
 

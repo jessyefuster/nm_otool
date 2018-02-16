@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core_handler.c                                     :+:      :+:    :+:   */
+/*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/16 00:09:14 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/16 16:42:09 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-void		ft_handle_macho(char *file, uint32_t file_type)
+void		ft_handle_macho(char *file, uint32_t file_type, t_symbols *symbols)
 {
+	//to do : add in symbols list rather than print
 	if (file_type & F_32)
 		ft_handle_macho_32(file);
 	else if (file_type & F_64)

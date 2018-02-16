@@ -6,10 +6,10 @@ LIBFT = -L../libft/ -lft
 
 SRCS = srcs/main.c \
 		srcs/tools.c \
-		srcs/macho_32_handler.c \
-		srcs/macho_64_handler.c \
-		srcs/core_handler.c \
-		srcs/fat_handler.c \
+		srcs/macho_32.c \
+		srcs/macho_64.c \
+		srcs/core.c \
+		srcs/fat.c \
 		srcs/print_symbols.c
 
 SRCO = $(SRCS:.c=.o)
