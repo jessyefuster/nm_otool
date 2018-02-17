@@ -6,18 +6,17 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 01:26:57 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 01:37:59 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-// need to get :
-// char		*name;
-// uint64_t	value;
-// uint8_t		type;
-// char		type_letter;
-// WIP
+/*
+**	Add the symbol to the linked list
+**	note : this function handles both 32bit and 64bit symbol
+**	TODO: type_letter
+*/
 static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, char *string_table)
 {
 	t_symbols		*new;
@@ -38,6 +37,7 @@ static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, 
 /*
 **	Iterate over symbols and store them in SYMBOLS chained list if valid
 **	note : this function handles both 32bit and 64bit arch
+**	TODO: type_letter
 */
 void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols)
 {

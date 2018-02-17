@@ -6,12 +6,17 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 01:23:07 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 01:39:33 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
+/*
+**	Print symbol nodes of the linked-list
+**	note : this function handles both 32bit and 64bit symbol
+**	TODO: type_letter
+*/
 void		print_symbols(t_symbols	*symbol, uint32_t file_type)
 {
 	while (symbol != NULL)
@@ -34,6 +39,11 @@ void		print_symbols(t_symbols	*symbol, uint32_t file_type)
 	}
 }
 
+/*
+**	Create a node with symbol information
+**	note : this function handles both 32bit and 64bit symbol
+**	TODO: type_letter
+*/
 t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
 {
 	t_symbols	*new;
