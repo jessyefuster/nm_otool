@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 13:27:41 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 14:17:38 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	nm_if_valid(char *filename)
 	if ((file = valid_file(filename, &file_info)) && !ft_nm(file, filename))
 		munmap(file, file_info.st_size);
 	else
-		printf("ft_nm: %s: error occured\n", filename);
+		fprintf(stderr, "ft_nm: %s: error occured\n", filename);
 }
 
 int		main(int argc, char **argv)
