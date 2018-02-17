@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/16 22:00:11 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 00:25:15 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 **	Search for SYMTAB load command in Mach-o file
 **	note : this function handles both 32bit and 64bit arch
 */
-void		handle_macho(char *file, uint32_t file_type, t_symbols *symbols)
+void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
 {
 	size_t					i;
 	size_t					ncmds;
@@ -43,7 +43,7 @@ void		handle_macho(char *file, uint32_t file_type, t_symbols *symbols)
 /*
 **	Iterate over arch headers in FAT file and nm each binary
 */
-void		handle_fat(char *file, uint32_t file_type, char *filename)
+void		handle_fat(char *file, char *filename)
 {
 	size_t				i;
 	char				*name;
@@ -74,5 +74,5 @@ void		handle_fat(char *file, uint32_t file_type, char *filename)
 // https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
 void		handle_archive(char *file, uint32_t file_type)
 {
-
+	printf("%p %u\n", file, file_type);
 }

@@ -2,11 +2,12 @@ NAME = ft_nm
 
 FLAGS = -Wall -Wextra -Werror
 
-LIBFT = -L../libft/ -lft
+LIBFT = ../libft/libft.a
 
 SRCS =	srcs/archive.c \
 		srcs/core.c \
 		srcs/fat.c \
+		srcs/list.c \
 		srcs/macho.c \
 		srcs/main.c \
 		srcs/tools.c \
@@ -14,7 +15,7 @@ SRCS =	srcs/archive.c \
 SRCO = $(SRCS:.c=.o)
 
 %.o:%.c
-	gcc -c $< -o $@
+	gcc -c $< -o $@ $(FLAGS)
 
 all: $(NAME)
 

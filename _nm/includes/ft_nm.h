@@ -85,8 +85,8 @@ typedef struct	s_symbols
 /*
 **	core.c
 */
-void		handle_macho(char *file, uint32_t file_type, t_symbols *symbols);
-void		handle_fat(char *file, uint32_t file_type, char *filename);
+void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols);
+void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, uint32_t file_type);
 
 /*
@@ -95,9 +95,15 @@ void		handle_archive(char *file, uint32_t file_type);
 struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 
 /*
+**	list.c
+*/
+void		print_symbols(t_symbols	*ptr, uint32_t file_type);
+t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
+
+/*
 **	macho.c
 */
-void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols *symbols);
+void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
 **	tools.c

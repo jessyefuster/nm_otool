@@ -8,7 +8,7 @@ OTOOL_DIR = _otool/
 NM = nm
 OTOOL = otool
 
-all: $(NM) $(OTOOL)
+all: $(NM)
 
 nm:
 	make -C libft/
