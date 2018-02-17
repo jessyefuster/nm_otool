@@ -1,0 +1,8 @@
+2c2
+< test_files/fat_arm-32 (for architecture ...):
+---
+> test_files/fat_arm-32 (for architecture i386):
+8c8
+< test_files/fat_arm-32 (for architecture ...):
+---
+> test_files/fat_arm-32 (for architecture armv7s):
