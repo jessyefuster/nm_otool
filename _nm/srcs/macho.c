@@ -6,14 +6,14 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 01:59:57 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 02:06:44 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
 /*
-**	Add the symbol to the linked list in ascii order
+**	Add the symbol to the linked-list in ascii order
 **	note : this function handles both 32bit and 64bit symbol
 **	TODO: type_letter
 */
