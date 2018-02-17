@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 19:35:43 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 20:14:08 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ bool	ft_nm(char *file, char *filename)
 	uint32_t	file_type;
 	t_symbols	*symbols;
 
+	if (invalid_address(file))
+		return (file_error(filename));
 	symbols = NULL;
 	file_type = get_file_type(file);
 	if (file_type & F_MACHO)
@@ -32,7 +34,7 @@ bool	ft_nm(char *file, char *filename)
 	else if (file_type & F_ARCHIVE)
 		ft_putendl("File type:   ARCHIVE FILE");
 	else
-		return (TRUE);
+		return (file_error(filename));
 	return (FALSE);
 }
 
@@ -61,10 +63,14 @@ void	nm_if_valid(char *filename)
 	char		*file;
 	struct stat	file_info;
 
-	if ((file = valid_file(filename, &file_info)) && !ft_nm(file, filename))
-		munmap(file, file_info.st_size);
+	if ((file = valid_file(filename, &file_info)))
+	{
+		if (!ft_nm(file, filename))
+			munmap(file, file_info.st_size);
+	}
 	else
-		fprintf(stderr, "ft_nm: %s: error occured\n", filename);
+		file_error(filename);
+		// fprintf(stderr, "ft_nm: %s: error occured\n", filename);
 }
 
 int		main(int argc, char **argv)

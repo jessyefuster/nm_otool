@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 19:34:27 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 20:06:04 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
 	new->name = "bad string index";
 	if (F_IS_32(file_type))
 	{
-		if ((uint64_t)(string_table + ((struct nlist *)symbol)->n_un.n_strx) <= G_MAXADDR)
+		if (!invalid_address(string_table + ((struct nlist *)symbol)->n_un.n_strx))
 			new->name = string_table + ((struct nlist *)symbol)->n_un.n_strx;
 		new->value = ((struct nlist *)symbol)->n_value;
 		new->type = ((struct nlist *)symbol)->n_type;
@@ -65,7 +65,7 @@ t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
 	}
 	else
 	{
-		if ((uint64_t)(string_table + ((struct nlist_64 *)symbol)->n_un.n_strx) <= G_MAXADDR)
+		if (!invalid_address(string_table + ((struct nlist_64 *)symbol)->n_un.n_strx))
 			new->name = string_table + ((struct nlist_64 *)symbol)->n_un.n_strx;
 		new->value = ((struct nlist_64 *)symbol)->n_value;
 		new->type = ((struct nlist_64 *)symbol)->n_type;

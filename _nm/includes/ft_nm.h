@@ -117,7 +117,9 @@ char		**get_sections(struct mach_header *header, uint32_t file_type);
 /*
 **	tools.c
 */
-int			ft_error(char *message);
+// int			ft_error(char *message);
+bool		file_error(char *filename);
+bool		invalid_address(void *ptr);
 uint32_t	swap_endian(uint32_t num);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);

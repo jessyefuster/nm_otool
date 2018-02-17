@@ -6,17 +6,25 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 19:46:11 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 20:13:40 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-int			ft_error(char *message)
+bool		file_error(char *filename)
 {
-	ft_putstr(message);
-	return (1);
+	fprintf(stderr, "ft_nm: %s: error occured\n", filename);
+	return (TRUE);
 }
+
+bool		invalid_address(void *ptr)
+{
+	if ((uint64_t)ptr > G_MAXADDR)
+		return (TRUE);
+	return (FALSE);
+}
+
 
 uint32_t	swap_endian(uint32_t num)
 {
