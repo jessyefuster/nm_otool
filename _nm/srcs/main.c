@@ -6,11 +6,13 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 14:17:38 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 19:35:43 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
+
+uint64_t	G_MAXADDR = 0;
 
 bool	ft_nm(char *file, char *filename)
 {
@@ -48,6 +50,7 @@ char	*valid_file(char *filename, struct stat *file_info)
 	if ((file = mmap(0, (*file_info).st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (NULL);
 
+	G_MAXADDR = (uint64_t)(file + (*file_info).st_size);
 	close(fd);
 
 	return (file);

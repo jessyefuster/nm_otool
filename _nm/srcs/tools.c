@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 13:51:14 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 19:46:11 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,24 @@ char		type_letter(char **sections, t_symbols *symbol)
 	type_letter = '?';
 	if (symbol->type & N_STAB)
 		return ('-');
-	// else if (symbol->type & N_PEXT)
-	// 	return ('u');
+	else if ((symbol->type & N_TYPE) == N_UNDF)
+	{
+		type_letter = 'u';
+		if (symbol->value)
+			type_letter = 'c';
+		if ((symbol->type & N_EXT))
+			return (ft_toupper(type_letter));
+	}
 	else if ((symbol->type & N_TYPE) == N_ABS)
 		type_letter = 'A';
 	else if ((symbol->type & N_TYPE) == N_INDR)
 		type_letter = 'I';
-	else if (symbol->type == N_EXT)
-	{
-		if (symbol->value)
-			return ('C');
-		return ('U');
-	}
+	// else if (symbol->type == N_EXT)
+	// {
+	// 	if (symbol->value)
+	// 		return ('C');
+	// 	return ('U');
+	// }
 	else if (symbol->type & N_SECT)
 		type_letter = section_letter(sections[symbol->sect]);
 	if (!(symbol->type & N_EXT))

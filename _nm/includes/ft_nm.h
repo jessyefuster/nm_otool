@@ -35,6 +35,8 @@
 # define F_IS_32(type) (F_ARCH(type) == F_32)
 # define F_IS_64(type) (F_ARCH(type) == F_64)
 
+extern uint64_t	G_MAXADDR;
+
 /*
 **	File flags	(uint8_t)
 **
