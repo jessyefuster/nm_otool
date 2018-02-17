@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 20:06:04 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 21:51:20 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void		print_symbols(char *file, t_symbols	*symbol, uint32_t file_type)
 		type = type_letter(sections, symbol);
 		if (F_IS_32(file_type))
 		{
-			if (symbol->value)
+			if (symbol->value || type != 'U')
 				printf("%08llx %c %s\n", symbol->value, type, symbol->name);
 			else
 				printf("         %c %s\n", type, symbol->name);
 		}
 		else
 		{
-			if (symbol->value)
+			if (symbol->value || type != 'U')
 				printf("%016llx %c %s\n", symbol->value, type, symbol->name);
 			else
 				printf("                 %c %s\n", type, symbol->name);
