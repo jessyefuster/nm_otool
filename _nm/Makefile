@@ -10,6 +10,7 @@ SRCS =	srcs/archive.c \
 		srcs/list.c \
 		srcs/macho.c \
 		srcs/main.c \
+		srcs/sections.c \
 		srcs/tools.c \
 
 SRCO = $(SRCS:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 02:06:44 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 13:54:29 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 **	Add the symbol to the linked-list in ascii order
 **	note : this function handles both 32bit and 64bit symbol
-**	TODO: type_letter
 */
 static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, char *string_table)
 {
@@ -39,9 +38,8 @@ static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, 
 }
 
 /*
-**	Iterate over symbols and store them in SYMBOLS chained list if valid
+**	Iterate over symbols and store them in SYMBOLS linked-list if valid
 **	note : this function handles both 32bit and 64bit arch
-**	TODO: type_letter
 */
 void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols)
 {

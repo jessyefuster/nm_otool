@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/15 15:35:48 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/17 13:51:14 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,32 @@ char		section_letter(char *segname)
 	else if (ft_strcmp(segname, "__bss") == 0)
 		return ('B');
 	return ('S');
+}
+
+char		type_letter(char **sections, t_symbols *symbol)
+{
+	char	type_letter;
+
+	type_letter = '?';
+	if (symbol->type & N_STAB)
+		return ('-');
+	// else if (symbol->type & N_PEXT)
+	// 	return ('u');
+	else if ((symbol->type & N_TYPE) == N_ABS)
+		type_letter = 'A';
+	else if ((symbol->type & N_TYPE) == N_INDR)
+		type_letter = 'I';
+	else if (symbol->type == N_EXT)
+	{
+		if (symbol->value)
+			return ('C');
+		return ('U');
+	}
+	else if (symbol->type & N_SECT)
+		type_letter = section_letter(sections[symbol->sect]);
+	if (!(symbol->type & N_EXT))
+		type_letter = ft_tolower(type_letter);
+	return (type_letter);
 }
 
 static	uint32_t	get_macho_type(uint32_t file_type)

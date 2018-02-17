@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 01:19:53 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 13:27:41 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	ft_nm(char *file, char *filename)
 	{
 		printf("\n%s:\n", filename);
 		handle_macho(file, file_type, &symbols);
-		print_symbols(symbols, file_type);
+		print_symbols(file, symbols, file_type);
 	}
 	else if (file_type & F_FAT)
 		handle_fat(file, filename);

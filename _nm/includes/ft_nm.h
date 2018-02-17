@@ -23,7 +23,8 @@
 // 	true = 1
 // }				t_bool;
 
-# define SYMBOL_SIZE(is_32) (is_32 ? sizeof(struct nlist) : sizeof(struct nlist_64)) 
+# define SYMBOL_SIZE(is_32) (is_32 ? sizeof(struct nlist) : sizeof(struct nlist_64))
+# define SECTION_SIZE(is_32) (is_32 ? sizeof(struct section) : sizeof(struct section_64))
 
 
 # define F_TYPE(type) (type & 0xF)
@@ -71,7 +72,8 @@ typedef struct	s_symbols
 	char		*name;
 	uint64_t	value;
 	uint8_t		type;
-	char		type_letter;
+	uint8_t		sect;
+	// char		type_letter;
 
 	struct s_symbols	*next;
 }				t_symbols;
@@ -97,7 +99,7 @@ struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 /*
 **	list.c
 */
-void		print_symbols(t_symbols	*ptr, uint32_t file_type);
+void		print_symbols(char *file, t_symbols	*ptr, uint32_t file_type);
 t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
 
 /*
@@ -106,11 +108,17 @@ t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
 void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
+**	sections.c
+*/
+char		**get_sections(struct mach_header *header, uint32_t file_type);
+
+/*
 **	tools.c
 */
 int			ft_error(char *message);
 uint32_t	swap_endian(uint32_t num);
 char		section_letter(char *segname);
+char		type_letter(char **sections, t_symbols *symbol);
 char		*symbol_type(int type, int sect, int value);
 uint32_t	get_file_type(char *file);
 
