@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 01:37:59 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/17 01:47:38 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,16 @@ static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, 
 
 	new = new_node(file_type, symbol, string_table);
 	ptr = (*symbols);
-	if ((*symbols) == NULL)
+	if ((*symbols) == NULL || (ft_strcmp((*symbols)->name, new->name) >= 0))
+	{
+		new->next = (*symbols);
 		(*symbols) = new;
+	}
 	else
 	{
-		while (ptr->next != NULL)
+		while (ptr->next != NULL && (ft_strcmp(ptr->next->name, new->name) < 0))
 			ptr = ptr->next;
+		new->next = ptr->next;
 		ptr->next = new;
 	}
 }
