@@ -35,7 +35,7 @@
 # define F_IS_32(type) (F_ARCH(type) == F_32)
 # define F_IS_64(type) (F_ARCH(type) == F_64)
 
-extern uint64_t	G_MAXADDR;
+extern uint64_t	g_maxaddr;
 
 /*
 **	File flags	(uint8_t)
@@ -119,7 +119,7 @@ char		**get_sections(struct mach_header *header, uint32_t file_type);
 */
 // int			ft_error(char *message);
 bool		file_error(char *filename);
-bool		invalid_address(void *ptr);
+bool		valid_addr(void *ptr);
 uint32_t	swap_endian(uint32_t num);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sections.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 13:53:39 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/19 14:28:07 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-static void	store_sections(void *segment, char **sections, uint32_t file_type, size_t *i_sect)
+static void	store_sections(void *segment, char **sections, uint32_t file_type,
+				size_t *i_sect)
 {
 	size_t			i;
 	size_t			nsects;
@@ -29,9 +30,9 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type, s
 	while (i < nsects)
 	{
 		if (F_IS_32(file_type))
-			sections[(*i_sect)] = ft_strdup(((struct section *)section)->sectname);
+			sections[(*i_sect)] = ((struct section *)section)->sectname;
 		else
-			sections[(*i_sect)] = ft_strdup(((struct section_64 *)section)->sectname);
+			sections[(*i_sect)] = ((struct section_64 *)section)->sectname;
 		section += SECTION_SIZE(F_IS_32(file_type));
 		(*i_sect)++;
 		i++;
@@ -42,6 +43,7 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type, s
 **	Store section names in a tab in order of appearance
 **	note : this function handles both 32bit and 64bit arch
 */
+
 char		**get_sections(struct mach_header *header, uint32_t file_type)
 {
 	size_t					i;

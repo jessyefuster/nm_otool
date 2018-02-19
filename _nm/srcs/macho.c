@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/17 19:27:12 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/19 14:25:04 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 **	Add the symbol to the linked-list in ascii order
 **	note : this function handles both 32bit and 64bit symbol
 */
-static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, char *string_table)
+
+static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol,
+				char *string_table)
 {
 	t_symbols		*new;
 	t_symbols		*ptr;
@@ -42,7 +44,9 @@ static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol, 
 **	Iterate over symbols and store them in SYMBOLS linked-list if valid
 **	note : this function handles both 32bit and 64bit arch
 */
-void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols)
+
+void		store_symbols(char *file, uint32_t file_type,
+				struct symtab_command *symtab_cmd, t_symbols **symbols)
 {
 	size_t			i;
 	void			*symbol;
@@ -55,7 +59,8 @@ void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symta
 	{
 		if (F_IS_32(file_type) && !(((struct nlist *)symbol)->n_type & N_STAB))
 			store_symbol(file_type, symbols, symbol, string_table);
-		else if (F_IS_64(file_type) && !(((struct nlist_64 *)symbol)->n_type & N_STAB))
+		else if (F_IS_64(file_type) && !(((struct nlist_64 *)symbol)->n_type &
+					N_STAB))
 			store_symbol(file_type, symbols, symbol, string_table);
 		symbol += SYMBOL_SIZE(F_IS_32(file_type));
 		i++;

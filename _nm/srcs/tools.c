@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 20:13:40 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/19 17:01:59 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ bool		file_error(char *filename)
 	return (TRUE);
 }
 
-bool		invalid_address(void *ptr)
+bool		valid_addr(void *ptr)
 {
-	if ((uint64_t)ptr > G_MAXADDR)
-		return (TRUE);
-	return (FALSE);
+	if ((uint64_t)ptr > g_maxaddr)
+		return (FALSE);
+	return (TRUE);
 }
-
 
 uint32_t	swap_endian(uint32_t num)
 {
@@ -37,7 +36,6 @@ uint32_t	swap_endian(uint32_t num)
 	b1 = (num & 0x0000ff00) << 8u;
 	b2 = (num & 0x00ff0000) >> 8u;
 	b3 = (num & 0xff000000) >> 24u;
-
 	return (b0 | b1 | b2 | b3);
 }
 
@@ -61,22 +59,16 @@ char		type_letter(char **sections, t_symbols *symbol)
 		return ('-');
 	else if ((symbol->type & N_TYPE) == N_UNDF)
 	{
-		type_letter = 'u';
+		type_letter = 'U';
 		if (symbol->value)
-			type_letter = 'c';
-		if ((symbol->type & N_EXT))
-			return (ft_toupper(type_letter));
+			type_letter = 'C';
+		// if ((symbol->type & N_EXT))
+		// 	return (ft_toupper(type_letter));
 	}
 	else if ((symbol->type & N_TYPE) == N_ABS)
 		type_letter = 'A';
 	else if ((symbol->type & N_TYPE) == N_INDR)
 		type_letter = 'I';
-	// else if (symbol->type == N_EXT)
-	// {
-	// 	if (symbol->value)
-	// 		return ('C');
-	// 	return ('U');
-	// }
 	else if (symbol->type & N_SECT)
 		type_letter = section_letter(sections[symbol->sect]);
 	if (!(symbol->type & N_EXT))
@@ -105,8 +97,6 @@ static	uint32_t	get_macho_type(uint32_t file_type)
 	return (0);
 }
 
-// https://code.woboq.org/llvm/include/ar.h.html
-// https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
 uint32_t			get_file_type(char *file)
 {
 	uint32_t	file_type;
@@ -114,23 +104,20 @@ uint32_t			get_file_type(char *file)
 
 	file_type = 0;
 	magic = *(int *)file;
-	// printf("magic:  %x\n", magic);
+	printf("magic  %x\n", magic);
 	if (magic == MH_MAGIC)
-		file_type |= F_32 | F_MACHO;
+		file_type |= F_32 | F_MACHO | F_LITTLE;
+	else if (magic == MH_CIGAM)
+		file_type |= F_32 | F_MACHO | F_BIG;
 	else if (magic == MH_MAGIC_64)
-		file_type |= F_64 | F_MACHO;
+		file_type |= F_64 | F_MACHO | F_LITTLE;
+	else if (magic == MH_CIGAM_64)
+		file_type |= F_64 | F_MACHO | F_BIG;
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
 		file_type |= F_FAT;
 	else
 		return (0);
-
 	if (file_type & F_MACHO)
 		file_type |= get_macho_type(((struct mach_header *)file)->filetype);
-	
-	// printf("filetype: %s\n", ft_utob(file_type, 2, "01"));
-	// printf("arch: %04s\n", ft_utob((file_type & 0xF00) >> 8, 2, "01"));
-
-
-
 	return (file_type);
 }

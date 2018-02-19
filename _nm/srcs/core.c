@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 20:16:08 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/19 16:59:23 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 **	Search for SYMTAB load command in Mach-o file
 **	note : this function handles both 32bit and 64bit arch
 */
+
 void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
 {
 	size_t					i;
@@ -26,23 +27,24 @@ void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
 	load_cmds = (struct load_command *)(((struct mach_header_64 *)file) + 1);
 	if (F_ARCH(file_type) == F_32)
 		load_cmds = (struct load_command *)(((struct mach_header *)file) + 1);
-
 	i = 0;
 	while (i < ncmds)
 	{
 		if (load_cmds->cmd == LC_SYMTAB)
 		{
-			store_symbols(file, file_type, (struct symtab_command *)load_cmds, symbols);
+			store_symbols(file, file_type, (struct symtab_command *)load_cmds,
+				symbols);
 			break ;
 		}
 		load_cmds = (void *)load_cmds + load_cmds->cmdsize;
 		i++;
-	}	
+	}
 }
 
 /*
 **	Iterate over arch headers in FAT file and nm each binary
 */
+
 void		handle_fat(char *file, char *filename)
 {
 	size_t				i;
@@ -68,8 +70,11 @@ void		handle_fat(char *file, char *filename)
 	}
 }
 
-// https://code.woboq.org/llvm/include/ar.h.html
-// https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+/*
+**	https://code.woboq.org/llvm/include/ar.h.html
+**	https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
+*/
+
 void		handle_archive(char *file, uint32_t file_type)
 {
 	printf("%p %u\n", file, file_type);

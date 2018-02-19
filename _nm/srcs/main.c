@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/17 20:14:08 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/19 16:59:35 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-uint64_t	G_MAXADDR = 0;
+uint64_t	g_maxaddr = 0;
 
 bool	ft_nm(char *file, char *filename)
 {
 	uint32_t	file_type;
 	t_symbols	*symbols;
 
-	if (invalid_address(file))
+	if (!valid_addr(file))
 		return (file_error(filename));
 	symbols = NULL;
 	file_type = get_file_type(file);
@@ -45,16 +45,13 @@ char	*valid_file(char *filename, struct stat *file_info)
 
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		return (NULL);
-
 	if (fstat(fd, file_info) < 0 || (*file_info).st_mode & S_IFDIR)
 		return (NULL);
-
-	if ((file = mmap(0, (*file_info).st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((file = mmap(0, (*file_info).st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+		== MAP_FAILED)
 		return (NULL);
-
-	G_MAXADDR = (uint64_t)(file + (*file_info).st_size);
+	g_maxaddr = (uint64_t)(file + (*file_info).st_size);
 	close(fd);
-
 	return (file);
 }
 
@@ -70,7 +67,6 @@ void	nm_if_valid(char *filename)
 	}
 	else
 		file_error(filename);
-		// fprintf(stderr, "ft_nm: %s: error occured\n", filename);
 }
 
 int		main(int argc, char **argv)
@@ -88,6 +84,5 @@ int		main(int argc, char **argv)
 	}
 	else
 		nm_if_valid("a.out");
-
 	return (0);
 }
