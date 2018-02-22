@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/22 14:54:05 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:25:11 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@
 void		print_symbols(char *file, t_symbols *symbol, uint32_t file_type)
 {
 	char	type;
-	// char	**sections;
+	char	**sections;
 
 	printf("%p\n", file);
 
-	// sections = get_sections((struct mach_header *)file, file_type);
+	sections = get_sections((struct mach_header *)file, file_type);
 	while (symbol != NULL)
 	{
-		// type = type_letter(sections, symbol);
-		type = '?';
+		type = type_letter(sections, symbol);
 		if (F_IS_32(file_type))
 		{
 			if (symbol->value || type != 'U')
@@ -47,36 +46,10 @@ void		print_symbols(char *file, t_symbols *symbol, uint32_t file_type)
 	}
 }
 
-
-t_symbols	*new_node_big(uint32_t file_type, void *symbol, char *string_table)
-{
-	t_symbols	*new;
-
-	if ((new = (t_symbols *)malloc(sizeof(t_symbols))) == NULL)
-		return (NULL);
-	new->next = NULL;
-	new->name = "bad string index";
-	if (F_IS_32(file_type))
-	{
-		if (valid_addr(string_table + swap_endian(((struct nlist *)symbol)->n_un.n_strx)))
-			new->name = string_table + swap_endian(((struct nlist *)symbol)->n_un.n_strx);
-		new->value = swap_endian(((struct nlist *)symbol)->n_value);
-		new->type = swap_endian(((struct nlist *)symbol)->n_type);
-		new->sect = swap_endian(((struct nlist *)symbol)->n_sect);
-	}
-	else
-	{
-		if (valid_addr(string_table + swap_endian(((struct nlist_64 *)symbol)->n_un.n_strx)))
-			new->name = string_table + swap_endian(((struct nlist_64 *)symbol)->n_un.n_strx);
-		new->value = swap_endian_64(((struct nlist_64 *)symbol)->n_value);
-		new->type = swap_endian(((struct nlist_64 *)symbol)->n_type);
-		new->sect = swap_endian(((struct nlist_64 *)symbol)->n_sect);
-	}
-	return (new);
-}
 /*
 **	Create a node with symbol information
 **	note : this function handles both 32bit and 64bit symbol
+**	note : this function handles endianess
 */
 
 t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
@@ -89,19 +62,19 @@ t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
 	new->name = "bad string index";
 	if (F_IS_32(file_type))
 	{
-		if (valid_addr(string_table + ((struct nlist *)symbol)->n_un.n_strx))
-			new->name = string_table + ((struct nlist *)symbol)->n_un.n_strx;
-		new->value = ((struct nlist *)symbol)->n_value;
-		new->type = ((struct nlist *)symbol)->n_type;
-		new->sect = ((struct nlist *)symbol)->n_sect;
+		if (valid_addr(string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file_type)))
+			new->name = string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file_type);
+		new->value = S_32(((struct nlist *)symbol)->n_value, file_type);
+		new->type = S_32(((struct nlist *)symbol)->n_type, file_type);
+		new->sect = S_32(((struct nlist *)symbol)->n_sect, file_type);
 	}
 	else
 	{
-		if (valid_addr(string_table + ((struct nlist_64 *)symbol)->n_un.n_strx))
-			new->name = string_table + ((struct nlist_64 *)symbol)->n_un.n_strx;
-		new->value = ((struct nlist_64 *)symbol)->n_value;
-		new->type = ((struct nlist_64 *)symbol)->n_type;
-		new->sect = ((struct nlist_64 *)symbol)->n_sect;
+		if (valid_addr(string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file_type)))
+			new->name = string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file_type);
+		new->value = S_64(((struct nlist_64 *)symbol)->n_value, file_type);
+		new->type = S_32(((struct nlist_64 *)symbol)->n_type, file_type);
+		new->sect = S_32(((struct nlist_64 *)symbol)->n_sect, file_type);
 	}
 	return (new);
 }

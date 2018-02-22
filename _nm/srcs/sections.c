@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sections.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/19 14:28:07 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:25:21 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type,
 	size_t			nsects;
 	void			*section;
 
-	nsects = ((struct segment_command_64 *)segment)->nsects;
+	nsects = S_32(((struct segment_command_64 *)segment)->nsects, file_type);
 	section = ((struct segment_command_64 *)segment) + 1;
 	if (F_IS_32(file_type))
 	{
-		nsects = ((struct segment_command *)segment)->nsects;
+		nsects = S_32(((struct segment_command *)segment)->nsects, file_type);
 		section = ((struct segment_command *)segment) + 1;
 	}
 	i = 0;
@@ -42,6 +42,7 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type,
 /*
 **	Store section names in a tab in order of appearance
 **	note : this function handles both 32bit and 64bit arch
+**	note : this function handles endianess
 */
 
 char		**get_sections(struct mach_header *header, uint32_t file_type)
@@ -58,11 +59,11 @@ char		**get_sections(struct mach_header *header, uint32_t file_type)
 		load_cmd = (void *)(header + 1);
 	i = 0;
 	i_sect = 1;
-	while (i < header->ncmds)
+	while (i < S_32(header->ncmds, file_type))
 	{
-		if (load_cmd->cmd == LC_SEGMENT_64 || load_cmd->cmd == LC_SEGMENT)
+		if (S_32(load_cmd->cmd, file_type) == LC_SEGMENT_64 || S_32(load_cmd->cmd, file_type) == LC_SEGMENT)
 			store_sections((void *)load_cmd, sections, file_type, &i_sect);
-		load_cmd = (void *)load_cmd + load_cmd->cmdsize;
+		load_cmd = (void *)load_cmd + S_32(load_cmd->cmdsize, file_type);
 		i++;
 	}
 	return (sections);

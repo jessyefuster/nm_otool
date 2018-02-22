@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/22 17:04:21 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:04:27 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,22 @@ bool		valid_addr(void *ptr)
 		return (FALSE);
 	return (TRUE);
 }
-// void		swap_binary(char *start, size_t size, bool is32)
-void		swap_binary(char *start, size_t size)
-{
-	uint32_t	*ptr;
-	void		*end;
 
-	end = start + size;
-	ptr = (uint32_t *)start;
-	while ((void *)ptr < end)
-	{
-		*ptr = swap_endian(*ptr);
-		ptr++;
-	}
-}
-// void		swap_bytes(void *pv, size_t n)
+// void		swap_binary(char *start, size_t size)
 // {
-//     char *p = pv;
-//     char	tmp;
-//     size_t lo, hi;
+// 	uint32_t	*ptr;
+// 	void		*end;
 
-//     for(lo=0, hi=n-1; hi>lo; lo++, hi--)
-//     {
-//         char tmp=p[lo];
-//         p[lo] = p[hi];
-//         p[hi] = tmp;
-//     }
+// 	end = start + size;
+// 	ptr = (uint32_t *)start;
+// 	while ((void *)ptr < end)
+// 	{
+// 		*ptr = swap_uint32(*ptr);
+// 		ptr++;
+// 	}
 // }
 
-uint32_t	swap_endian(uint32_t num)
+uint32_t	swap_uint32(uint32_t num)
 {
 	uint32_t b0;
 	uint32_t b1;
@@ -66,7 +53,7 @@ uint32_t	swap_endian(uint32_t num)
 	return (b0 | b1 | b2 | b3);
 }
 
-uint64_t	swap_endian_64(uint64_t num)
+uint64_t	swap_uint64(uint64_t num)
 {
 	uint32_t b0;
 	uint32_t b1;
@@ -87,6 +74,20 @@ uint64_t	swap_endian_64(uint64_t num)
 	b7 = (num & 0xff00000000000000) >> 56u;
 
 	return (b0 | b1 | b2 | b3 | b4 | b5 | b6 | b7);
+}
+
+uint32_t	rev_uint32(uint32_t num, uint32_t file_type)
+{
+	if (file_type & F_BIG)
+		return (swap_uint32(num));
+	return (num);
+}
+
+uint64_t	rev_uint64(uint64_t num, uint32_t file_type)
+{
+	if (file_type & F_BIG)
+		return (swap_uint64(num));
+	return (num);
 }
 
 char		section_letter(char *segname)

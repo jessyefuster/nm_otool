@@ -22,7 +22,8 @@
 // 	false = 0,
 // 	true = 1
 // }				t_bool;
-// # define SWAP(x) swap_bytes()
+# define S_32(num, file_type) rev_uint32(num, file_type)
+# define S_64(num, file_type) rev_uint64(num, file_type)
 
 # define SYMBOL_SIZE(is_32) (is_32 ? sizeof(struct nlist) : sizeof(struct nlist_64))
 # define SECTION_SIZE(is_32) (is_32 ? sizeof(struct section) : sizeof(struct section_64))
@@ -39,7 +40,7 @@
 extern uint64_t	g_maxaddr;
 
 /*
-**	File flags	(uint8_t)
+**	File flags	(uint32_t)
 **
 **	  00 	   00		   0000			  0000
 **	endian   32 / 64	macho type		file type
@@ -90,7 +91,6 @@ typedef struct	s_symbols
 /*
 **	core.c
 */
-void		handle_macho_big(char *file, uint32_t file_type, t_symbols **symbols);
 void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols);
 void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, uint32_t file_type);
@@ -104,13 +104,11 @@ struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 **	list.c
 */
 void		print_symbols(char *file, t_symbols	*ptr, uint32_t file_type);
-t_symbols	*new_node_big(uint32_t file_type, void *symbol, char *string_table);
 t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
 
 /*
 **	macho.c
 */
-void		store_symbols_big(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
@@ -121,14 +119,12 @@ char		**get_sections(struct mach_header *header, uint32_t file_type);
 /*
 **	tools.c
 */
-// int			ft_error(char *message);
 bool		file_error(char *filename);
 bool		valid_addr(void *ptr);
-// void		swap_binary(char *start, size_t size, bool is32);
-void		swap_binary(char *start, size_t size);
-// void		swap_bytes(void *pv, size_t n);
-uint32_t	swap_endian(uint32_t num);
-uint64_t	swap_endian_64(uint64_t num);
+uint32_t	swap_uint32(uint32_t num);
+uint64_t	swap_uint64(uint64_t num);
+uint32_t	rev_uint32(uint32_t num, uint32_t file_type);
+uint64_t	rev_uint64(uint64_t num, uint32_t file_type);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);
 char		*symbol_type(int type, int sect, int value);
@@ -140,29 +136,5 @@ uint32_t	get_file_type(char *file);
 char		*valid_file(char *filename, struct stat *file_info);
 void		nm_if_valid(char *filename);
 bool		ft_nm(char *file, char *filename);
-
-
-
-/*
-**	_macho_32.c
-**	_macho_64.c
-**	DEPRECATED
-*/
-// void		display_symbols_32(char *file, struct mach_header *header, struct symtab_command *symtab_cmd);
-// void		ft_handle_macho_32(char *file);
-// void		display_symbols_64(char *file, struct mach_header_64 *header, struct symtab_command *symtab_cmd);
-// void		ft_handle_macho_64(char *file);
-
-
-/*
-**	_print.c
-**	DEPRECATED
-*/
-// char		**get_sections_32(struct mach_header *header, struct load_command *load_cmds);
-// char		**get_sections_64(struct mach_header_64 *header, struct load_command *load_cmds);
-// char		symbol_32(char *file, char **sections, struct nlist *symbol, char *string_table);
-// char		symbol_64(char *file, char **sections, struct nlist_64 *symbol, char *string_table);
-
-
 
 #endif

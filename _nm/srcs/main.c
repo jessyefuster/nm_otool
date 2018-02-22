@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/22 17:02:52 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:43:09 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ bool	ft_nm(char *file, char *filename)
 	{
 		printf("\n%s:\n", filename);
 		handle_macho(file, file_type, &symbols);
-		// if (F_ENDIAN(file_type) == F_LITTLE)
-		// {
-		// 	handle_macho(file, file_type, &symbols);
-		// }
-		// else
-		// {
-		// 	printf("BIGGGG\n");
-		// 	printf("%c\n", *file);
-		// 	// swap_binary(file);
-		// 	printf("%c\n", *file);
-		// 	// handle_macho_big(file, file_type, &symbols);
-		// }
 		print_symbols(file, symbols, file_type);
 	}
 	else if (file_type & F_FAT)
