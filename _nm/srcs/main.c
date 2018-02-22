@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/19 16:59:35 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 17:02:52 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@ bool	ft_nm(char *file, char *filename)
 	{
 		printf("\n%s:\n", filename);
 		handle_macho(file, file_type, &symbols);
+		// if (F_ENDIAN(file_type) == F_LITTLE)
+		// {
+		// 	handle_macho(file, file_type, &symbols);
+		// }
+		// else
+		// {
+		// 	printf("BIGGGG\n");
+		// 	printf("%c\n", *file);
+		// 	// swap_binary(file);
+		// 	printf("%c\n", *file);
+		// 	// handle_macho_big(file, file_type, &symbols);
+		// }
 		print_symbols(file, symbols, file_type);
 	}
 	else if (file_type & F_FAT)
@@ -47,7 +59,7 @@ char	*valid_file(char *filename, struct stat *file_info)
 		return (NULL);
 	if (fstat(fd, file_info) < 0 || (*file_info).st_mode & S_IFDIR)
 		return (NULL);
-	if ((file = mmap(0, (*file_info).st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+	if ((file = mmap(0, (*file_info).st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0))
 		== MAP_FAILED)
 		return (NULL);
 	g_maxaddr = (uint64_t)(file + (*file_info).st_size);

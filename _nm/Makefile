@@ -16,7 +16,7 @@ SRCS =	srcs/archive.c \
 SRCO = $(SRCS:.c=.o)
 
 %.o:%.c
-	gcc -c $< -o $@ $(FLAGS)
+	gcc -c $< -o $@ # $(FLAGS)
 
 all: $(NAME)
 

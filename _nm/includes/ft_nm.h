@@ -22,6 +22,7 @@
 // 	false = 0,
 // 	true = 1
 // }				t_bool;
+// # define SWAP(x) swap_bytes()
 
 # define SYMBOL_SIZE(is_32) (is_32 ? sizeof(struct nlist) : sizeof(struct nlist_64))
 # define SECTION_SIZE(is_32) (is_32 ? sizeof(struct section) : sizeof(struct section_64))
@@ -89,6 +90,7 @@ typedef struct	s_symbols
 /*
 **	core.c
 */
+void		handle_macho_big(char *file, uint32_t file_type, t_symbols **symbols);
 void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols);
 void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, uint32_t file_type);
@@ -102,11 +104,13 @@ struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 **	list.c
 */
 void		print_symbols(char *file, t_symbols	*ptr, uint32_t file_type);
+t_symbols	*new_node_big(uint32_t file_type, void *symbol, char *string_table);
 t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
 
 /*
 **	macho.c
 */
+void		store_symbols_big(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
@@ -120,7 +124,11 @@ char		**get_sections(struct mach_header *header, uint32_t file_type);
 // int			ft_error(char *message);
 bool		file_error(char *filename);
 bool		valid_addr(void *ptr);
+// void		swap_binary(char *start, size_t size, bool is32);
+void		swap_binary(char *start, size_t size);
+// void		swap_bytes(void *pv, size_t n);
 uint32_t	swap_endian(uint32_t num);
+uint64_t	swap_endian_64(uint64_t num);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);
 char		*symbol_type(int type, int sect, int value);

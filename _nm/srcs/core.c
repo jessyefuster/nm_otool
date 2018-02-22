@@ -6,11 +6,35 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/19 16:59:23 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/22 16:57:05 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
+
+void		handle_macho_big(char *file, uint32_t file_type, t_symbols **symbols)
+{
+	size_t					i;
+	size_t					ncmds;
+	struct load_command		*load_cmds;
+
+	ncmds = swap_endian(((struct mach_header *)file)->ncmds);
+	load_cmds = (struct load_command *)(((struct mach_header_64 *)file) + 1);
+	if (F_ARCH(file_type) == F_32)
+		load_cmds = (struct load_command *)(((struct mach_header *)file) + 1);
+	i = 0;
+	while (i < ncmds)
+	{
+		if (swap_endian(load_cmds->cmd) == LC_SYMTAB)
+		{
+			store_symbols_big(file, file_type, (struct symtab_command *)load_cmds,
+				symbols);
+			break ;
+		}
+		load_cmds = (void *)load_cmds + swap_endian(load_cmds->cmdsize);
+		i++;
+	}
+}
 
 /*
 **	Search for SYMTAB load command in Mach-o file
@@ -62,6 +86,8 @@ void		handle_fat(char *file, char *filename)
 		while (i < swap_endian(fat_header->nfat_arch))
 		{
 			name = ft_strjoin(filename, " (for architecture ...)");
+			if (get_file_type(file + swap_endian(fat_arch->offset)) & F_BIG)
+				swap_binary(file + swap_endian(fat_arch->offset), swap_endian(fat_arch->size));
 			ft_nm(file + swap_endian(fat_arch->offset), name);
 			free(name);
 			fat_arch++;
