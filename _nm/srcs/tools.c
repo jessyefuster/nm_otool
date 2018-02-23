@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/22 19:04:27 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/23 14:55:29 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ uint32_t			get_file_type(char *file)
 
 	file_type = 0;
 	magic = *(int *)file;
-	printf("magic  %x\n", magic);
 	if (magic == MH_MAGIC)
 		file_type |= F_32 | F_MACHO | F_LITTLE;
 	else if (magic == MH_CIGAM)

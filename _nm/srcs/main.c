@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/22 18:43:09 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/23 15:32:21 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint64_t	g_maxaddr = 0;
 
-bool	ft_nm(char *file, char *filename)
+bool	ft_nm(char *file, char *filename, bool print_filename)
 {
 	uint32_t	file_type;
 	t_symbols	*symbols;
@@ -25,7 +25,8 @@ bool	ft_nm(char *file, char *filename)
 	file_type = get_file_type(file);
 	if (file_type & F_MACHO)
 	{
-		printf("\n%s:\n", filename);
+		if (print_filename)
+			printf("\n%s:\n", filename);
 		handle_macho(file, file_type, &symbols);
 		print_symbols(file, symbols, file_type);
 	}
@@ -55,14 +56,14 @@ char	*valid_file(char *filename, struct stat *file_info)
 	return (file);
 }
 
-void	nm_if_valid(char *filename)
+void	nm_if_valid(char *filename, bool print_filename)
 {
 	char		*file;
 	struct stat	file_info;
 
 	if ((file = valid_file(filename, &file_info)))
 	{
-		if (!ft_nm(file, filename))
+		if (!ft_nm(file, filename, print_filename))
 			munmap(file, file_info.st_size);
 	}
 	else
@@ -73,16 +74,18 @@ int		main(int argc, char **argv)
 {
 	int		i;
 
-	if (argc > 1)
+	if (argc > 2)
 	{
 		i = 1;
 		while (i < argc)
 		{
-			nm_if_valid(argv[i]);
+			nm_if_valid(argv[i], TRUE);
 			i++;
 		}
 	}
+	else if (argc == 2)
+		nm_if_valid(argv[1], FALSE);
 	else
-		nm_if_valid("a.out");
+		nm_if_valid("a.out", FALSE);
 	return (0);
 }

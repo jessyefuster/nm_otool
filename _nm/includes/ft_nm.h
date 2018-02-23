@@ -98,6 +98,7 @@ void		handle_archive(char *file, uint32_t file_type);
 /*
 **	fat.c
 */
+char			*arch_name(cpu_type_t type);
 struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 
 /*
@@ -134,7 +135,7 @@ uint32_t	get_file_type(char *file);
 **	main.c
 */
 char		*valid_file(char *filename, struct stat *file_info);
-void		nm_if_valid(char *filename);
-bool		ft_nm(char *file, char *filename);
+void		nm_if_valid(char *filename, bool print_filename);
+bool		ft_nm(char *file, char *filename, bool print_filename);
 
 #endif
