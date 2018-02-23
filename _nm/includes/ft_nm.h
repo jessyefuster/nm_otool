@@ -16,6 +16,9 @@
 # include <mach-o/fat.h>
 # include <mach/machine.h>
 
+# include <ar.h>
+# include <mach-o/ranlib.h>
+
 
 // typedef enum	e_bool
 // {
