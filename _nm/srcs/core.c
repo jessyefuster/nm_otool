@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/23 15:30:11 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:45:45 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
 **	Iterate over arch headers in FAT file and nm each binary
 */
 
-void		handle_fat(char *file, char *filename)
+void		handle_fat(char *file, char *filename, bool print_filename)
 {
 	size_t				i;
 	char				*name;
@@ -55,7 +55,7 @@ void		handle_fat(char *file, char *filename)
 
 	fat_header = (struct fat_header *)file;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file + swap_uint32(fat_arch->offset), filename, FALSE);
+		ft_nm(file + swap_uint32(fat_arch->offset), filename, print_filename);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
