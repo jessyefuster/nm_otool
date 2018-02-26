@@ -95,7 +95,7 @@ typedef struct	s_symbols
 **	core.c
 */
 void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols);
-void		handle_fat(char *file, char *filename, bool print_filename);
+void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, uint32_t file_type);
 
 /*
@@ -123,6 +123,7 @@ char		**get_sections(struct mach_header *header, uint32_t file_type);
 /*
 **	tools.c
 */
+bool		is_archive(char *ptr);
 bool		file_error(char *filename);
 bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);

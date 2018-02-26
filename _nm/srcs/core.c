@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/24 17:45:45 by jessye           ###   ########.fr       */
+/*   Updated: 2018/02/26 15:40:06 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
 **	Iterate over arch headers in FAT file and nm each binary
 */
 
-void		handle_fat(char *file, char *filename, bool print_filename)
+void		handle_fat(char *file, char *filename)
 {
 	size_t				i;
 	char				*name;
@@ -55,7 +55,7 @@ void		handle_fat(char *file, char *filename, bool print_filename)
 
 	fat_header = (struct fat_header *)file;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file + swap_uint32(fat_arch->offset), filename, print_filename);
+		ft_nm(file + swap_uint32(fat_arch->offset), filename, FALSE);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -78,5 +78,19 @@ void		handle_fat(char *file, char *filename, bool print_filename)
 
 void		handle_archive(char *file, uint32_t file_type)
 {
-	printf("%p %u\n", file, file_type);
+	printf("ARCHIVE    %p %u\n", file, file_type);
+	struct ar_hdr	*header;
+	char			*symdef;
+	// uint32_t		*size;
+	char		*size;
+	
+	header = (struct ar_hdr *)(file + SARMAG);
+	symdef = (char *)(header + 1);
+	// size = (uint32_t *)(symdef + sizeof(SYMDEF));
+	size = symdef + sizeof(SYMDEF);
+
+	printf("ar_hdr->name  |%s\n", header->ar_name);
+	printf("symdef  |%s\n", symdef);
+	// printf("size %u\n", *size);
+	// printf("%s\n", );
 }

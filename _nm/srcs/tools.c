@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/23 14:55:29 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/02/26 14:56:06 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,13 @@ char		section_letter(char *segname)
 	return ('S');
 }
 
+bool		is_archive(char *ptr)
+{
+	if (ft_strncmp(ptr, ARMAG, SARMAG) == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
 char		type_letter(char **sections, t_symbols *symbol)
 {
 	char	type_letter;
@@ -165,6 +172,8 @@ uint32_t			get_file_type(char *file)
 		file_type |= F_64 | F_MACHO | F_BIG;
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
 		file_type |= F_FAT;
+	else if (is_archive(file))
+		file_type |= F_ARCHIVE;
 	else
 		return (0);
 	if (file_type & F_MACHO)
