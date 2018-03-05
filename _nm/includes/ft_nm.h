@@ -89,7 +89,7 @@ typedef struct	s_symbols
 /*
 **	archive.c
 */
-
+size_t		*archive_offsets(struct ar_hdr *header);
 
 /*
 **	core.c

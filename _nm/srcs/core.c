@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/26 15:40:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/05 15:33:56 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,31 @@ void		handle_fat(char *file, char *filename)
 
 void		handle_archive(char *file, uint32_t file_type)
 {
-	printf("ARCHIVE    %p %u\n", file, file_type);
-	struct ar_hdr	*header;
-	char			*symdef;
-	// uint32_t		*size;
-	char		*size;
-	
-	header = (struct ar_hdr *)(file + SARMAG);
-	symdef = (char *)(header + 1);
-	// size = (uint32_t *)(symdef + sizeof(SYMDEF));
-	size = symdef + sizeof(SYMDEF);
+	// printf("%u\n", file_type);
+	(void)file_type;
 
-	printf("ar_hdr->name  |%s\n", header->ar_name);
-	printf("symdef  |%s\n", symdef);
-	// printf("size %u\n", *size);
-	// printf("%s\n", );
+	size_t	*offsets;
+
+	offsets = archive_offsets((struct ar_hdr *)file);
+	// struct ar_hdr	*header;
+	// size_t			symdef_len;
+	// char			*symdef;
+	// struct ranlib	*ran;
+	// size_t			n_ran;
+
+	// header = (struct ar_hdr *)file;
+	// symdef_len = ft_atoi(file + (sizeof(AR_EFMT1) - 1));
+	// symdef = (char *)(header + 1);
+	// ran = (struct ranlib *)(symdef + symdef_len + sizeof(uint32_t));
+
+	// n_ran = *((uint32_t *)(symdef + symdef_len)) / sizeof(struct ranlib);
+
+	// for (size_t i = 0; i < n_ran; ++i)
+	// {
+	// 	printf("%u\n", ran->ran_off);
+	// 	ran++;
+	// }
+
+	// printf("len %zu\n", symdef_len);
+	// printf("n_ran %zu\n", n_ran);
 }
