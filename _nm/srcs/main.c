@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/05 14:34:56 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/06 02:16:32 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	ft_nm(char *file, char *filename, bool print_filename)
 	else if (file_type & F_FAT)
 		handle_fat(file, filename);
 	else if (file_type & F_ARCHIVE)
-		handle_archive(file + SARMAG, file_type);
+		handle_archive(file, filename);
 	else
 		return (file_error(filename));
 	return (FALSE);

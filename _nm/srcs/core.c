@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/05 15:33:56 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/06 02:16:49 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,33 +76,28 @@ void		handle_fat(char *file, char *filename)
 **	https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
 */
 
-void		handle_archive(char *file, uint32_t file_type)
+void		handle_archive(char *file, char *filename)
 {
-	// printf("%u\n", file_type);
-	(void)file_type;
+	size_t			i;
+	struct ar_hdr	*header;
+	char			*macho;
+	char			*name;
+	size_t			*offsets;
 
-	size_t	*offsets;
+	offsets = archive_offsets((struct ar_hdr *)(file + SARMAG));
+	if (offsets == NULL)
+	{
+		file_error("");
+		return ;
+	}
 
-	offsets = archive_offsets((struct ar_hdr *)file);
-	// struct ar_hdr	*header;
-	// size_t			symdef_len;
-	// char			*symdef;
-	// struct ranlib	*ran;
-	// size_t			n_ran;
-
-	// header = (struct ar_hdr *)file;
-	// symdef_len = ft_atoi(file + (sizeof(AR_EFMT1) - 1));
-	// symdef = (char *)(header + 1);
-	// ran = (struct ranlib *)(symdef + symdef_len + sizeof(uint32_t));
-
-	// n_ran = *((uint32_t *)(symdef + symdef_len)) / sizeof(struct ranlib);
-
-	// for (size_t i = 0; i < n_ran; ++i)
-	// {
-	// 	printf("%u\n", ran->ran_off);
-	// 	ran++;
-	// }
-
-	// printf("len %zu\n", symdef_len);
-	// printf("n_ran %zu\n", n_ran);
+	i = 0;
+	while (offsets[i])
+	{
+		header = (struct ar_hdr *)(file + offsets[i]);
+		macho = (char *)(header + 1) + ft_atoi((char *)header + 3);
+		name = ft_strjoin(filename, archive_name((char *)(header + 1)));
+		ft_nm(macho, name, TRUE);
+		i++;
+	}
 }

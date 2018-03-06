@@ -11,6 +11,7 @@ SRCS =	srcs/archive.c \
 		srcs/macho.c \
 		srcs/main.c \
 		srcs/sections.c \
+		srcs/sort.c \
 		srcs/tools.c \
 
 SRCO = $(SRCS:.c=.o)
