@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sections.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/23 14:53:00 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/07 00:37:34 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-static void	store_sections(void *segment, char **sections, uint32_t file_type,
+static void	store_sections(void *segment, char **sections, t_filetype_t file_type,
 				size_t *i_sect)
 {
 	size_t			i;
@@ -45,7 +45,7 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type,
 **	note : this function handles endianess
 */
 
-char		**get_sections(struct mach_header *header, uint32_t file_type)
+char		**get_sections(struct mach_header *header, t_filetype_t file_type)
 {
 	size_t					i;
 	size_t					i_sect;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/06 15:37:07 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/07 00:35:57 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	note : this function handles endianess
 */
 
-void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols)
+void		handle_macho(char *file, t_filetype_t file_type, t_symbols **symbols)
 {
 	size_t					i;
 	size_t					ncmds;

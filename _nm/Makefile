@@ -13,6 +13,7 @@ SRCS =	srcs/archive.c \
 		srcs/sections.c \
 		srcs/sort.c \
 		srcs/tools.c \
+		srcs/checks/check_file.c \
 
 SRCO = $(SRCS:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/02/23 14:55:10 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/07 00:34:45 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	note : this function handles both 32bit and 64bit symbol
 */
 
-void		print_symbols(char *file, t_symbols *symbol, uint32_t file_type)
+void		print_symbols(char *file, t_symbols *symbol, t_filetype_t file_type)
 {
 	char	type;
 	char	**sections;
@@ -50,7 +50,7 @@ void		print_symbols(char *file, t_symbols *symbol, uint32_t file_type)
 **	note : this function handles endianess
 */
 
-t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table)
+t_symbols	*new_node(t_filetype_t file_type, void *symbol, char *string_table)
 {
 	t_symbols	*new;
 

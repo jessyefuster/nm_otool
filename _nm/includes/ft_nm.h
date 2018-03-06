@@ -42,8 +42,10 @@
 
 extern uint64_t	g_maxaddr;
 
+typedef uint32_t	t_filetype_t;
+
 /*
-**	File flags	(uint32_t)
+**	File flags	t_filetype_t (uint32_t)
 **
 **	  00 	   00		   0000			  0000
 **	endian   32 / 64	macho type		file type
@@ -93,9 +95,17 @@ char			*archive_name(char *name);
 size_t		*archive_offsets(struct ar_hdr *header);
 
 /*
+**	CHECKS
+*/
+/*
+**		check_file.c
+*/
+t_filetype_t	get_file_type(char *file);
+
+/*
 **	core.c
 */
-void		handle_macho(char *file, uint32_t file_type, t_symbols **symbols);
+void		handle_macho(char *file, t_filetype_t file_type, t_symbols **symbols);
 void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, char *filename);
 
@@ -108,18 +118,18 @@ struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 /*
 **	list.c
 */
-void		print_symbols(char *file, t_symbols	*ptr, uint32_t file_type);
-t_symbols	*new_node(uint32_t file_type, void *symbol, char *string_table);
+void		print_symbols(char *file, t_symbols	*ptr, t_filetype_t file_type);
+t_symbols	*new_node(t_filetype_t file_type, void *symbol, char *string_table);
 
 /*
 **	macho.c
 */
-void		store_symbols(char *file, uint32_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
+void		store_symbols(char *file, t_filetype_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
 **	sections.c
 */
-char		**get_sections(struct mach_header *header, uint32_t file_type);
+char		**get_sections(struct mach_header *header, t_filetype_t file_type);
 
 /*
 **	sort.c
@@ -134,12 +144,11 @@ bool		file_error(char *filename);
 bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);
 uint64_t	swap_uint64(uint64_t num);
-uint32_t	rev_uint32(uint32_t num, uint32_t file_type);
-uint64_t	rev_uint64(uint64_t num, uint32_t file_type);
+uint32_t	rev_uint32(uint32_t num, t_filetype_t file_type);
+uint64_t	rev_uint64(uint64_t num, t_filetype_t file_type);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);
 char		*symbol_type(int type, int sect, int value);
-uint32_t	get_file_type(char *file);
 
 /*
 **	main.c

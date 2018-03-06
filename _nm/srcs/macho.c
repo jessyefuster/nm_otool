@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/24 17:55:38 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/07 00:36:33 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	note : this function handles endianess
 */
 
-static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol,
+static void	store_symbol(t_filetype_t file_type, t_symbols **symbols, void *symbol,
 				char *string_table)
 {
 	t_symbols		*new;
@@ -47,7 +47,7 @@ static void	store_symbol(uint32_t file_type, t_symbols **symbols, void *symbol,
 **	note : this function handles endianess
 */
 
-void		store_symbols(char *file, uint32_t file_type,
+void		store_symbols(char *file, t_filetype_t file_type,
 				struct symtab_command *symtab_cmd, t_symbols **symbols)
 {
 	size_t			i;

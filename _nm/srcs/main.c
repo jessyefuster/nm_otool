@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/06 02:16:32 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/07 00:33:03 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,25 @@ uint64_t	g_maxaddr = 0;
 
 bool	ft_nm(char *file, char *filename, bool print_filename)
 {
-	uint32_t	file_type;
-	t_symbols	*symbols;
+	t_filetype_t	file_type;
+	t_symbols		*symbols;
 
-	if (!valid_addr(file))
-		return (file_error(filename));
 	symbols = NULL;
 	file_type = get_file_type(file);
 	if (file_type & F_MACHO)
 	{
-		if (print_filename)
-			printf("\n%s:\n", filename);
-		handle_macho(file, file_type, &symbols);
-		print_symbols(file, symbols, file_type);
+		printf("DO MACHO (print: %u)\n", print_filename);
+		// if (print_filename)
+		// 	printf("\n%s:\n", filename);
+		// handle_macho(file, file_type, &symbols);
+		// print_symbols(file, symbols, file_type);
 	}
 	else if (file_type & F_FAT)
-		handle_fat(file, filename);
+		printf("DO FAT\n");
+		// handle_fat(file, filename);
 	else if (file_type & F_ARCHIVE)
-		handle_archive(file, filename);
+		printf("DO ARCHIVE\n");
+		// handle_archive(file, filename);
 	else
 		return (file_error(filename));
 	return (FALSE);
