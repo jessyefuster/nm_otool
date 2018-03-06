@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   archive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/06 02:29:25 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/06 15:27:57 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char			*archive_name(char *name)
 	char	*new_name;
 
 	name_len = ft_strlen(name);
-	new_name = (char *)malloc(sizeof(char) * (name_len + 2 + 1));
+	if ((new_name = (char *)malloc(sizeof(char) * (name_len + 2 + 1))) == NULL)
+		return (NULL);
 	new_name[name_len + 2] = 0;
 	new_name[0] = '(';
 	ft_strcpy(&new_name[1], name);
@@ -75,7 +76,7 @@ size_t	*archive_offsets(struct ar_hdr *header)
 	n_rans = *((uint32_t *)((char *)(header + 1) + ft_atoi((char *)header + 3))) / sizeof(struct ranlib);
 	ran = (struct ranlib *)((char *)(header + 1) + ft_atoi((char *)header + 3) + sizeof(uint32_t));
 
-	if (n_rans == 0)
+	if (!valid_addr((void *)ran) || n_rans == 0)
 		return (NULL);
 	offsets = store_offsets(ran, n_rans);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/06 02:16:49 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/06 15:37:07 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void		handle_archive(char *file, char *filename)
 	char			*name;
 	size_t			*offsets;
 
-	offsets = archive_offsets((struct ar_hdr *)(file + SARMAG));
-	if (offsets == NULL)
+	// offsets = archive_offsets((struct ar_hdr *)(file + SARMAG));
+	if ((offsets = archive_offsets((struct ar_hdr *)(file + SARMAG))) == NULL)
 	{
-		file_error("");
+		file_error(filename);
 		return ;
 	}
 
@@ -96,7 +96,9 @@ void		handle_archive(char *file, char *filename)
 	{
 		header = (struct ar_hdr *)(file + offsets[i]);
 		macho = (char *)(header + 1) + ft_atoi((char *)header + 3);
-		name = ft_strjoin(filename, archive_name((char *)(header + 1)));
+		name = archive_name((char *)(header + 1));
+		if (name)
+			name = ft_strjoin(filename, name);
 		ft_nm(macho, name, TRUE);
 		i++;
 	}
