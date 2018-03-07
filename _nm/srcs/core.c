@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/07 00:35:57 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/07 01:28:19 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		handle_fat(char *file, char *filename)
 
 	fat_header = (struct fat_header *)file;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file + swap_uint32(fat_arch->offset), filename, FALSE);
+		ft_nm(file + swap_uint32(fat_arch->offset), filename, swap_uint32(fat_arch->size), FALSE);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -63,7 +63,7 @@ void		handle_fat(char *file, char *filename)
 		while (i < swap_uint32(fat_header->nfat_arch))
 		{
 			name = ft_strjoin(filename, arch_name(swap_uint32(fat_arch->cputype)));
-			ft_nm(file + swap_uint32(fat_arch->offset), name, TRUE);
+			ft_nm(file + swap_uint32(fat_arch->offset), name, swap_uint32(fat_arch->size), TRUE);
 			free(name);
 			fat_arch++;
 			i++;
@@ -99,7 +99,7 @@ void		handle_archive(char *file, char *filename)
 		name = archive_name((char *)(header + 1));
 		if (name)
 			name = ft_strjoin(filename, name);
-		ft_nm(macho, name, TRUE);
+		ft_nm(macho, name, ft_atoi(header->ar_size), TRUE);
 		i++;
 	}
 }

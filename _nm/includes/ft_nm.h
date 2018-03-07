@@ -100,7 +100,8 @@ size_t		*archive_offsets(struct ar_hdr *header);
 /*
 **		check_file.c
 */
-t_filetype_t	get_file_type(char *file);
+// bool		is_archive(char *ptr, size_t size);
+t_filetype_t	get_file_type(char *file, size_t size);
 
 /*
 **	core.c
@@ -139,7 +140,6 @@ void		sort_tab(size_t *tab, size_t len);
 /*
 **	tools.c
 */
-bool		is_archive(char *ptr);
 bool		file_error(char *filename);
 bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);
@@ -155,6 +155,6 @@ char		*symbol_type(int type, int sect, int value);
 */
 char		*valid_file(char *filename, struct stat *file_info);
 void		nm_if_valid(char *filename, bool print_filename);
-bool		ft_nm(char *file, char *filename, bool print_filename);
+bool		ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
 
 #endif

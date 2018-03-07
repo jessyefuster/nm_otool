@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/07 00:33:03 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/07 01:28:40 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 uint64_t	g_maxaddr = 0;
 
-bool	ft_nm(char *file, char *filename, bool print_filename)
+bool	ft_nm(char *file, char *filename, size_t file_size, bool print_filename)
 {
 	t_filetype_t	file_type;
 	t_symbols		*symbols;
 
 	symbols = NULL;
-	file_type = get_file_type(file);
+	file_type = get_file_type(file, file_size);
 	if (file_type & F_MACHO)
 	{
 		printf("DO MACHO (print: %u)\n", print_filename);
@@ -64,7 +64,7 @@ void	nm_if_valid(char *filename, bool print_filename)
 
 	if ((file = valid_file(filename, &file_info)))
 	{
-		if (!ft_nm(file, filename, print_filename))
+		if (!ft_nm(file, filename, file_info.st_size, print_filename))
 			munmap(file, file_info.st_size);
 	}
 	else
