@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_macho.c                                      :+:      :+:    :+:   */
+/*   archive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/08 15:14:43 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/08 16:34:53 by jfuster          ###   ########.fr       */
+/*   Created: 2018/03/08 15:14:20 by jfuster           #+#    #+#             */
+/*   Updated: 2018/03/08 23:47:47 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_nm.h"
 
-t_filetype_t	check_macho(char *file, size_t size, t_filetype_t ft)
+enum check_result	check_archive(char *file, size_t size)
 {
 	(void)file;
-	// (void)size;
-	if (MACH_HEADER_SIZE(F_IS_32(ft)) > size)
-		return (CHECK_BAD);
+	(void)size;
 	return (CHECK_GOOD);
 }

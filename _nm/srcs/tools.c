@@ -6,16 +6,16 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/07 02:22:22 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/08 23:36:09 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-bool		file_error(char *filename)
+enum status	file_error(char *filename)
 {
 	fprintf(stderr, "ft_nm: %s: error occured\n", filename);
-	return (TRUE);
+	return (S_FAILURE);
 }
 
 bool		valid_addr(void *ptr)

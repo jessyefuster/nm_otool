@@ -79,6 +79,12 @@ enum	check_result
 	CHECK_GOOD
 };
 
+enum	status
+{
+	S_FAILURE,
+	S_SUCCESS
+};
+
 /*
 **	Symbol chained-list structure
 */
@@ -107,19 +113,20 @@ size_t		*archive_offsets(struct ar_hdr *header);
 /*
 **		check_archive.c
 */
-t_filetype_t	check_archive(char *file, size_t size);
+enum check_result	check_archive(char *file, size_t size);
 /*
 **		check_fat.c
 */
-t_filetype_t	check_fat(char *file, size_t size);
+enum check_result	check_fat(char *file, size_t size);
 /*
 **		check_file.c
 */
-t_filetype_t	get_file_type(char *file, size_t size);
+enum check_result	filecheck_error(char *filename, char *error);
+t_filetype_t		get_file_type(char *file, char *filename, size_t size);
 /*
 **		check_macho.c
 */
-t_filetype_t	check_macho(char *file, size_t size, t_filetype_t ft);
+enum check_result	check_macho(char *file, size_t size, char *filename, t_filetype_t ft);
 
 /*
 **	core.c
@@ -158,7 +165,7 @@ void		sort_tab(size_t *tab, size_t len);
 /*
 **	tools.c
 */
-bool		file_error(char *filename);
+enum status	file_error(char *filename);
 bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);
 uint64_t	swap_uint64(uint64_t num);
@@ -166,13 +173,12 @@ uint32_t	rev_uint32(uint32_t num, t_filetype_t file_type);
 uint64_t	rev_uint64(uint64_t num, t_filetype_t file_type);
 char		section_letter(char *segname);
 char		type_letter(char **sections, t_symbols *symbol);
-char		*symbol_type(int type, int sect, int value);
 
 /*
 **	main.c
 */
-char		*valid_file(char *filename, struct stat *file_info);
-void		nm_if_valid(char *filename, bool print_filename);
-bool		ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
+char		*map_file(char *filename, struct stat *file_info);
+enum status	nm_if_valid_file(char *filename, bool print_filename);
+enum status	ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
 
 #endif
