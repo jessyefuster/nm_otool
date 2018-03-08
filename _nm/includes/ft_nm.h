@@ -30,6 +30,7 @@
 
 # define SYMBOL_SIZE(is_32) (is_32 ? sizeof(struct nlist) : sizeof(struct nlist_64))
 # define SECTION_SIZE(is_32) (is_32 ? sizeof(struct section) : sizeof(struct section_64))
+# define MACH_HEADER_SIZE(is_32) (is_32 ? sizeof(struct mach_header) : sizeof(struct mach_header_64))
 
 
 # define F_TYPE(type) (type & 0xF)
@@ -72,6 +73,12 @@ enum	file_flags
 	F_BIG =			0x800,
 };
 
+enum	check_result
+{
+	CHECK_BAD,
+	CHECK_GOOD
+};
+
 /*
 **	Symbol chained-list structure
 */
@@ -98,10 +105,21 @@ size_t		*archive_offsets(struct ar_hdr *header);
 **	CHECKS
 */
 /*
+**		check_archive.c
+*/
+t_filetype_t	check_archive(char *file, size_t size);
+/*
+**		check_fat.c
+*/
+t_filetype_t	check_fat(char *file, size_t size);
+/*
 **		check_file.c
 */
-// bool		is_archive(char *ptr, size_t size);
 t_filetype_t	get_file_type(char *file, size_t size);
+/*
+**		check_macho.c
+*/
+t_filetype_t	check_macho(char *file, size_t size, t_filetype_t ft);
 
 /*
 **	core.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/07 01:28:40 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/08 14:26:42 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	ft_nm(char *file, char *filename, size_t file_size, bool print_filename)
 	file_type = get_file_type(file, file_size);
 	if (file_type & F_MACHO)
 	{
-		printf("DO MACHO (print: %u)\n", print_filename);
+		printf("DO MACHO (print name: %s)\n", print_filename ? "true" : "false");
 		// if (print_filename)
 		// 	printf("\n%s:\n", filename);
 		// handle_macho(file, file_type, &symbols);

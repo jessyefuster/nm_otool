@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 23:56:49 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/07 02:21:44 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/08 16:34:43 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,15 @@ t_filetype_t			get_file_type(char *file, size_t size)
 	t_filetype_t	file_type;
 
 	file_type = guess_file_type(file, size);
+
+	if (F_TYPE(file_type) == F_NONE)
+		return (F_NONE);
+	else if (F_TYPE(file_type) == F_FAT && check_fat(file, size) == CHECK_BAD)
+		return (F_NONE);
+	else if (F_TYPE(file_type) == F_ARCHIVE && check_archive(file, size) == CHECK_BAD)
+		return (F_NONE);
+	else if (F_TYPE(file_type) == F_MACHO && check_macho(file, size, file_type) == CHECK_BAD)
+		return (F_NONE);
 
 	// if (file_type & F_MACHO)
 	// 	file_type |= get_macho_type(((struct mach_header *)file)->filetype);

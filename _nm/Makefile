@@ -13,7 +13,10 @@ SRCS =	srcs/archive.c \
 		srcs/sections.c \
 		srcs/sort.c \
 		srcs/tools.c \
+		srcs/checks/check_archive.c \
+		srcs/checks/check_fat.c \
 		srcs/checks/check_file.c \
+		srcs/checks/check_macho.c \
 
 SRCO = $(SRCS:.c=.o)
 
