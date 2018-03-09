@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/08 23:33:45 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/09 16:20:00 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ enum status		ft_nm(char *file, char *filename, size_t file_size, bool print_file
 	file_type = get_file_type(file, filename, file_size);
 	if (file_type & F_MACHO)
 	{
-		printf("%s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
+		printf("ft_nm: %-50s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
 		// if (print_filename)
 		// 	printf("\n%s:\n", filename);
 		// handle_macho(file, file_type, &symbols);
 		// print_symbols(file, symbols, file_type);
 	}
 	else if (file_type & F_FAT)
-		printf("%s: DO FAT\n",filename);
+		printf("ft_nm: %-50s: DO FAT\n",filename);
 		// handle_fat(file, filename);
 	else if (file_type & F_ARCHIVE)
-		printf("%s: DO ARCHIVE\n",filename);
+		printf("ft_nm: %-50s: DO ARCHIVE\n",filename);
 		// handle_archive(file, filename);
 	else
 		return (S_FAILURE);
