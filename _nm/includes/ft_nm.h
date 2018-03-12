@@ -40,6 +40,8 @@
 
 # define F_IS_32(type) (F_ARCH(type) == F_32)
 # define F_IS_64(type) (F_ARCH(type) == F_64)
+# define F_IS_LITTLE(type) (F_ENDIAN(type) == F_LITTLE)
+# define F_IS_BIG(type) (F_ENDIAN(type) == F_BIG)
 
 extern uint64_t	g_maxaddr;
 
