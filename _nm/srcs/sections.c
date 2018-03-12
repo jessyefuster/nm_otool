@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sections.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/07 00:37:34 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/12 17:17:56 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char		**get_sections(struct mach_header *header, t_filetype_t file_type)
 		load_cmd = (void *)(header + 1);
 	i = 0;
 	i_sect = 1;
+	
 	while (i < S_32(header->ncmds, file_type))
 	{
 		if (S_32(load_cmd->cmd, file_type) == LC_SEGMENT_64 || S_32(load_cmd->cmd, file_type) == LC_SEGMENT)

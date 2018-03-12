@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/08 23:36:09 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/12 17:11:17 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ uint64_t	rev_uint64(uint64_t num, t_filetype_t file_type)
 
 char		section_letter(char *segname)
 {
+	if (segname == NULL)
+		return ('?');
 	if (ft_strcmp(segname, "__text") == 0)
 		return ('T');
 	else if (ft_strcmp(segname, "__data") == 0)

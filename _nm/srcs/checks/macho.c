@@ -6,11 +6,29 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:43 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/09 16:33:21 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/12 16:18:13 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_nm.h"
+
+static enum check_result	check_segment_command_64(size_t size, struct segment_command_64 *sg, char *filename, t_filetype_t ft)
+{
+	(void)size;
+	size_t				i;
+	struct section_64	*s;
+
+	if (S_32(sg->cmdsize, ft) != sizeof(struct segment_command_64) + sg->nsects * sizeof(struct section_64))
+		return (filecheck_error(filename, "LC_SEGMENT_64 incorrect cmdsize"));
+	s = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
+	i = 0;
+	while (i < sg->nsects)
+	{
+		i++;
+	}
+
+	return (CHECK_GOOD);
+}
 
 static enum check_result	check_symtab_command_64(size_t size, struct symtab_command *st, char *filename, t_filetype_t ft)
 {
@@ -57,6 +75,16 @@ static enum check_result	check_load_commands_64(size_t size, struct mach_header_
 			if ((void *)l + sizeof(struct symtab_command) > (void *)lc + S_32(mh->sizeofcmds, ft))
 				return (filecheck_error(filename, "LC_SYMTAB end out of cmds"));
 			if (check_symtab_command_64(size, st, filename, ft) == CHECK_BAD)
+				return (CHECK_BAD);
+		}
+		else if (S_32(l->cmd, ft) == LC_SEGMENT_64)
+		{
+			sg = (struct segment_command_64 *)l;
+			if ((void *)l + sizeof(struct segment_command_64) > (void *)lc + S_32(mh->sizeofcmds, ft))
+				return (filecheck_error(filename, "LC_SEGMENT_64 end out of cmds"));
+			if ((void *)l + sizeof(struct segment_command_64) + sg->nsects * sizeof(struct section_64) > (void *)lc + S_32(mh->sizeofcmds, ft))
+				return (filecheck_error(filename, "LC_SEGMENT_64 sections out of cmds"));
+			if (check_segment_command_64(size, sg, filename, ft) == CHECK_BAD)
 				return (CHECK_BAD);
 		}
 
