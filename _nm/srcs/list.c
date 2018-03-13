@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/12 22:46:27 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/13 16:39:54 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 **	note : this function handles both 32bit and 64bit symbol
 */
 
-void		print_symbols(char *file, t_symbols *symbol, t_filetype_t file_type)
+void		print_symbols(t_file *file, t_symbols *symbol)
 {
 	char	type;
 	char	**sections;
 
-	sections = get_sections((struct mach_header *)file, file_type);
+	sections = get_sections((struct mach_header *)file->ptr, file->file_type);
 	while (symbol != NULL)
 	{
 		type = type_letter(sections, symbol);
-		if (F_IS_32(file_type))
+		if (F_IS_32(file->file_type))
 		{
 			if (symbol->value || type != 'U')
 				printf("%08llx %c %s\n", symbol->value, type, symbol->name);
@@ -50,7 +50,7 @@ void		print_symbols(char *file, t_symbols *symbol, t_filetype_t file_type)
 **	note : this function handles endianess
 */
 
-t_symbols	*new_node(t_filetype_t file_type, void *symbol, char *string_table)
+t_symbols	*new_node(t_file *file, void *symbol, char *string_table)
 {
 	t_symbols	*new;
 
@@ -58,23 +58,19 @@ t_symbols	*new_node(t_filetype_t file_type, void *symbol, char *string_table)
 		return (NULL);
 	new->next = NULL;
 	new->name = "bad string index";
-	if (F_IS_32(file_type))
+	if (F_IS_32(file->file_type))
 	{
-		if (S_32(((struct nlist *)symbol)->n_un.n_strx, file_type) == 0)
-			new->name = "";
-		else if (valid_addr(string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file_type)))
-			new->name = string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file_type);
-		new->value = S_32(((struct nlist *)symbol)->n_value, file_type);
+		if (string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file->file_type) <= file->ptr + file->size)
+			new->name = string_table + S_32(((struct nlist *)symbol)->n_un.n_strx, file->file_type);
+		new->value = S_32(((struct nlist *)symbol)->n_value, file->file_type);
 		new->type = ((struct nlist *)symbol)->n_type;
 		new->sect = ((struct nlist *)symbol)->n_sect;
 	}
 	else
 	{
-		if (S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file_type) == 0)
-			new->name = "";
-		else if (valid_addr(string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file_type)))
-			new->name = string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file_type);
-		new->value = S_64(((struct nlist_64 *)symbol)->n_value, file_type);
+		if (string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file->file_type) <= file->ptr + file->size)
+			new->name = string_table + S_32(((struct nlist_64 *)symbol)->n_un.n_strx, file->file_type);
+		new->value = S_64(((struct nlist_64 *)symbol)->n_value, file->file_type);
 		new->type = ((struct nlist_64 *)symbol)->n_type;
 		new->sect = ((struct nlist_64 *)symbol)->n_sect;
 	}

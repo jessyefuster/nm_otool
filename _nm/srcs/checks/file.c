@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 23:56:49 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/08 23:48:03 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/13 16:00:53 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@
 **	Try to first-guess file type based on its magic number
 */
 
-static t_filetype_t		guess_file_type(char *file, size_t size)
+static t_filetype_t		guess_file_type(t_file *file)
 {
 	uint32_t		magic;
 	t_filetype_t	file_type;
 
 	magic = 0;
 	file_type = 0;
-	if (size >= SARMAG && ft_strncmp(file, ARMAG, SARMAG) == 0)
+	if (file->size >= SARMAG && ft_strncmp(file->ptr, ARMAG, SARMAG) == 0)
 		file_type |= F_ARCHIVE;
 	else
 	{
-		if (size >= sizeof(magic))
-			magic = *((uint32_t *)file);
+		if (file->size >= sizeof(magic))
+			magic = *((uint32_t *)file->ptr);
 		if (magic == MH_MAGIC)
 			file_type |= F_32 | F_MACHO | F_LITTLE;
 		else if (magic == MH_CIGAM)
@@ -71,22 +71,22 @@ static t_filetype_t		guess_file_type(char *file, size_t size)
 **	WIP
 */
 
-t_filetype_t			get_file_type(char *file, char *filename, size_t size)
+t_filetype_t			get_file_type(t_file *file)
 {
 	t_filetype_t	file_type;
 
-	file_type = guess_file_type(file, size);
+	file_type = guess_file_type(file);
 
 	if (F_TYPE(file_type) == F_NONE)
 	{
-		filecheck_error(filename, "error occured");
+		filecheck_error(file->filename, "error occured");
 		return (F_NONE);
 	}
-	else if (F_TYPE(file_type) == F_FAT && check_fat(file, size) == CHECK_BAD)
+	else if (F_TYPE(file_type) == F_FAT && check_fat(file) == CHECK_BAD)
 		return (F_NONE);
-	else if (F_TYPE(file_type) == F_ARCHIVE && check_archive(file, size) == CHECK_BAD)
+	else if (F_TYPE(file_type) == F_ARCHIVE && check_archive(file) == CHECK_BAD)
 		return (F_NONE);
-	else if (F_TYPE(file_type) == F_MACHO && check_macho(file, size, filename, file_type) == CHECK_BAD)
+	else if (F_TYPE(file_type) == F_MACHO && check_macho(file, file_type) == CHECK_BAD)
 		return (F_NONE);
 
 	// if (file_type & F_MACHO)

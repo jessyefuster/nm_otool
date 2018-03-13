@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/12 17:18:23 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/13 16:36:36 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,38 @@
 
 uint64_t	g_maxaddr = 0;
 
-enum status		ft_nm(char *file, char *filename, size_t file_size, bool print_filename)
+void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_size)
 {
-	t_filetype_t	file_type;
+	file_info->ptr = file;
+	file_info->size = file_size;
+	file_info->filename = filename;
+	file_info->file_type = 0;
+}
+
+enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filename)
+{
+	static t_file	*file = NULL;
 	t_symbols		*symbols;
 
 	symbols = NULL;
-	file_type = get_file_type(file, filename, file_size);
-	if (file_type & F_MACHO)
+	if (!file && ((file = (t_file *)malloc(sizeof(t_file))) == NULL))
+		exit_error("malloc error");
+	init_file_info(file, ptr, filename, file_size);
+	file->file_type = get_file_type(file);
+	if (file->file_type & F_MACHO)
 	{
-		printf("ft_nm: %-50s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
-		// if (print_filename)
-		// 	printf("\n%s:\n", filename);
-		// handle_macho(file, file_type, &symbols);
-		// print_symbols(file, symbols, file_type);
+		// printf("ft_nm: %-50s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
+		if (print_filename)
+			printf("\n%s:\n", file->filename);
+		handle_macho(file, &symbols);
+		print_symbols(file, symbols);
 	}
-	else if (file_type & F_FAT)
-		printf("ft_nm: %-50s: DO FAT\n",filename);
-		// handle_fat(file, filename);
-	else if (file_type & F_ARCHIVE)
-		printf("ft_nm: %-50s: DO ARCHIVE\n",filename);
-		// handle_archive(file, filename);
+	else if (file->file_type & F_FAT)
+		printf("ft_nm: %-50s: DO FAT\n", file->filename);
+		// handle_fat(ptr, filename);
+	else if (file->file_type & F_ARCHIVE)
+		printf("ft_nm: %-50s: DO ARCHIVE\n", file->filename);
+		// handle_archive(ptr, filename);
 	else
 		return (S_FAILURE);
 		// return (file_error(filename));
@@ -60,15 +71,15 @@ char	*map_file(char *filename, struct stat *file_info)
 
 enum status		nm_if_valid_file(char *filename, bool print_filename)
 {
-	char			*file;
+	char			*ptr;
 	struct stat		file_info;
 	enum status		status;
 
-	file = map_file(filename, &file_info);
-	if (file)
+	ptr = map_file(filename, &file_info);
+	if (ptr)
 	{
-		status = ft_nm(file, filename, file_info.st_size, print_filename);
-		munmap(file, file_info.st_size);
+		status = ft_nm(ptr, filename, file_info.st_size, print_filename);
+		munmap(ptr, file_info.st_size);
 		return (status);
 	}
 	else

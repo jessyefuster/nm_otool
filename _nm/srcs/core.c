@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/07 01:28:19 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/13 16:30:29 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,25 @@
 **	note : this function handles endianess
 */
 
-void		handle_macho(char *file, t_filetype_t file_type, t_symbols **symbols)
+void		handle_macho(t_file *file, t_symbols **symbols)
 {
 	size_t					i;
 	size_t					ncmds;
 	struct load_command		*load_cmds;
 
-	ncmds = S_32(((struct mach_header *)file)->ncmds, file_type);
-	load_cmds = (struct load_command *)(((struct mach_header_64 *)file) + 1);
-	if (F_ARCH(file_type) == F_32)
-		load_cmds = (struct load_command *)(((struct mach_header *)file) + 1);
+	ncmds = S_32(((struct mach_header *)file->ptr)->ncmds, file->file_type);
+	load_cmds = (struct load_command *)(((struct mach_header_64 *)file->ptr) + 1);
+	if (F_ARCH(file->file_type) == F_32)
+		load_cmds = (struct load_command *)(((struct mach_header *)file->ptr) + 1);
 	i = 0;
 	while (i < ncmds)
 	{
-		if (S_32(load_cmds->cmd, file_type) == LC_SYMTAB)
+		if (S_32(load_cmds->cmd, file->file_type) == LC_SYMTAB)
 		{
-			store_symbols(file, file_type, (struct symtab_command *)load_cmds,
-				symbols);
+			store_symbols(file, (struct symtab_command *)load_cmds, symbols);
 			break ;
 		}
-		load_cmds = (void *)load_cmds + S_32(load_cmds->cmdsize, file_type);
+		load_cmds = (void *)load_cmds + S_32(load_cmds->cmdsize, file->file_type);
 		i++;
 	}
 }

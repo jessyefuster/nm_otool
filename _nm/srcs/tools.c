@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/12 20:38:35 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/13 16:42:06 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ enum status	file_error(char *filename)
 {
 	fprintf(stderr, "ft_nm: %s: error occured\n", filename);
 	return (S_FAILURE);
+}
+
+void		exit_error(char *error)
+{
+	fprintf(stderr, "EXIT: %s in %s at line %d\n", error, __FILE__, __LINE__);
+	exit(EXIT_FAILURE);
 }
 
 bool		valid_addr(void *ptr)

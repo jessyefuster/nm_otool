@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/07 00:36:33 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/13 16:32:53 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 **	note : this function handles endianess
 */
 
-static void	store_symbol(t_filetype_t file_type, t_symbols **symbols, void *symbol,
+static void	store_symbol(t_file *file, t_symbols **symbols, void *symbol,
 				char *string_table)
 {
 	t_symbols		*new;
 	t_symbols		*ptr;
 
-	if ((new = new_node(file_type, symbol, string_table)) == NULL)
+	if ((new = new_node(file, symbol, string_table)) == NULL)
 		return ;
 	ptr = (*symbols);
 	if ((*symbols) == NULL || (ft_strcmp((*symbols)->name, new->name) >= 0))
@@ -47,24 +47,24 @@ static void	store_symbol(t_filetype_t file_type, t_symbols **symbols, void *symb
 **	note : this function handles endianess
 */
 
-void		store_symbols(char *file, t_filetype_t file_type,
+void		store_symbols(t_file *file,
 				struct symtab_command *symtab_cmd, t_symbols **symbols)
 {
 	size_t			i;
 	void			*symbol;
 	char			*string_table;
 
-	string_table = file + S_32(symtab_cmd->stroff, file_type);
-	symbol = file + S_32(symtab_cmd->symoff, file_type);
+	string_table = file->ptr + S_32(symtab_cmd->stroff, file->file_type);
+	symbol = file->ptr + S_32(symtab_cmd->symoff, file->file_type);
 	i = 0;
-	while (i < S_32(symtab_cmd->nsyms, file_type))
+	while (i < S_32(symtab_cmd->nsyms, file->file_type))
 	{
-		if (F_IS_32(file_type) && !(S_32(((struct nlist *)symbol)->n_type, file_type) & N_STAB))
-			store_symbol(file_type, symbols, symbol, string_table);
-		else if (F_IS_64(file_type) && !(S_32(((struct nlist_64 *)symbol)->n_type, file_type) &
+		if (F_IS_32(file->file_type) && !(S_32(((struct nlist *)symbol)->n_type, file->file_type) & N_STAB))
+			store_symbol(file, symbols, symbol, string_table);
+		else if (F_IS_64(file->file_type) && !(S_32(((struct nlist_64 *)symbol)->n_type, file->file_type) &
 					N_STAB))
-			store_symbol(file_type, symbols, symbol, string_table);
-		symbol += SYMBOL_SIZE(F_IS_32(file_type));
+			store_symbol(file, symbols, symbol, string_table);
+		symbol += SYMBOL_SIZE(F_IS_32(file->file_type));
 		i++;
 	}
 }

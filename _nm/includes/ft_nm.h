@@ -102,6 +102,15 @@ typedef struct	s_symbols
 	struct s_symbols	*next;
 }				t_symbols;
 
+typedef struct	s_file
+{
+	char			*ptr;
+	size_t			size;
+
+	char			*filename;
+
+	t_filetype_t	file_type;
+}				t_file;
 
 /*
 **	archive.c
@@ -115,25 +124,25 @@ size_t		*archive_offsets(struct ar_hdr *header);
 /*
 **		check_archive.c
 */
-enum check_result	check_archive(char *file, size_t size);
+enum check_result	check_archive(t_file *file);
 /*
 **		check_fat.c
 */
-enum check_result	check_fat(char *file, size_t size);
+enum check_result	check_fat(t_file *file);
 /*
 **		check_file.c
 */
 enum check_result	filecheck_error(char *filename, char *error);
-t_filetype_t		get_file_type(char *file, char *filename, size_t size);
+t_filetype_t		get_file_type(t_file *file);
 /*
 **		check_macho.c
 */
-enum check_result	check_macho(char *file, size_t size, char *filename, t_filetype_t ft);
+enum check_result	check_macho(t_file *file, t_filetype_t ft);
 
 /*
 **	core.c
 */
-void		handle_macho(char *file, t_filetype_t file_type, t_symbols **symbols);
+void		handle_macho(t_file *file, t_symbols **symbols);
 void		handle_fat(char *file, char *filename);
 void		handle_archive(char *file, char *filename);
 
@@ -146,13 +155,13 @@ struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 /*
 **	list.c
 */
-void		print_symbols(char *file, t_symbols	*ptr, t_filetype_t file_type);
-t_symbols	*new_node(t_filetype_t file_type, void *symbol, char *string_table);
+void		print_symbols(t_file *file, t_symbols *ptr);
+t_symbols	*new_node(t_file *file, void *symbol, char *string_table);
 
 /*
 **	macho.c
 */
-void		store_symbols(char *file, t_filetype_t file_type, struct symtab_command *symtab_cmd, t_symbols **symbols);
+void		store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
 **	sections.c
@@ -167,6 +176,7 @@ void		sort_tab(size_t *tab, size_t len);
 /*
 **	tools.c
 */
+void		exit_error(char *error);
 enum status	file_error(char *filename);
 bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);
