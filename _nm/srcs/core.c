@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/13 16:30:29 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 15:09:12 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ void		handle_fat(char *file, char *filename)
 
 	fat_header = (struct fat_header *)file;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file + swap_uint32(fat_arch->offset), filename, swap_uint32(fat_arch->size), FALSE);
+		ft_nm(file + fat_arch->offset, filename, fat_arch->size, FALSE);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
 		i = 0;
-		while (i < swap_uint32(fat_header->nfat_arch))
+		while (i < fat_header->nfat_arch)
 		{
-			name = ft_strjoin(filename, arch_name(swap_uint32(fat_arch->cputype)));
-			ft_nm(file + swap_uint32(fat_arch->offset), name, swap_uint32(fat_arch->size), TRUE);
+			name = ft_strjoin(filename, arch_name(fat_arch->cputype));
+			ft_nm(file + fat_arch->offset, name, fat_arch->size, TRUE);
 			free(name);
 			fat_arch++;
 			i++;

@@ -122,22 +122,27 @@ size_t		*archive_offsets(struct ar_hdr *header);
 **	CHECKS
 */
 /*
-**		check_archive.c
+**		archive.c
 */
 enum check_result	check_archive(t_file *file);
 /*
-**		check_fat.c
+**		fat.c
 */
 enum check_result	check_fat(t_file *file);
 /*
-**		check_file.c
+**		file.c
 */
 enum check_result	filecheck_error(char *filename, char *error);
 t_filetype_t		get_file_type(t_file *file);
 /*
-**		check_macho.c
+**		macho.c
 */
 enum check_result	check_macho(t_file *file, t_filetype_t ft);
+/*
+**		swap.c
+*/
+void				swap_fat_header(struct fat_header *header);
+void				swap_fat_arch(struct fat_arch *arch);
 
 /*
 **	core.c

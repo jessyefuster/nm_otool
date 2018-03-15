@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:43 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/13 16:01:10 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 16:21:19 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ static enum check_result	check_macho_64(t_file *file, t_filetype_t ft)
 
 	mh = (struct mach_header_64 *)(file->ptr);
 	lc = (struct load_command *)(mh + 1);
+	// if (F_IS_BIG(file->file_type))
+		// swap_mach_header(mh);
 	if (file->size < sizeof(struct mach_header_64))
 		return (filecheck_error(file->filename, "no size for mach header"));
 	if (file->size < sizeof(struct mach_header_64) + S_32(mh->sizeofcmds, ft))
@@ -115,7 +117,8 @@ enum check_result	check_macho(t_file *file, t_filetype_t ft)
 {
 
 	if (F_IS_32(ft))
-		return (filecheck_error(file->filename, "32 arch not handled"));
+		return (CHECK_GOOD);
+		// return (filecheck_error(file->filename, "32 arch not handled"));
 	else
 		return (check_macho_64(file, ft));
 }

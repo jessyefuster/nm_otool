@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/13 16:36:36 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 16:21:34 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 		print_symbols(file, symbols);
 	}
 	else if (file->file_type & F_FAT)
-		printf("ft_nm: %-50s: DO FAT\n", file->filename);
-		// handle_fat(ptr, filename);
+		handle_fat(ptr, filename);
+		// printf("ft_nm: %-50s: DO FAT\n", file->filename);
 	else if (file->file_type & F_ARCHIVE)
 		printf("ft_nm: %-50s: DO ARCHIVE\n", file->filename);
 		// handle_archive(ptr, filename);

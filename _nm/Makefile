@@ -18,6 +18,7 @@ SRCS =	srcs/archive.c \
 		srcs/checks/file.c \
 		srcs/checks/macho.c \
 		srcs/checks/tools.c \
+		srcs/checks/swap.c \
 
 SRCO = $(SRCS:.c=.o)
 
