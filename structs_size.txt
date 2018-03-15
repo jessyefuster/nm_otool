@@ -1,0 +1,2 @@
+struct mach_header		32
+struct mach_header_64	28

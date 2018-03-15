@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   sections.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/02/23 14:53:00 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 21:05:02 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
 
-static void	store_sections(void *segment, char **sections, uint32_t file_type,
+static void	store_sections(void *segment, char **sections, t_filetype_t file_type,
 				size_t *i_sect)
 {
 	size_t			i;
 	size_t			nsects;
 	void			*section;
 
-	nsects = S_32(((struct segment_command_64 *)segment)->nsects, file_type);
+	nsects = ((struct segment_command_64 *)segment)->nsects;
 	section = ((struct segment_command_64 *)segment) + 1;
 	if (F_IS_32(file_type))
 	{
-		nsects = S_32(((struct segment_command *)segment)->nsects, file_type);
+		nsects = ((struct segment_command *)segment)->nsects;
 		section = ((struct segment_command *)segment) + 1;
 	}
 	i = 0;
@@ -45,7 +45,7 @@ static void	store_sections(void *segment, char **sections, uint32_t file_type,
 **	note : this function handles endianess
 */
 
-char		**get_sections(struct mach_header *header, uint32_t file_type)
+char		**get_sections(struct mach_header *header, t_filetype_t file_type)
 {
 	size_t					i;
 	size_t					i_sect;
@@ -59,11 +59,12 @@ char		**get_sections(struct mach_header *header, uint32_t file_type)
 		load_cmd = (void *)(header + 1);
 	i = 0;
 	i_sect = 1;
-	while (i < S_32(header->ncmds, file_type))
+	
+	while (i < header->ncmds)
 	{
-		if (S_32(load_cmd->cmd, file_type) == LC_SEGMENT_64 || S_32(load_cmd->cmd, file_type) == LC_SEGMENT)
+		if (load_cmd->cmd == LC_SEGMENT_64 || load_cmd->cmd == LC_SEGMENT)
 			store_sections((void *)load_cmd, sections, file_type, &i_sect);
-		load_cmd = (void *)load_cmd + S_32(load_cmd->cmdsize, file_type);
+		load_cmd = (void *)load_cmd + load_cmd->cmdsize;
 		i++;
 	}
 	return (sections);
