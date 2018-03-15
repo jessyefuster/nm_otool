@@ -20,11 +20,6 @@
 # include <mach-o/ranlib.h>
 
 
-// typedef enum	e_bool
-// {
-// 	false = 0,
-// 	true = 1
-// }				t_bool;
 # define S_32(num, file_type) rev_uint32(num, file_type)
 # define S_64(num, file_type) rev_uint64(num, file_type)
 
@@ -88,33 +83,31 @@ enum	status
 /*
 **	Symbol chained-list structure
 */
-typedef struct	s_symbols
+typedef struct		s_symbols
 {
-	//bool		is_32;
-	char		*name;
-	uint64_t	value;
-	uint8_t		type;
-	uint8_t		sect;
-	// char		type_letter;
+	char				*name;
+	uint64_t			value;
+	uint8_t				type;
+	uint8_t				sect;
 
 	struct s_symbols	*next;
-}				t_symbols;
+}					t_symbols;
 
-typedef struct	s_file
+typedef struct		s_file
 {
-	char			*ptr;
-	size_t			size;
+	char				*ptr;
+	size_t				size;
 
-	char			*name;
+	char				*name;
 
-	t_filetype_t	type;
-}				t_file;
+	t_filetype_t		type;
+}					t_file;
 
 /*
 **	archive.c
 */
-char			*archive_name(char *name);
-size_t		*archive_offsets(struct ar_hdr *header);
+char				*archive_name(char *name);
+size_t				*archive_offsets(struct ar_hdr *header);
 
 /*
 **	CHECKS
@@ -156,55 +149,54 @@ void				swap_nlist_64(struct nlist_64 *symbol);
 /*
 **	core.c
 */
-void		handle_macho(t_file *file, t_symbols **symbols);
-void		handle_fat(char *file, char *filename);
-void		handle_archive(char *file, char *filename);
+void				handle_macho(t_file *file, t_symbols **symbols);
+void				handle_fat(char *file, char *filename);
+void				handle_archive(char *file, char *filename);
 
 /*
 **	fat.c
 */
-char			*arch_name(cpu_type_t type);
-struct fat_arch	*find_arch(struct fat_header *fat_header, cpu_type_t arch);
+char				*arch_name(cpu_type_t type);
+struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 
 /*
 **	list.c
 */
-void		print_symbols(t_file *file, t_symbols *ptr);
-t_symbols	*new_node(t_file *file, void *symbol, char *string_table);
+void				print_symbols(t_file *file, t_symbols *ptr);
+t_symbols			*new_node(t_file *file, void *symbol, char *string_table);
 
 /*
 **	macho.c
 */
-void		store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
+void				store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
 **	sections.c
 */
-char		**get_sections(struct mach_header *header, t_filetype_t file_type);
+char				**get_sections(struct mach_header *header, t_filetype_t file_type);
 
 /*
 **	sort.c
 */
-void		sort_tab(size_t *tab, size_t len);
+void				sort_tab(size_t *tab, size_t len);
 
 /*
 **	tools.c
 */
-void		exit_error(char *error);
-enum status	file_error(char *filename);
-// bool		valid_addr(void *ptr);
-uint32_t	swap_uint32(uint32_t num);
-uint64_t	swap_uint64(uint64_t num);
-uint32_t	rev_uint32(uint32_t num, t_filetype_t file_type);
-uint64_t	rev_uint64(uint64_t num, t_filetype_t file_type);
-char		section_letter(char *segname);
-char		type_letter(char **sections, t_symbols *symbol);
+void				exit_error(char *error);
+enum status			file_error(char *filename);
+uint32_t			swap_uint32(uint32_t num);
+uint64_t			swap_uint64(uint64_t num);
+uint32_t			rev_uint32(uint32_t num, t_filetype_t file_type);
+uint64_t			rev_uint64(uint64_t num, t_filetype_t file_type);
+char				section_letter(char *segname);
+char				type_letter(char **sections, t_symbols *symbol);
 
 /*
 **	main.c
 */
-char		*map_file(char *filename, struct stat *file_info);
-enum status	nm_if_valid_file(char *filename, bool print_filename);
-enum status	ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
+char				*map_file(char *filename, struct stat *file_info);
+enum status			nm_if_valid_file(char *filename, bool print_filename);
+enum status			ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
 
 #endif
