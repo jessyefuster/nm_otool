@@ -105,9 +105,9 @@ typedef struct	s_file
 	char			*ptr;
 	size_t			size;
 
-	char			*filename;
+	char			*name;
 
-	t_filetype_t	file_type;
+	t_filetype_t	type;
 }				t_file;
 
 /*

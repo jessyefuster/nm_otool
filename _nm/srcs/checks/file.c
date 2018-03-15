@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 23:56:49 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/13 16:00:53 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 21:20:56 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_filetype_t			get_file_type(t_file *file)
 
 	if (F_TYPE(file_type) == F_NONE)
 	{
-		filecheck_error(file->filename, "error occured");
+		filecheck_error(file->name, "error occured");
 		return (F_NONE);
 	}
 	else if (F_TYPE(file_type) == F_FAT && check_fat(file) == CHECK_BAD)

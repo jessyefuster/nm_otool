@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:43 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 21:09:46 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/15 21:22:16 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ enum check_result	check_symtab_command(t_file *file, struct symtab_command *st, 
 {
 	(void)ft;
 	if (st->cmdsize != sizeof(struct symtab_command))
-		return (filecheck_error(file->filename, "LC_SYMTAB incorrect cmdsize"));
+		return (filecheck_error(file->name, "LC_SYMTAB incorrect cmdsize"));
 	if (st->symoff > file->size)
-		return (filecheck_error(file->filename, "LC_SYMTAB symoff out of file"));
+		return (filecheck_error(file->name, "LC_SYMTAB symoff out of file"));
 	if (st->symoff + st->nsyms * sizeof(struct nlist_64) > file->size)
-		return (filecheck_error(file->filename, "no size for symbol table"));
+		return (filecheck_error(file->name, "no size for symbol table"));
 	if (st->stroff > file->size)
-		return (filecheck_error(file->filename, "LC_SYMTAB stroff out of file"));
+		return (filecheck_error(file->name, "LC_SYMTAB stroff out of file"));
 	if (st->stroff + st->strsize > file->size)
-		return (filecheck_error(file->filename, "no size for string table"));
+		return (filecheck_error(file->name, "no size for string table"));
 	return (CHECK_GOOD);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 21:08:04 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/15 21:27:56 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		handle_macho(t_file *file, t_symbols **symbols)
 
 	ncmds = ((struct mach_header *)file->ptr)->ncmds;
 	load_cmds = (struct load_command *)(((struct mach_header_64 *)file->ptr) + 1);
-	if (F_IS_32(file->file_type))
+	if (F_IS_32(file->type))
 		load_cmds = (struct load_command *)(((struct mach_header *)file->ptr) + 1);
 	i = 0;
 	while (i < ncmds)

@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 21:08:17 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/15 21:26:43 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_s
 {
 	file_info->ptr = file;
 	file_info->size = file_size;
-	file_info->filename = filename;
-	file_info->file_type = 0;
+	file_info->name = filename;
+	file_info->type = 0;
 }
 
 enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filename)
@@ -29,19 +29,19 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	if (!file && ((file = (t_file *)malloc(sizeof(t_file))) == NULL))
 		exit_error("malloc error");
 	init_file_info(file, ptr, filename, file_size);
-	file->file_type = get_file_type(file);
-	if (file->file_type & F_MACHO)
+	file->type = get_file_type(file);
+	if (file->type & F_MACHO)
 	{
 		// printf("ft_nm: %-50s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
 		if (print_filename)
-			printf("\n%s:\n", file->filename);
+			printf("\n%s:\n", file->name);
 		handle_macho(file, &symbols);
 		print_symbols(file, symbols);
 	}
-	else if (file->file_type & F_FAT)
+	else if (file->type & F_FAT)
 		handle_fat(ptr, filename);
-	else if (file->file_type & F_ARCHIVE)
-		printf("ft_nm: %-50s: DO ARCHIVE\n", file->filename);
+	else if (file->type & F_ARCHIVE)
+		printf("ft_nm: %-50s: DO ARCHIVE\n", file->name);
 	else
 		return (S_FAILURE);
 	return (S_SUCCESS);

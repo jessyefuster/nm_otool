@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/15 20:45:58 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/15 21:29:25 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void		store_symbols(t_file *file,
 	i = 0;
 	while (i < symtab_cmd->nsyms)
 	{
-		if (F_IS_32(file->file_type) && !(((struct nlist *)symbol)->n_type & N_STAB))
+		if (F_IS_32(file->type) && !(((struct nlist *)symbol)->n_type & N_STAB))
 			store_symbol(file, symbols, symbol, string_table);
-		else if (F_IS_64(file->file_type) && !(((struct nlist_64 *)symbol)->n_type &
+		else if (F_IS_64(file->type) && !(((struct nlist_64 *)symbol)->n_type &
 					N_STAB))
 			store_symbol(file, symbols, symbol, string_table);
-		symbol += SYMBOL_SIZE(F_IS_32(file->file_type));
+		symbol += SYMBOL_SIZE(F_IS_32(file->type));
 		i++;
 	}
 }
