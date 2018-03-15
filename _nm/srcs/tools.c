@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/13 16:42:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 11:42:02 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,10 @@ char		type_letter(char **sections, t_symbols *symbol)
 {
 	char	type_letter;
 
-	type_letter = '?';
-	if (symbol->type & N_STAB)
+	type_letter = ' ';
+	if (symbol->type == 0)
+		type_letter = '?';
+	else if (symbol->type & N_STAB)
 		return ('-');
 	else if ((symbol->type & N_TYPE) == N_UNDF)
 	{
