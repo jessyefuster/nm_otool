@@ -43,8 +43,6 @@
 # define F_IS_LITTLE(type) (F_ENDIAN(type) == F_LITTLE)
 # define F_IS_BIG(type) (F_ENDIAN(type) == F_BIG)
 
-extern uint64_t	g_maxaddr;
-
 typedef uint32_t	t_filetype_t;
 
 /*

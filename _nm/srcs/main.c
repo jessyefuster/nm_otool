@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 16:21:34 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 19:34:22 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_nm.h"
-
-uint64_t	g_maxaddr = 0;
 
 void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_size)
 {
@@ -64,7 +62,6 @@ char	*map_file(char *filename, struct stat *file_info)
 	if ((file = mmap(0, (*file_info).st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0))
 		== MAP_FAILED)
 		return (NULL);
-	g_maxaddr = (uint64_t)(file + (*file_info).st_size);
 	close(fd);
 	return (file);
 }
