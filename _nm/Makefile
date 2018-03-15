@@ -17,6 +17,8 @@ SRCS =	srcs/archive.c \
 		srcs/checks/fat.c \
 		srcs/checks/file.c \
 		srcs/checks/macho.c \
+		srcs/checks/macho_32.c \
+		srcs/checks/macho_64.c \
 		srcs/checks/tools.c \
 		srcs/checks/swap.c \
 

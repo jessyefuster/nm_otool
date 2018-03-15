@@ -6,7 +6,7 @@
 /*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 19:34:22 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/15 21:08:17 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,10 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	}
 	else if (file->file_type & F_FAT)
 		handle_fat(ptr, filename);
-		// printf("ft_nm: %-50s: DO FAT\n", file->filename);
 	else if (file->file_type & F_ARCHIVE)
 		printf("ft_nm: %-50s: DO ARCHIVE\n", file->filename);
-		// handle_archive(ptr, filename);
 	else
 		return (S_FAILURE);
-		// return (file_error(filename));
 	return (S_SUCCESS);
 }
 

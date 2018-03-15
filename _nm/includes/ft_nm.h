@@ -135,12 +135,23 @@ t_filetype_t		get_file_type(t_file *file);
 /*
 **		macho.c
 */
+enum check_result	check_macho_32(t_file *file, t_filetype_t ft);
+enum check_result	check_macho_64(t_file *file, t_filetype_t ft);
+enum check_result	check_symtab_command(t_file *file, struct symtab_command *st, t_filetype_t ft);
 enum check_result	check_macho(t_file *file, t_filetype_t ft);
 /*
 **		swap.c
 */
 void				swap_fat_header(struct fat_header *header);
 void				swap_fat_arch(struct fat_arch *arch);
+void				swap_mach_header(struct mach_header *header);
+void				swap_mach_header_64(struct mach_header_64 *header);
+void				swap_load_command(struct load_command *command);
+void				swap_segment(struct segment_command *segment);
+void				swap_segment_64(struct segment_command_64 *segment);
+void				swap_symtab(struct symtab_command *symtab);
+void				swap_nlist(struct nlist *symbol);
+void				swap_nlist_64(struct nlist_64 *symbol);
 
 /*
 **	core.c
@@ -181,7 +192,7 @@ void		sort_tab(size_t *tab, size_t len);
 */
 void		exit_error(char *error);
 enum status	file_error(char *filename);
-bool		valid_addr(void *ptr);
+// bool		valid_addr(void *ptr);
 uint32_t	swap_uint32(uint32_t num);
 uint64_t	swap_uint64(uint64_t num);
 uint32_t	rev_uint32(uint32_t num, t_filetype_t file_type);

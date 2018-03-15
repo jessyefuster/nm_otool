@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/03/13 16:32:53 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 20:45:58 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ void		store_symbols(t_file *file,
 	void			*symbol;
 	char			*string_table;
 
-	string_table = file->ptr + S_32(symtab_cmd->stroff, file->file_type);
-	symbol = file->ptr + S_32(symtab_cmd->symoff, file->file_type);
+	string_table = file->ptr + symtab_cmd->stroff;
+	symbol = file->ptr + symtab_cmd->symoff;
 	i = 0;
-	while (i < S_32(symtab_cmd->nsyms, file->file_type))
+	while (i < symtab_cmd->nsyms)
 	{
-		if (F_IS_32(file->file_type) && !(S_32(((struct nlist *)symbol)->n_type, file->file_type) & N_STAB))
+		if (F_IS_32(file->file_type) && !(((struct nlist *)symbol)->n_type & N_STAB))
 			store_symbol(file, symbols, symbol, string_table);
-		else if (F_IS_64(file->file_type) && !(S_32(((struct nlist_64 *)symbol)->n_type, file->file_type) &
+		else if (F_IS_64(file->file_type) && !(((struct nlist_64 *)symbol)->n_type &
 					N_STAB))
 			store_symbol(file, symbols, symbol, string_table);
 		symbol += SYMBOL_SIZE(F_IS_32(file->file_type));

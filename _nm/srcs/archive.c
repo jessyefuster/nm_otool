@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   archive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/06 15:27:57 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 19:50:18 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ size_t	*archive_offsets(struct ar_hdr *header)
 	n_rans = *((uint32_t *)((char *)(header + 1) + ft_atoi((char *)header + 3))) / sizeof(struct ranlib);
 	ran = (struct ranlib *)((char *)(header + 1) + ft_atoi((char *)header + 3) + sizeof(uint32_t));
 
-	if (!valid_addr((void *)ran) || n_rans == 0)
-		return (NULL);
+	// if (!valid_addr((void *)ran) || n_rans == 0)
+		// return (NULL);
 	offsets = store_offsets(ran, n_rans);
 
 	return (offsets);

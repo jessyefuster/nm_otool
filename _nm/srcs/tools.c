@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 11:42:02 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/03/15 20:01:21 by jessye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void		exit_error(char *error)
 	exit(EXIT_FAILURE);
 }
 
-bool		valid_addr(void *ptr)
-{
-	if ((uint64_t)ptr > g_maxaddr)
-		return (FALSE);
-	return (TRUE);
-}
+// bool		valid_addr(void *ptr)
+// {
+// 	if ((uint64_t)ptr > g_maxaddr)
+// 		return (FALSE);
+// 	return (TRUE);
+// }
 
 // void		swap_binary(char *start, size_t size)
 // {
@@ -84,15 +84,17 @@ uint64_t	swap_uint64(uint64_t num)
 
 uint32_t	rev_uint32(uint32_t num, t_filetype_t file_type)
 {
-	if (file_type & F_BIG)
-		return (swap_uint32(num));
+	(void)file_type;
+	// if (file_type & F_BIG)
+		// return (swap_uint32(num));
 	return (num);
 }
 
 uint64_t	rev_uint64(uint64_t num, t_filetype_t file_type)
 {
-	if (file_type & F_BIG)
-		return (swap_uint64(num));
+	(void)file_type;
+	// if (file_type & F_BIG)
+		// return (swap_uint64(num));
 	return (num);
 }
 
