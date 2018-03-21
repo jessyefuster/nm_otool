@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:13:56 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 21:24:07 by jessye           ###   ########.fr       */
+/*   Updated: 2018/03/21 16:14:23 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ enum check_result	check_fat(t_file *file)
 	while (i < fh->nfat_arch)
 	{
 		swap_fat_arch(fa);
+		if (fa->offset == 0)
+			return (filecheck_error(file->name, "arch offset is 0"));
 		if (file->size < fa->offset + fa->size)
 			return (filecheck_error(file->name, "no size for arch"));
 		fa++;
