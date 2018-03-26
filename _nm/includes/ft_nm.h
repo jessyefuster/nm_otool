@@ -115,6 +115,7 @@ size_t				*archive_offsets(struct ar_hdr *header);
 /*
 **		archive.c
 */
+bool				is_extended(struct ar_hdr *header);
 enum check_result	check_archive(t_file *file);
 /*
 **		fat.c
@@ -151,7 +152,7 @@ void				swap_nlist_64(struct nlist_64 *symbol);
 */
 void				handle_macho(t_file *file, t_symbols **symbols);
 void				handle_fat(char *file, char *filename);
-void				handle_archive(char *file, char *filename);
+void				handle_archive(t_file *file);
 
 /*
 **	fat.c
