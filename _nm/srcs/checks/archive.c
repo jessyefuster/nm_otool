@@ -90,7 +90,7 @@ enum check_result			check_archive(t_file *file)
 		{
 			o_magic = *((uint32_t *)(file->ptr + offset));
 			if (offset + sizeof(uint32_t) > file->size || o_magic == FAT_CIGAM)
-				return (filecheck_error(file->name, "cannot contain FAT object"));
+				return (filecheck_error(file->name, "archive cannot contain FAT object"));
 			// printf("    (no ext magic  0x%x)\n\n", *((uint32_t *)(file->ptr + offset)));
 		}
 		// printf("FUCKING SIZE %d\n", ft_atoi(ah->ar_size));

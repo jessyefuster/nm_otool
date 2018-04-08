@@ -70,6 +70,23 @@ void		handle_fat(char *file, char *filename)
 	}
 }
 
+
+static size_t	size_ar_name(struct ar_hdr *header)
+{
+	long i;
+
+	i = sizeof(header->ar_name) - 1;
+	if (header->ar_name[i] == ' ')
+	{
+	    do
+	    {
+			if (header->ar_name[i] != ' ')
+		    	break;
+			i--;
+	    }while(i > 0);
+	}
+	return ((size_t)(i + 1));
+}
 /*
 **	https://code.woboq.org/llvm/include/ar.h.html
 **	https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
@@ -79,6 +96,7 @@ void		handle_fat(char *file, char *filename)
 void		handle_archive(t_file *file)
 {
 	char			*member_name;
+	size_t			member_name_size;
 	size_t			offset;
 	struct ar_hdr	*header;
 
@@ -88,24 +106,43 @@ void		handle_archive(t_file *file)
 	while (file->size > offset)
 	{
 		header = (struct ar_hdr *)(file->ptr + offset);
-		// printf("%s\n", header->ar_name);
 		offset += sizeof(struct ar_hdr);
+		member_name = header->ar_name;
+		member_name_size = size_ar_name(header);
 		if (is_extended(header))
 		{
-			member_name = (char *)(header + 1);
-			printf("%s is_extended\n", member_name);
+			member_name = file->ptr + offset;
+			member_name_size = ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1);
 		}
-		else
+		// ft_putnstr(member_name, member_name_size);
+		// ft_putchar('\n');
+		if (ft_strcmp(member_name, SYMDEF) && ft_strcmp(member_name, SYMDEF_SORTED))
 		{
-			member_name = (char *)malloc(sizeof(char) * 17);
-			ft_bzero(member_name, 17);
-			ft_strncpy(member_name, header->ar_name, 16);
-			printf("%s no_extended\n", member_name);
+			if (is_extended(header))
+				ft_nm(file->ptr + offset + member_name_size, "(lol ext)", ft_atoi(header->ar_size) - member_name_size, TRUE);
+			else
+				ft_nm(file->ptr + offset, "(lol)", ft_atoi(header->ar_size), TRUE);
 		}
-		
 		offset += ft_atoi(header->ar_size);
 	}
 }
+// if (is_extended(header))
+// {
+// 	member_name = (char *)(header + 1);
+// 	member_name_len = ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1);
+// 	printf("%s is_extended\n", member_name);
+// }
+// else
+// {
+// 	member_name = (char *)malloc(sizeof(char) * 17);
+// 	ft_bzero(member_name, 17);
+// 	ft_strncpy(member_name, header->ar_name, 16);
+
+// 	printf("%s no_extended\n", member_name);
+// }
+
+
+
 // void		handle_archive(char *file, char *filename)
 // {
 // 	size_t			i;

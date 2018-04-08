@@ -22,11 +22,11 @@ void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_s
 
 enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filename)
 {
-	static t_file	*file = NULL;
-	t_symbols		*symbols;
+	t_file		*file;
+	t_symbols	*symbols;
 
 	symbols = NULL;
-	if (!file && ((file = (t_file *)malloc(sizeof(t_file))) == NULL))
+	if (((file = (t_file *)malloc(sizeof(t_file))) == NULL))
 		exit_error("malloc error");
 	init_file_info(file, ptr, filename, file_size);
 	file->type = get_file_type(file);
@@ -41,8 +41,10 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	else if (file->type & F_FAT)
 		handle_fat(ptr, filename);
 	else if (file->type & F_ARCHIVE)
-		handle_archive(file);
+	{
 		// printf("ft_nm: %-50s: DO ARCHIVE\n", file->name);
+		handle_archive(file);
+	}
 	else
 		return (S_FAILURE);
 	return (S_SUCCESS);
