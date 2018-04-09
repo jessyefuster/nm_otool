@@ -20,6 +20,8 @@
 # include <mach-o/ranlib.h>
 
 
+# define MIN(a, b)	(a <= b ? a : b)
+
 # define S_32(num, file_type) rev_uint32(num, file_type)
 # define S_64(num, file_type) rev_uint64(num, file_type)
 
@@ -107,6 +109,7 @@ typedef struct		s_file
 **	archive.c
 */
 char				*archive_name(char *name);
+char				*format_archive_name(char *archive_name, char *member_name, size_t member_name_len);
 size_t				*archive_offsets(struct ar_hdr *header);
 
 /*

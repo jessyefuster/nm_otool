@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   archive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessye <jessye@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/15 19:50:18 by jessye           ###   ########.fr       */
+/*   Updated: 2018/04/09 16:18:41 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,27 @@ char			*archive_name(char *name)
 	new_name[name_len + 2] = 0;
 	new_name[0] = '(';
 	ft_strcpy(&new_name[1], name);
+	new_name[name_len + 1] = ')';
+	return (new_name);
+}
+
+char			*format_archive_name(char *archive_name, char *member_name, size_t member_name_len)
+{
+	size_t	archive_name_len;
+	size_t	name_len;
+	char	*new_name;
+
+	(void)member_name;
+
+	archive_name_len = ft_strlen(archive_name);
+	name_len = archive_name_len + member_name_len;
+	if ((new_name = (char *)malloc(sizeof(char) * (name_len + 2 + 1))) == NULL)
+		exit_error("malloc error");
+	ft_memset(new_name, 'x', sizeof(char) * name_len + 2);
+	new_name[name_len + 2] = 0;
+	ft_strcpy(new_name, archive_name);
+	new_name[archive_name_len] = '(';
+	ft_strncpy(new_name + archive_name_len + 1, member_name, member_name_len);
 	new_name[name_len + 1] = ')';
 	return (new_name);
 }

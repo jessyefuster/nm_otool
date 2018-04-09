@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/26 16:38:53 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/09 16:24:35 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,8 @@ static size_t	size_ar_name(struct ar_hdr *header)
 	long i;
 
 	i = sizeof(header->ar_name) - 1;
-	if (header->ar_name[i] == ' ')
-	{
-	    do
-	    {
-			if (header->ar_name[i] != ' ')
-		    	break;
-			i--;
-	    }while(i > 0);
-	}
+	while (i >= 0 && header->ar_name[i] == ' ')
+		i--;
 	return ((size_t)(i + 1));
 }
 /*
@@ -116,12 +109,12 @@ void		handle_archive(t_file *file)
 		}
 		// ft_putnstr(member_name, member_name_size);
 		// ft_putchar('\n');
-		if (ft_strcmp(member_name, SYMDEF) && ft_strcmp(member_name, SYMDEF_SORTED))
+		if (ft_strncmp(member_name, SYMDEF, member_name_size) && ft_strncmp(member_name, SYMDEF_SORTED, member_name_size))
 		{
 			if (is_extended(header))
-				ft_nm(file->ptr + offset + member_name_size, "(lol ext)", ft_atoi(header->ar_size) - member_name_size, TRUE);
+				ft_nm(file->ptr + offset + member_name_size, format_archive_name(file->name, member_name, MIN((size_t)member_name_size, ft_strlen(member_name))), ft_atoi(header->ar_size) - member_name_size, TRUE);
 			else
-				ft_nm(file->ptr + offset, "(lol)", ft_atoi(header->ar_size), TRUE);
+				ft_nm(file->ptr + offset, format_archive_name(file->name, member_name, member_name_size), ft_atoi(header->ar_size), TRUE);
 		}
 		offset += ft_atoi(header->ar_size);
 	}
