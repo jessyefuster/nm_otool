@@ -19,6 +19,10 @@
 # include <ar.h>
 # include <mach-o/ranlib.h>
 
+// # define DEBUG	TRUE
+// # define DEBUG	FALSE
+
+// # define PRINT_DEBUG(msg)	if (DEBUG == TRUE){printf("%s\n", msg);}
 
 # define MIN(a, b)	(a <= b ? a : b)
 
@@ -68,6 +72,12 @@ enum	file_flags
 	F_64 =			0x200,
 	F_LITTLE =		0x400,
 	F_BIG =			0x800,
+};
+
+enum	function
+{
+	NM,
+	OTOOL
 };
 
 enum	check_result
@@ -159,7 +169,7 @@ struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 **	tools.c
 */
 void				exit_error(char *error);
-enum status			file_error(char *filename);
+enum status			file_error(enum function f, char *filename);
 uint32_t			swap_uint32(uint32_t num);
 uint64_t			swap_uint64(uint64_t num);
 uint32_t			rev_uint32(uint32_t num, t_filetype_t file_type);

@@ -12,9 +12,12 @@
 
 #include "./ft_nm_otool.h"
 
-enum status	file_error(char *filename)
+enum status	file_error(enum function f, char *filename)
 {
-	fprintf(stderr, "ft_nm: %s: error occured\n", filename);
+	if (f == NM)
+		fprintf(stderr, "ft_nm: %s: error occured\n", filename);
+	else
+		fprintf(stderr, "ft_otool: %s: error occured\n", filename);
 	return (S_FAILURE);
 }
 

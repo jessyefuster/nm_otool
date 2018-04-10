@@ -81,7 +81,7 @@ enum status		nm_if_valid_file(char *filename, bool print_filename)
 	}
 	else
 	{
-		file_error(filename);
+		file_error(NM, filename);
 		return (S_FAILURE);
 	}
 }

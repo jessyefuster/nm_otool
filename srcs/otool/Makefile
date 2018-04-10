@@ -5,6 +5,8 @@ FLAGS = -Wall -Wextra -Werror
 LIBFT = ../../libft/libft.a
 
 SRCS =	srcs/main.c \
+		srcs/core.c \
+		srcs/section.c \
 		../archive.c \
 		../fat.c \
 		../tools.c \
