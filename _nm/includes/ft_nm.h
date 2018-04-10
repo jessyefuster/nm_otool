@@ -108,9 +108,7 @@ typedef struct		s_file
 /*
 **	archive.c
 */
-char				*archive_name(char *name);
 char				*format_archive_name(char *archive_name, char *member_name, size_t member_name_len);
-size_t				*archive_offsets(struct ar_hdr *header);
 
 /*
 **	CHECKS
@@ -118,6 +116,7 @@ size_t				*archive_offsets(struct ar_hdr *header);
 /*
 **		archive.c
 */
+size_t				size_ar_name(struct ar_hdr *header);
 bool				is_extended(struct ar_hdr *header);
 enum check_result	check_archive(t_file *file);
 /*

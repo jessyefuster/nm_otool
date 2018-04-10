@@ -6,18 +6,21 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:20 by jfuster           #+#    #+#             */
-/*   Updated: 2018/03/26 16:21:12 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:26:23 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_nm.h"
 
-// get size after #1/
-// static size_t				size_ar_name(struct ar_hdr *header)
-// {
-// 	(void)header;
-// 	return (0);
-// }
+size_t	size_ar_name(struct ar_hdr *header)
+{
+	long i;
+
+	i = sizeof(header->ar_name) - 1;
+	while (i >= 0 && header->ar_name[i] == ' ')
+		i--;
+	return ((size_t)(i + 1));
+}
 
 bool				is_extended(struct ar_hdr *header)
 {
@@ -58,17 +61,15 @@ static enum check_result	check_archive_header(struct ar_hdr *header)
 // check on badnamesize archive
 enum check_result			check_archive(t_file *file)
 {
-	uint32_t		o_magic;
+	uint32_t		*o_magic;
 	size_t			offset;
 	struct ar_hdr	*ah;
 
 	offset = SARMAG;
 	if (file->size == SARMAG)
 		return (CHECK_GOOD);
-	// printf("TOTAL SIZE %zu\n\n", file->size);
 	while (file->size > offset + 1)
 	{
-		// printf("  header offset %zu\n", offset);
 		ah = (struct ar_hdr *)(file->ptr + offset);
 		if (offset + sizeof(struct ar_hdr) > file->size)
 			return (filecheck_error(file->name, "no size for archive header"));
@@ -81,20 +82,16 @@ enum check_result			check_archive(t_file *file)
 		{
 			if (file->size < offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1))
 				return (filecheck_error(file->name, "no size for archive member name"));
-			o_magic = *((uint32_t *)(file->ptr + offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1)));
-			if (offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1) + sizeof(uint32_t) > file->size || o_magic == FAT_CIGAM)
+			o_magic = (uint32_t *)(file->ptr + offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1));
+			if (offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1) + sizeof(uint32_t) > file->size || *o_magic == FAT_CIGAM)
 				return (filecheck_error(file->name, "cannot contain FAT object"));
-			// printf("    (ext magic  0x%x)\n\n", *((uint32_t *)(file->ptr + offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1))));
 		}
 		else
 		{
-			o_magic = *((uint32_t *)(file->ptr + offset));
-			if (offset + sizeof(uint32_t) > file->size || o_magic == FAT_CIGAM)
+			o_magic = (uint32_t *)(file->ptr + offset);
+			if (offset + sizeof(uint32_t) > file->size || *o_magic == FAT_CIGAM)
 				return (filecheck_error(file->name, "archive cannot contain FAT object"));
-			// printf("    (no ext magic  0x%x)\n\n", *((uint32_t *)(file->ptr + offset)));
 		}
-		// printf("FUCKING SIZE %d\n", ft_atoi(ah->ar_size));
-		// return (filecheck_error(file->name, "cacacaca"));
 		offset += ft_atoi(ah->ar_size);
 	}
 	return (CHECK_GOOD);

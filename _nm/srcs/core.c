@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/09 16:24:35 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/10 15:24:53 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,6 @@ void		handle_fat(char *file, char *filename)
 	}
 }
 
-
-static size_t	size_ar_name(struct ar_hdr *header)
-{
-	long i;
-
-	i = sizeof(header->ar_name) - 1;
-	while (i >= 0 && header->ar_name[i] == ' ')
-		i--;
-	return ((size_t)(i + 1));
-}
 /*
 **	https://code.woboq.org/llvm/include/ar.h.html
 **	https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
@@ -107,8 +97,6 @@ void		handle_archive(t_file *file)
 			member_name = file->ptr + offset;
 			member_name_size = ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1);
 		}
-		// ft_putnstr(member_name, member_name_size);
-		// ft_putchar('\n');
 		if (ft_strncmp(member_name, SYMDEF, member_name_size) && ft_strncmp(member_name, SYMDEF_SORTED, member_name_size))
 		{
 			if (is_extended(header))
@@ -119,47 +107,3 @@ void		handle_archive(t_file *file)
 		offset += ft_atoi(header->ar_size);
 	}
 }
-// if (is_extended(header))
-// {
-// 	member_name = (char *)(header + 1);
-// 	member_name_len = ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1);
-// 	printf("%s is_extended\n", member_name);
-// }
-// else
-// {
-// 	member_name = (char *)malloc(sizeof(char) * 17);
-// 	ft_bzero(member_name, 17);
-// 	ft_strncpy(member_name, header->ar_name, 16);
-
-// 	printf("%s no_extended\n", member_name);
-// }
-
-
-
-// void		handle_archive(char *file, char *filename)
-// {
-// 	size_t			i;
-// 	struct ar_hdr	*header;
-// 	char			*macho;
-// 	char			*name;
-// 	size_t			*offsets;
-
-// 	// offsets = archive_offsets((struct ar_hdr *)(file + SARMAG));
-// 	if ((offsets = archive_offsets((struct ar_hdr *)(file + SARMAG))) == NULL)
-// 	{
-// 		file_error(filename);
-// 		return ;
-// 	}
-
-// 	i = 0;
-// 	while (offsets[i])
-// 	{
-// 		header = (struct ar_hdr *)(file + offsets[i]);
-// 		macho = (char *)(header + 1) + ft_atoi((char *)header + 3);
-// 		name = archive_name((char *)(header + 1));
-// 		if (name)
-// 			name = ft_strjoin(filename, name);
-// 		ft_nm(macho, name, ft_atoi(header->ar_size), TRUE);
-// 		i++;
-// 	}
-// }
