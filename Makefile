@@ -2,8 +2,8 @@ CURRENT_DIR = $(PWD)
 
 LIBFT_DIR = libft/
 
-NM_DIR = _nm/
-OTOOL_DIR = _otool/
+NM_DIR = srcs/nm/
+OTOOL_DIR = srcs/otool/
 
 NM = nm
 OTOOL = otool
@@ -18,7 +18,7 @@ nm:
 otool:
 	make -C $(LIBFT_DIR)
 	make -C $(OTOOL_DIR)
-	cp $(OTOOL_DIR)ft_nm ./
+	cp $(OTOOL_DIR)ft_otool ./
 
 clean:
 	make -C libft/ clean
