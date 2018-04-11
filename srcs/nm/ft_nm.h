@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_nm.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/11 14:12:22 by jfuster           #+#    #+#             */
+/*   Updated: 2018/04/11 14:24:13 by jfuster          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_NM_H
 # define FT_NM_H
 # include "../ft_nm_otool.h"
@@ -6,7 +18,7 @@
 **	core.c
 */
 void				handle_macho(t_file *file, t_symbols **symbols);
-void				handle_fat(char *file, char *filename);
+void				handle_fat(t_file *file);
 void				handle_archive(t_file *file);
 
 /*

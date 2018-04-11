@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/10 21:57:20 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/04/11 16:21:59 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
 /*
-**	Search for SYMTAB load command in Mach-o file
+**	Search for __text section in Mach-o file
 **	note : this function handles both 32bit and 64bit arch
-**	note : this function handles endianess
 */
 
 void		handle_macho(t_file *file)
@@ -38,7 +37,7 @@ void		handle_macho(t_file *file)
 			text_section = get_text_section(file, (void *)lc);
 			if (text_section)
 			{
-				print_text_section(text_section);
+				print_text_section(file, text_section);
 				break ;
 			}
 		}
@@ -48,7 +47,7 @@ void		handle_macho(t_file *file)
 }
 
 /*
-**	Iterate over arch headers in FAT file and nm each binary
+**	Iterate over arch headers in FAT file and otool each binary
 */
 
 void		handle_fat(t_file *file)

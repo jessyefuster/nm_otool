@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:24:12 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/11 14:13:05 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,24 @@ void		handle_macho(t_file *file, t_symbols **symbols)
 **	Iterate over arch headers in FAT file and nm each binary
 */
 
-void		handle_fat(char *file, char *filename)
+void		handle_fat(t_file *file)
 {
 	size_t				i;
 	char				*name;
 	struct fat_header	*fat_header;
 	struct fat_arch		*fat_arch;
 
-	fat_header = (struct fat_header *)file;
+	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file + fat_arch->offset, filename, fat_arch->size, FALSE);
+		ft_nm(file->ptr + fat_arch->offset, file->name, fat_arch->size, FALSE);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
 		i = 0;
 		while (i < fat_header->nfat_arch)
 		{
-			name = ft_strjoin(filename, arch_name(fat_arch->cputype));
-			ft_nm(file + fat_arch->offset, name, fat_arch->size, TRUE);
+			name = ft_strjoin(file->name, arch_name(fat_arch->cputype));
+			ft_nm(file->ptr + fat_arch->offset, name, fat_arch->size, TRUE);
 			free(name);
 			fat_arch++;
 			i++;
