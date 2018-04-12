@@ -6,14 +6,14 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 21:27:26 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/12 15:06:38 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:49:12 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
 #define I(cpu) 					((cpu == CPU_TYPE_I386 || cpu == CPU_TYPE_X86_64) ? 1 : 4)
-#define NEWLINE(value, size)	(bool)((value == size) || (value % 16 == 0))
+// #define NEWLINE(value, size)	(bool)((value == size) || (value % 16 == 0))
 
 void		*get_text_section(t_file *file, void *segment)
 {

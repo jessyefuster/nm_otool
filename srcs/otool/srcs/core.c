@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/12 15:11:24 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:51:09 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		handle_fat(t_file *file)
 		i = 0;
 		while (i < fat_header->nfat_arch)
 		{
-			name = ft_strjoin(file->name, arch_name(fat_arch->cputype));
+			name = ft_strjoin(file->name, arch_name_short(fat_arch->cputype));
 			ft_otool(file->ptr + fat_arch->offset, name, fat_arch->size);
 			free(name);
 			fat_arch++;

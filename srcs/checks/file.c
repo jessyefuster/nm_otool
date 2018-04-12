@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 23:56:49 by jessye            #+#    #+#             */
-/*   Updated: 2018/04/11 16:21:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:55:58 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_filetype_t			get_file_type(t_file *file)
 
 	if (F_TYPE(file_type) == F_NONE)
 	{
-		filecheck_error(file->name, "error occured");
+		filecheck_error(file->name, "is not an object file");
 		return (F_NONE);
 	}
 	else if (F_TYPE(file_type) == F_FAT && check_fat(file) == CHECK_BAD)

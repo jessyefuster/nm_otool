@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nm_otool.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 20:12:28 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/04/12 15:50:55 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void				swap_nlist_64(struct nlist_64 *symbol);
 **	fat.c
 */
 char				*arch_name(cpu_type_t type);
+char				*arch_name_short(cpu_type_t type);
 struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:22:45 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:50:45 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,34 @@ char				*arch_name(cpu_type_t type)
 		return (" (for architecture ppc)");
 	else
 		return (" (for architecture \?\?\?)");
+}
+
+char				*arch_name_short(cpu_type_t type)
+{
+	if (type == CPU_TYPE_I386)
+		return (" (architecture i386)");
+	else if (type == CPU_TYPE_X86_64)
+		return (" (architecture x86_64)");
+	else if (type == CPU_TYPE_VAX)
+		return (" (architecture vax)");
+	else if (type == CPU_TYPE_MC680x0)
+		return (" (architecture mc680x0)");
+	else if (type == CPU_TYPE_MC98000)
+		return (" (architecture mc98000)");
+	else if (type == CPU_TYPE_HPPA)
+		return (" (architecture hppa)");
+	else if ((type == CPU_TYPE_ARM) || (type == CPU_TYPE_ARM64))
+		return (" (architecture arm)");
+	else if (type == CPU_TYPE_MC88000)
+		return (" (architecture mc88000)");
+	else if (type == CPU_TYPE_SPARC)
+		return (" (architecture sparc)");
+	else if (type == CPU_TYPE_I860)
+		return (" (architecture i860)");
+	else if ((type == CPU_TYPE_POWERPC) || (type == CPU_TYPE_POWERPC64))
+		return (" (architecture ppc)");
+	else
+		return (" (architecture \?\?\?)");
 }
 
 struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch)
