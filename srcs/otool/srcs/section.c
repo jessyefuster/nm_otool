@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   section.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 21:27:26 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/11 21:36:34 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/04/12 15:06:38 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,21 @@ void		*get_text_section(t_file *file, void *segment)
 	return (NULL);
 }
 
-static void	print_bytes_hexa(t_file *file, void *byte, bool newline)
+static void	print_bytes_hexa(t_file *file, void *byte)
 {
-	(void)byte;
-	char		final_char;
+	// char		final_char;
 	cpu_type_t	cpu_type;
 
-	final_char = (newline ? '\n': ' ');
+	// final_char = (newline ? '\n': ' ');
 	cpu_type = ((struct mach_header *)(file->ptr))->cputype;
 	if (cpu_type == CPU_TYPE_I386 || cpu_type == CPU_TYPE_X86_64)
-		printf("%02x%c", *((unsigned char *)byte), final_char);
+		printf("%02x ", *((unsigned char *)byte));
 	else
 	{
 		if (F_IS_BIG(file->type))
-			printf("%08x%c", swap_uint32(*((uint32_t *)byte)), final_char);
+			printf("%08x ", swap_uint32(*((uint32_t *)byte)));
 		else
-			printf("%08x%c", *((uint32_t *)byte), final_char);
+			printf("%08x ", *((uint32_t *)byte));
 	}
 }
 
@@ -96,8 +95,9 @@ void		print_text_section(t_file *file, void *section)
 				printf("%016llx\t", addr);
 			addr += 16;
 		}
-		print_bytes_hexa(file, (void *)file->ptr + offset + i,
-			(bool)(((i + I(c)) == size) || ((i + I(c)) % 16 == 0)));
+		print_bytes_hexa(file, (void *)file->ptr + offset + i);
 		i += I(c);
+		if (i == size || (i % 16 == 0))
+			printf("\n");
 	}
 }

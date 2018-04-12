@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 14:26:35 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 14:53:31 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	core.c
 */
 void		handle_macho(t_file *file);
-void		handle_fat(t_file *file);
+void		handle_fat(t_file *file, bool print_filename);
 void		handle_archive(t_file *file);
 
 /*

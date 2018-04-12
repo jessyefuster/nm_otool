@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/11 20:41:05 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/04/12 14:53:14 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		handle_macho(t_file *file)
 **	Iterate over arch headers in FAT file and otool each binary
 */
 
-void		handle_fat(t_file *file)
+void		handle_fat(t_file *file, bool print_filename)
 {
 	size_t				i;
 	char				*name;
@@ -59,7 +59,7 @@ void		handle_fat(t_file *file)
 
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_otool(file->ptr + fat_arch->offset, file->name, fat_arch->size, FALSE);
+		ft_otool(file->ptr + fat_arch->offset, file->name, fat_arch->size, print_filename);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
