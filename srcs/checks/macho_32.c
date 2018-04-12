@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho_32.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 20:54:36 by jessye            #+#    #+#             */
-/*   Updated: 2018/04/11 16:03:44 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/11 20:25:22 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static enum check_result	check_segment_command_32(t_file *file, struct segment_command *sg, t_filetype_t ft)
 {
-	(void)ft;
 	size_t				i;
 	struct section		*s;
 
@@ -24,6 +23,11 @@ static enum check_result	check_segment_command_32(t_file *file, struct segment_c
 	i = 0;
 	while (i < sg->nsects)
 	{
+		if (F_IS_BIG(ft))
+			swap_section(s);
+		if (s->offset > file->size || s->offset + s->size > file->size)
+			return (filecheck_error(file->name, "section offset out of file"));
+		s++;
 		i++;
 	}
 
