@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/12 14:53:31 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:10:27 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	core.c
 */
 void		handle_macho(t_file *file);
-void		handle_fat(t_file *file, bool print_filename);
+void		handle_fat(t_file *file);
 void		handle_archive(t_file *file);
 
 /*
@@ -32,6 +32,6 @@ void		print_text_section(t_file *file, void *section);
 */
 // char				*map_file(char *filename, struct stat *file_info);
 // enum status			nm_if_valid_file(char *filename, bool print_filename);
-enum status		ft_otool(char *ptr, char *filename, size_t file_size, bool print_filename);
+enum status		ft_otool(char *ptr, char *filename, size_t file_size);
 
 #endif

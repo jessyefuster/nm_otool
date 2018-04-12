@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/12 14:53:14 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:11:24 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		handle_macho(t_file *file)
 **	Iterate over arch headers in FAT file and otool each binary
 */
 
-void		handle_fat(t_file *file, bool print_filename)
+void		handle_fat(t_file *file)
 {
 	size_t				i;
 	char				*name;
@@ -59,7 +59,7 @@ void		handle_fat(t_file *file, bool print_filename)
 
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_otool(file->ptr + fat_arch->offset, file->name, fat_arch->size, print_filename);
+		ft_otool(file->ptr + fat_arch->offset, file->name, fat_arch->size);
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -67,7 +67,7 @@ void		handle_fat(t_file *file, bool print_filename)
 		while (i < fat_header->nfat_arch)
 		{
 			name = ft_strjoin(file->name, arch_name(fat_arch->cputype));
-			ft_otool(file->ptr + fat_arch->offset, name, fat_arch->size, TRUE);
+			ft_otool(file->ptr + fat_arch->offset, name, fat_arch->size);
 			free(name);
 			fat_arch++;
 			i++;
@@ -105,9 +105,9 @@ void		handle_archive(t_file *file)
 		if (ft_strncmp(member_name, SYMDEF, member_name_size) && ft_strncmp(member_name, SYMDEF_SORTED, member_name_size))
 		{
 			if (is_extended(header))
-				ft_otool(file->ptr + offset + member_name_size, format_archive_name(file->name, member_name, MIN((size_t)member_name_size, ft_strlen(member_name))), ft_atoi(header->ar_size) - member_name_size, TRUE);
+				ft_otool(file->ptr + offset + member_name_size, format_archive_name(file->name, member_name, MIN((size_t)member_name_size, ft_strlen(member_name))), ft_atoi(header->ar_size) - member_name_size);
 			else
-				ft_otool(file->ptr + offset, format_archive_name(file->name, member_name, member_name_size), ft_atoi(header->ar_size), TRUE);
+				ft_otool(file->ptr + offset, format_archive_name(file->name, member_name, member_name_size), ft_atoi(header->ar_size));
 		}
 		offset += ft_atoi(header->ar_size);
 	}

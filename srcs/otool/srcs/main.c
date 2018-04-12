@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/12 14:52:58 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/12 15:14:43 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_s
 	file_info->type = 0;
 }
 
-enum status		ft_otool(char *ptr, char *filename, size_t file_size, bool print_filename)
+enum status		ft_otool(char *ptr, char *filename, size_t file_size)
 {
 	t_file		*file;
 
@@ -30,12 +30,11 @@ enum status		ft_otool(char *ptr, char *filename, size_t file_size, bool print_fi
 	file->type = get_file_type(file);
 	if (file->type & F_MACHO)
 	{
-		if (print_filename)
-			printf("%s:\n", file->name);
+		printf("%s:\n", file->name);
 		handle_macho(file);
 	}
 	else if (file->type & F_FAT)
-		handle_fat(file, print_filename);
+		handle_fat(file);
 	else if (file->type & F_ARCHIVE)
 		handle_archive(file);
 	else
@@ -59,17 +58,16 @@ char	*map_file(char *filename, struct stat *file_info)
 	return (file);
 }
 
-enum status		otool_if_valid_file(char *filename, bool print_filename)
+enum status		otool_if_valid_file(char *filename)
 {
 	char			*ptr;
 	struct stat		file_info;
 	enum status		status;
 
-(void)print_filename;
 	ptr = map_file(filename, &file_info);
 	if (ptr)
 	{
-		status = ft_otool(ptr, filename, file_info.st_size, print_filename);
+		status = ft_otool(ptr, filename, file_info.st_size);
 		munmap(ptr, file_info.st_size);
 		return (status);
 	}
@@ -86,20 +84,18 @@ int		main(int argc, char **argv)
 	int		errors;
 
 	errors = 0;
-	if (argc > 2)
+	if (argc > 1)
 	{
 		i = 1;
 		while (i < argc)
 		{
-			if (otool_if_valid_file(argv[i], TRUE) == S_FAILURE)
+			if (otool_if_valid_file(argv[i]) == S_FAILURE)
 				return (EXIT_FAILURE);
 			i++;
 		}
 	}
-	else if (argc == 2)
-		errors = !otool_if_valid_file(argv[1], FALSE);
 	else
-		errors = !otool_if_valid_file("a.out", FALSE);
+		errors = !otool_if_valid_file("a.out");
 
 	if (errors)
 		return (EXIT_FAILURE);
