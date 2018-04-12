@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nm_otool.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 14:24:27 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/11 20:12:28 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ void				swap_mach_header_64(struct mach_header_64 *header);
 void				swap_load_command(struct load_command *command);
 void				swap_segment(struct segment_command *segment);
 void				swap_segment_64(struct segment_command_64 *segment);
+void				swap_section(struct section *section);
+void				swap_section_64(struct section_64 *section);
 void				swap_symtab(struct symtab_command *symtab);
 void				swap_nlist(struct nlist *symbol);
 void				swap_nlist_64(struct nlist_64 *symbol);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 14:12:05 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/11 21:36:09 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	else if (file->type & F_FAT)
 		handle_fat(file);
 	else if (file->type & F_ARCHIVE)
-	{
-		// printf("ft_nm: %-50s: DO ARCHIVE\n", file->name);
 		handle_archive(file);
-	}
 	else
 		return (S_FAILURE);
 	return (S_SUCCESS);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 14:11:30 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/11 21:36:02 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,16 @@ enum status		ft_otool(char *ptr, char *filename, size_t file_size, bool print_fi
 	file->type = get_file_type(file);
 	if (file->type & F_MACHO)
 	{
-		// printf("MACHO\n");
 		if (print_filename)
-			printf("\n%s:\n", file->name);
+			printf("%s:\n", file->name);
 		handle_macho(file);
 	}
 	else if (file->type & F_FAT)
-	{
-		// printf("FAT\n");
 		handle_fat(file);
-	}
 	else if (file->type & F_ARCHIVE)
-	{
-		// printf("ARCHIVE\n");
 		handle_archive(file);
-	}
 	else
-	{
-		// printf("NONE\n");
 		exit(EXIT_FAILURE);
-	}
 	return (S_SUCCESS);
 }
 
