@@ -6,14 +6,28 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/17 01:30:05 by jessye            #+#    #+#             */
-/*   Updated: 2018/04/10 16:23:16 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/13 16:15:13 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm.h"
 
-static void	store_sections(void *segment, char **sections, t_filetype_t file_type,
-				size_t *i_sect)
+char		section_letter(char *segname)
+{
+	if (segname == NULL)
+		return ('S');
+	if (ft_strcmp(segname, "__text") == 0)
+		return ('T');
+	else if (ft_strcmp(segname, "__data") == 0)
+		return ('D');
+	else if (ft_strcmp(segname, "__bss") == 0)
+		return ('B');
+	else
+		return ('S');
+}
+
+static void	store_sections(void *segment, char **sections,
+			t_filetype_t file_type, size_t *i_sect)
 {
 	size_t			i;
 	size_t			nsects;
@@ -59,7 +73,6 @@ char		**get_sections(struct mach_header *header, t_filetype_t file_type)
 		load_cmd = (void *)(header + 1);
 	i = 0;
 	i_sect = 1;
-	
 	while (i < header->ncmds)
 	{
 		if (load_cmd->cmd == LC_SEGMENT_64 || load_cmd->cmd == LC_SEGMENT)

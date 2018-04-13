@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 21:36:09 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/04/13 16:14:28 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm.h"
 
-void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_size)
+void			init_file_info(t_file *file_info, char *file, char *filename,
+				size_t file_size)
 {
 	file_info->ptr = file;
 	file_info->size = file_size;
@@ -20,7 +21,8 @@ void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_s
 	file_info->type = 0;
 }
 
-enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filename)
+enum status		ft_nm(char *ptr, char *filename, size_t file_size,
+				bool print_filename)
 {
 	t_file		*file;
 	t_symbols	*symbols;
@@ -32,7 +34,6 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	file->type = get_file_type(file);
 	if (file->type & F_MACHO)
 	{
-		// printf("ft_nm: %-50s: DO MACHO (print name: %s)\n", filename, print_filename ? "true" : "false");
 		if (print_filename)
 			printf("\n%s:\n", file->name);
 		handle_macho(file, &symbols);
@@ -47,7 +48,7 @@ enum status		ft_nm(char *ptr, char *filename, size_t file_size, bool print_filen
 	return (S_SUCCESS);
 }
 
-char	*map_file(char *filename, struct stat *file_info)
+char			*map_file(char *filename, struct stat *file_info)
 {
 	int			fd;
 	char		*file;
@@ -56,8 +57,8 @@ char	*map_file(char *filename, struct stat *file_info)
 		return (NULL);
 	if (fstat(fd, file_info) < 0 || (*file_info).st_mode & S_IFDIR)
 		return (NULL);
-	if ((file = mmap(0, (*file_info).st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0))
-		== MAP_FAILED)
+	if ((file = mmap(0, (*file_info).st_size,
+	PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (NULL);
 	close(fd);
 	return (file);
@@ -78,12 +79,12 @@ enum status		nm_if_valid_file(char *filename, bool print_filename)
 	}
 	else
 	{
-		file_error(NM, filename);
+		filecheck_error(filename, "file map error");
 		return (S_FAILURE);
 	}
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	int		i;
 	int		errors;
@@ -102,7 +103,6 @@ int		main(int argc, char **argv)
 		errors = !nm_if_valid_file(argv[1], FALSE);
 	else
 		errors = !nm_if_valid_file("a.out", FALSE);
-
 	if (errors)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

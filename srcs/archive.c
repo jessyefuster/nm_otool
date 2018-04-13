@@ -12,13 +12,12 @@
 
 #include "./ft_nm_otool.h"
 
-char			*format_archive_name(char *archive_name, char *member_name, size_t member_name_len)
+char			*format_archive_name(char *archive_name, char *member_name,
+						size_t member_name_len)
 {
 	size_t	archive_name_len;
 	size_t	name_len;
 	char	*new_name;
-
-	(void)member_name;
 
 	archive_name_len = ft_strlen(archive_name);
 	name_len = archive_name_len + member_name_len;

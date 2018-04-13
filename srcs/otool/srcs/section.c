@@ -6,14 +6,14 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 21:27:26 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/12 15:49:12 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/13 16:12:37 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
-#define I(cpu) 					((cpu == CPU_TYPE_I386 || cpu == CPU_TYPE_X86_64) ? 1 : 4)
-// #define NEWLINE(value, size)	(bool)((value == size) || (value % 16 == 0))
+#define I(c) 			((c == CPU_TYPE_I386 || c == CPU_TYPE_X86_64) ? 1 : 4)
+#define ADDR_FORMAT(ft)	(F_IS_32(ft) ? "%08llx\t" : "%016llx\t")
 
 void		*get_text_section(t_file *file, void *segment)
 {
@@ -32,7 +32,7 @@ void		*get_text_section(t_file *file, void *segment)
 	while (i < nsects)
 	{
 		if ((ft_strcmp(((struct section *)section)->segname, "__TEXT") == 0) &&
-				(ft_strcmp(((struct section *)section)->sectname, "__text") == 0))
+		(ft_strcmp(((struct section *)section)->sectname, "__text") == 0))
 			return (section);
 		section += SECTION_SIZE(F_IS_32(file->type));
 		i++;
@@ -42,10 +42,8 @@ void		*get_text_section(t_file *file, void *segment)
 
 static void	print_bytes_hexa(t_file *file, void *byte)
 {
-	// char		final_char;
 	cpu_type_t	cpu_type;
 
-	// final_char = (newline ? '\n': ' ');
 	cpu_type = ((struct mach_header *)(file->ptr))->cputype;
 	if (cpu_type == CPU_TYPE_I386 || cpu_type == CPU_TYPE_X86_64)
 		printf("%02x ", *((unsigned char *)byte));
@@ -58,14 +56,16 @@ static void	print_bytes_hexa(t_file *file, void *byte)
 	}
 }
 
-static void	set_variables(void *section, uint64_t *addr, uint64_t *size, size_t *offset)
+static void	set_variables(void *section, uint64_t *addr, uint64_t *size,
+			size_t *offset)
 {
 	*addr = ((struct section *)section)->addr;
 	*size = ((struct section *)section)->size;
 	*offset = ((struct section *)section)->offset;
 }
 
-static void	set_variables64(void *section, uint64_t *addr, uint64_t *size, size_t *offset)
+static void	set_variables64(void *section, uint64_t *addr, uint64_t *size,
+			size_t *offset)
 {
 	*addr = ((struct section_64 *)section)->addr;
 	*size = ((struct section_64 *)section)->size;
@@ -89,10 +89,7 @@ void		print_text_section(t_file *file, void *section)
 	{
 		if (i % 16 == 0)
 		{
-			if (F_IS_32(file->type))
-				printf("%08llx\t", addr);
-			else
-				printf("%016llx\t", addr);
+			printf(ADDR_FORMAT(file->type), addr);
 			addr += 16;
 		}
 		print_bytes_hexa(file, (void *)file->ptr + offset + i);

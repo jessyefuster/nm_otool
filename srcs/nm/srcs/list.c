@@ -6,51 +6,27 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:23:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/13 16:27:39 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm.h"
 
-/*
-**	Print symbol nodes of the linked-list
-**	note : this function handles both 32bit and 64bit symbol
-*/
-
-void		print_symbols(t_file *file, t_symbols *symbol)
+static void	try_swap_symbol(t_file *file, void *symbol)
 {
-	char	type;
-	char	**sections;
-
-	sections = get_sections((struct mach_header *)file->ptr, file->type);
-	while (symbol != NULL)
-	{
-		type = type_letter(sections, symbol);
-		if (F_IS_32(file->type))
-		{
-			if (symbol->value || type != 'U')
-				printf("%08llx %c %s\n", symbol->value, type, symbol->name);
-			else
-				printf("         %c %s\n", type, symbol->name);
-		}
-		else
-		{
-			if (symbol->value || type != 'U')
-				printf("%016llx %c %s\n", symbol->value, type, symbol->name);
-			else
-				printf("                 %c %s\n", type, symbol->name);
-		}
-		symbol = symbol->next;
-	}
+	if (F_IS_BIG(file->type) && F_IS_32(file->type))
+		swap_nlist((struct nlist *)symbol);
+	else if (F_IS_BIG(file->type) && F_IS_64(file->type))
+		swap_nlist_64((struct nlist_64 *)symbol);
 }
 
 /*
 **	Create a node with symbol information
 **	note : this function handles both 32bit and 64bit symbol
-**	todo : handle endianess (swap symbol)
+**	note : this function handles endianess
 */
 
-t_symbols	*new_node(t_file *file, void *symbol, char *string_table)
+t_symbols	*new_node(t_file *file, void *s, char *st)
 {
 	t_symbols	*new;
 
@@ -58,25 +34,51 @@ t_symbols	*new_node(t_file *file, void *symbol, char *string_table)
 		return (NULL);
 	new->next = NULL;
 	new->name = "bad string index";
-	if (F_IS_BIG(file->type) && F_IS_32(file->type))
-		swap_nlist((struct nlist *)symbol);
-	else if (F_IS_BIG(file->type) && F_IS_64(file->type))
-		swap_nlist_64((struct nlist_64 *)symbol);
+	try_swap_symbol(file, s);
 	if (F_IS_32(file->type))
 	{
-		if (string_table + ((struct nlist *)symbol)->n_un.n_strx <= file->ptr + file->size)
-			new->name = string_table + ((struct nlist *)symbol)->n_un.n_strx;
-		new->value = ((struct nlist *)symbol)->n_value;
-		new->type = ((struct nlist *)symbol)->n_type;
-		new->sect = ((struct nlist *)symbol)->n_sect;
+		if (st + ((struct nlist *)s)->n_un.n_strx <= file->ptr + file->size)
+			new->name = st + ((struct nlist *)s)->n_un.n_strx;
+		new->value = ((struct nlist *)s)->n_value;
+		new->type = ((struct nlist *)s)->n_type;
+		new->sect = ((struct nlist *)s)->n_sect;
 	}
 	else
 	{
-		if (string_table + ((struct nlist_64 *)symbol)->n_un.n_strx <= file->ptr + file->size)
-			new->name = string_table + ((struct nlist_64 *)symbol)->n_un.n_strx;
-		new->value = ((struct nlist_64 *)symbol)->n_value;
-		new->type = ((struct nlist_64 *)symbol)->n_type;
-		new->sect = ((struct nlist_64 *)symbol)->n_sect;
+		if (st + ((struct nlist_64 *)s)->n_un.n_strx <= file->ptr + file->size)
+			new->name = st + ((struct nlist_64 *)s)->n_un.n_strx;
+		new->value = ((struct nlist_64 *)s)->n_value;
+		new->type = ((struct nlist_64 *)s)->n_type;
+		new->sect = ((struct nlist_64 *)s)->n_sect;
 	}
 	return (new);
+}
+
+/*
+**	Add the symbol to the linked-list in ascii order
+**	note : this function handles both 32bit and 64bit symbol
+**	note : this function handles endianess
+*/
+
+void		store_symbol(t_file *file, t_symbols **symbols, void *symbol,
+			char *string_table)
+{
+	t_symbols		*new;
+	t_symbols		*ptr;
+
+	if ((new = new_node(file, symbol, string_table)) == NULL)
+		return ;
+	ptr = (*symbols);
+	if ((*symbols) == NULL || (ft_strcmp((*symbols)->name, new->name) >= 0))
+	{
+		new->next = (*symbols);
+		(*symbols) = new;
+	}
+	else
+	{
+		while (ptr->next != NULL && (ft_strcmp(ptr->next->name, new->name) < 0))
+			ptr = ptr->next;
+		new->next = ptr->next;
+		ptr->next = new;
+	}
 }

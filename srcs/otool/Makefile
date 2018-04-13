@@ -16,7 +16,6 @@ SRCS =	srcs/main.c \
 		../checks/macho.c \
 		../checks/macho_32.c \
 		../checks/macho_64.c \
-		../checks/tools.c \
 		../checks/swap.c \
 
 SRCO = $(SRCS:.c=.o)

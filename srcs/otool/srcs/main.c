@@ -6,13 +6,14 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/12 15:14:43 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/13 15:56:59 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
-void	init_file_info(t_file *file_info, char *file, char *filename, size_t file_size)
+void			init_file_info(t_file *file_info, char *file, char *filename,
+				size_t file_size)
 {
 	file_info->ptr = file;
 	file_info->size = file_size;
@@ -42,7 +43,7 @@ enum status		ft_otool(char *ptr, char *filename, size_t file_size)
 	return (S_SUCCESS);
 }
 
-char	*map_file(char *filename, struct stat *file_info)
+char			*map_file(char *filename, struct stat *file_info)
 {
 	int			fd;
 	char		*file;
@@ -51,8 +52,8 @@ char	*map_file(char *filename, struct stat *file_info)
 		return (NULL);
 	if (fstat(fd, file_info) < 0 || (*file_info).st_mode & S_IFDIR)
 		return (NULL);
-	if ((file = mmap(0, (*file_info).st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0))
-		== MAP_FAILED)
+	if ((file = mmap(0, (*file_info).st_size,
+		PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (NULL);
 	close(fd);
 	return (file);
@@ -73,17 +74,15 @@ enum status		otool_if_valid_file(char *filename)
 	}
 	else
 	{
-		file_error(OTOOL, filename);
+		filecheck_error(filename, "file map error");
 		return (S_FAILURE);
 	}
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	int		i;
-	int		errors;
 
-	errors = 0;
 	if (argc > 1)
 	{
 		i = 1;
@@ -94,10 +93,7 @@ int		main(int argc, char **argv)
 			i++;
 		}
 	}
-	else
-		errors = !otool_if_valid_file("a.out");
-
-	if (errors)
+	else if (otool_if_valid_file("a.out") == S_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

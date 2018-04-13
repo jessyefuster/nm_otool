@@ -11,7 +11,7 @@ SRCS =	../archive.c \
 		srcs/macho.c \
 		srcs/main.c \
 		srcs/sections.c \
-		srcs/sort.c \
+		srcs/symbols.c \
 		../tools.c \
 		../checks/archive.c \
 		../checks/fat.c \
@@ -19,7 +19,6 @@ SRCS =	../archive.c \
 		../checks/macho.c \
 		../checks/macho_32.c \
 		../checks/macho_64.c \
-		../checks/tools.c \
 		../checks/swap.c \
 
 SRCO = $(SRCS:.c=.o)

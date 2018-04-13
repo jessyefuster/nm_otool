@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/12 15:50:55 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/13 16:55:21 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,11 @@ enum	status
 	S_SUCCESS
 };
 
+typedef struct	s_ar_member {
+	char	*name;
+	size_t	name_size;
+}				t_ar_member;
+
 /*
 **	Symbol chained-list structure
 */
@@ -148,7 +153,6 @@ enum check_result	check_fat(t_file *file);
 /*
 **		file.c
 */
-enum check_result	filecheck_error(char *filename, char *error);
 t_filetype_t		get_file_type(t_file *file);
 /*
 **		macho.c
@@ -173,6 +177,7 @@ void				swap_symtab(struct symtab_command *symtab);
 void				swap_nlist(struct nlist *symbol);
 void				swap_nlist_64(struct nlist_64 *symbol);
 
+
 /*
 **	fat.c
 */
@@ -184,13 +189,12 @@ struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 **	tools.c
 */
 void				exit_error(char *error);
-enum status			file_error(enum function f, char *filename);
+// enum status			file_error(enum function f, char *filename);
+enum check_result	filecheck_error(char *filename, char *error);
 uint32_t			swap_uint32(uint32_t num);
 uint64_t			swap_uint64(uint64_t num);
 uint32_t			rev_uint32(uint32_t num, t_filetype_t file_type);
 uint64_t			rev_uint64(uint64_t num, t_filetype_t file_type);
-char				section_letter(char *segname);
-char				type_letter(char **sections, t_symbols *symbol);
 
 
 #endif

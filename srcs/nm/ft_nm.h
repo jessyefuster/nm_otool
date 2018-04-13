@@ -17,37 +17,39 @@
 /*
 **	core.c
 */
-void				handle_macho(t_file *file, t_symbols **symbols);
-void				handle_fat(t_file *file);
-void				handle_archive(t_file *file);
+void				    handle_macho(t_file *file, t_symbols **symbols);
+void				    handle_fat(t_file *file);
+void				    handle_archive(t_file *file);
 
 /*
 **	list.c
 */
-void				print_symbols(t_file *file, t_symbols *ptr);
-t_symbols			*new_node(t_file *file, void *symbol, char *string_table);
+t_symbols			  *new_node(t_file *file, void *symbol, char *string_table);
+void			store_symbol(t_file *file, t_symbols **symbols, void *symbol,
+				char *string_table);
 
 /*
 **	macho.c
 */
-void				store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
+void				    store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
 
 /*
 **	sections.c
 */
-char				**get_sections(struct mach_header *header, t_filetype_t file_type);
+char				    section_letter(char *segname);
+char				    **get_sections(struct mach_header *header, t_filetype_t file_type);
 
 /*
-**	sort.c
+**	symbols.c
 */
-void				sort_tab(size_t *tab, size_t len);
-
+char						type_letter(char **sections, t_symbols *symbol);
+void				    print_symbols(t_file *file, t_symbols *ptr);
 
 
 /*
 **	main.c
 */
-char				*map_file(char *filename, struct stat *file_info);
+char				    *map_file(char *filename, struct stat *file_info);
 enum status			nm_if_valid_file(char *filename, bool print_filename);
 enum status			ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
 
