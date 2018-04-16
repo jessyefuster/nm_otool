@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:12:22 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/11 14:24:13 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/16 15:36:05 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,41 @@
 /*
 **	core.c
 */
-void				    handle_macho(t_file *file, t_symbols **symbols);
-void				    handle_fat(t_file *file);
-void				    handle_archive(t_file *file);
+void			handle_macho(t_file *file, t_symbols **symbols);
+void			handle_fat(t_file *file);
+void			handle_archive(t_file *file);
 
 /*
 **	list.c
 */
-t_symbols			  *new_node(t_file *file, void *symbol, char *string_table);
+t_symbols		*new_node(t_file *file, void *symbol, char *string_table);
 void			store_symbol(t_file *file, t_symbols **symbols, void *symbol,
 				char *string_table);
 
 /*
 **	macho.c
 */
-void				    store_symbols(t_file *file, struct symtab_command *symtab_cmd, t_symbols **symbols);
+void			store_symbols(t_file *file, struct symtab_command *symtab_cmd,
+				t_symbols **symbols);
 
 /*
 **	sections.c
 */
-char				    section_letter(char *segname);
-char				    **get_sections(struct mach_header *header, t_filetype_t file_type);
+char			section_letter(char *segname);
+char			**get_sections(struct mach_header *header, t_filetype_t ft);
 
 /*
 **	symbols.c
 */
-char						type_letter(char **sections, t_symbols *symbol);
-void				    print_symbols(t_file *file, t_symbols *ptr);
-
+char			type_letter(char **sections, t_symbols *symbol);
+void			print_symbols(t_file *file, t_symbols *ptr);
 
 /*
 **	main.c
 */
-char				    *map_file(char *filename, struct stat *file_info);
-enum status			nm_if_valid_file(char *filename, bool print_filename);
-enum status			ft_nm(char *file, char *filename, size_t file_size, bool print_filename);
+char			*map_file(char *filename, struct stat *file_info);
+enum status		nm_if_valid_file(char *filename, bool print_filename);
+enum status		ft_nm(char *file, char *filename, size_t file_size,
+				bool print_filename);
 
 #endif

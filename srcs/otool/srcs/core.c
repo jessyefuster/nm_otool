@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/13 15:53:20 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/16 16:33:59 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void		handle_archive(t_file *file)
 	t_ar_member		member;
 	size_t			offset;
 
+	printf("Archive : %s\n", file->name);
 	offset = SARMAG;
 	if (file->size == SARMAG)
 		return ;
