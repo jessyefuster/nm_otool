@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/13 15:56:59 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 14:21:28 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void			init_file_info(t_file *file_info, char *file, char *filename,
 	file_info->type = 0;
 }
 
-enum status		ft_otool(char *ptr, char *filename, size_t file_size)
+enum e_status	ft_otool(char *ptr, char *filename, size_t file_size)
 {
 	t_file		*file;
 
@@ -59,11 +59,11 @@ char			*map_file(char *filename, struct stat *file_info)
 	return (file);
 }
 
-enum status		otool_if_valid_file(char *filename)
+enum e_status	otool_if_valid_file(char *filename)
 {
 	char			*ptr;
 	struct stat		file_info;
-	enum status		status;
+	enum e_status	status;
 
 	ptr = map_file(filename, &file_info);
 	if (ptr)

@@ -6,13 +6,15 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:13:56 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:27:47 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 14:42:54 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm_otool.h"
 
-enum check_result	check_fat(t_file *file)
+typedef struct fat_header	t_fh;
+
+enum e_check_result		check_fat(t_file *file)
 {
 	struct fat_header	*fh;
 	struct fat_arch		*fa;
@@ -23,10 +25,10 @@ enum check_result	check_fat(t_file *file)
 	swap_fat_header(fh);
 	if (file->size < sizeof(struct fat_header))
 		return (filecheck_error(file->name, "no size for fat header"));
-	if (file->size < sizeof(struct fat_header) + fh->nfat_arch * sizeof(struct fat_arch))
+	if (file->size < sizeof(t_fh) + fh->nfat_arch * sizeof(struct fat_arch))
 		return (filecheck_error(file->name, "no size for fat archs"));
 	if (fh->nfat_arch == 0)
-		return (filecheck_error(file->name, "incorrect nfat_arch in fat header"));
+		return (filecheck_error(file->name, "incorrect nfat_arch in header"));
 	i = 0;
 	while (i < fh->nfat_arch)
 	{

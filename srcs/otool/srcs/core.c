@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/16 16:33:59 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 14:38:40 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void		handle_archive(t_file *file)
 		set_member(&member, header->ar_name, size_ar_name(header));
 		if (is_extended(header))
 			set_member(&member, file->ptr + offset,
-				ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1));
+			ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1));
 		if (ft_strncmp(member.name, SYMDEF, member.name_size) &&
-				ft_strncmp(member.name, SYMDEF_SORTED, member.name_size))
+		ft_strncmp(member.name, SYMDEF_SORTED, member.name_size))
 			call_otool(file, header, offset, member);
 		offset += ft_atoi(header->ar_size);
 	}

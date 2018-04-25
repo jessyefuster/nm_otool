@@ -6,13 +6,13 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:20 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:27:43 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 15:08:58 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm_otool.h"
 
-size_t	size_ar_name(struct ar_hdr *header)
+size_t						size_ar_name(struct ar_hdr *header)
 {
 	long i;
 
@@ -22,14 +22,14 @@ size_t	size_ar_name(struct ar_hdr *header)
 	return ((size_t)(i + 1));
 }
 
-bool				is_extended(struct ar_hdr *header)
+bool						is_extended(struct ar_hdr *header)
 {
 	if (ft_strncmp(header->ar_name, AR_EFMT1, sizeof(AR_EFMT1) - 1) == 0)
 		return (TRUE);
 	return (FALSE);
 }
 
-static enum check_result	check_archive_header(struct ar_hdr *header)
+static enum e_check_result	check_archive_header(struct ar_hdr *header)
 {
 	size_t	i;
 	char	*p;
@@ -58,10 +58,33 @@ static enum check_result	check_archive_header(struct ar_hdr *header)
 	return (CHECK_GOOD);
 }
 
-// check on badnamesize archive
-enum check_result			check_archive(t_file *file)
+static enum e_check_result	check_archive_fat(t_file *file, struct ar_hdr *ah,
+							size_t offset)
 {
-	uint32_t		*o_magic;
+	uint32_t	*magic;
+	size_t		member_name_len;
+
+	member_name_len = ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1);
+	if (is_extended(ah))
+	{
+		if (file->size < offset + member_name_len)
+			return (filecheck_error(file->name, "no size for member name"));
+		magic = (uint32_t *)(file->ptr + offset + member_name_len);
+		if (offset + member_name_len + sizeof(uint32_t) > file->size
+		|| *magic == FAT_CIGAM)
+			return (filecheck_error(file->name, "cannot contain FAT object"));
+	}
+	else
+	{
+		magic = (uint32_t *)(file->ptr + offset);
+		if (offset + sizeof(uint32_t) > file->size || *magic == FAT_CIGAM)
+			return (filecheck_error(file->name, "cannot contain FAT object"));
+	}
+	return (CHECK_GOOD);
+}
+
+enum e_check_result			check_archive(t_file *file)
+{
 	size_t			offset;
 	struct ar_hdr	*ah;
 
@@ -76,22 +99,11 @@ enum check_result			check_archive(t_file *file)
 		if (check_archive_header(ah) == CHECK_BAD)
 			return (filecheck_error(file->name, "malformed archive header"));
 		offset += sizeof(struct ar_hdr);
-		if (ft_atoi(ah->ar_size) == 0 || file->size < offset + ft_atoi(ah->ar_size))
+		if (ft_atoi(ah->ar_size) == 0 ||
+		file->size < offset + ft_atoi(ah->ar_size))
 			return (filecheck_error(file->name, "invalid archive member size"));
-		if (is_extended(ah))
-		{
-			if (file->size < offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1))
-				return (filecheck_error(file->name, "no size for archive member name"));
-			o_magic = (uint32_t *)(file->ptr + offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1));
-			if (offset + ft_atoi(ah->ar_name + sizeof(AR_EFMT1) - 1) + sizeof(uint32_t) > file->size || *o_magic == FAT_CIGAM)
-				return (filecheck_error(file->name, "cannot contain FAT object"));
-		}
-		else
-		{
-			o_magic = (uint32_t *)(file->ptr + offset);
-			if (offset + sizeof(uint32_t) > file->size || *o_magic == FAT_CIGAM)
-				return (filecheck_error(file->name, "archive cannot contain FAT object"));
-		}
+		if (check_archive_fat(file, ah, offset) == CHECK_BAD)
+			return (CHECK_BAD);
 		offset += ft_atoi(ah->ar_size);
 	}
 	return (CHECK_GOOD);

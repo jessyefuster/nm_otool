@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/13 16:57:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 14:37:49 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,48 +119,10 @@ void		handle_archive(t_file *file)
 		set_member(&member, header->ar_name, size_ar_name(header));
 		if (is_extended(header))
 			set_member(&member, file->ptr + offset,
-				ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1));
+			ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1));
 		if (ft_strncmp(member.name, SYMDEF, member.name_size) &&
-				ft_strncmp(member.name, SYMDEF_SORTED, member.name_size))
+		ft_strncmp(member.name, SYMDEF_SORTED, member.name_size))
 			call_nm(file, header, offset, member);
 		offset += ft_atoi(header->ar_size);
 	}
 }
-
-/*
-**	https://code.woboq.org/llvm/include/ar.h.html
-**	https://upload.wikimedia.org/wikipedia/commons/6/67/Deb_File_Structure.svg
-**	WIP
-*/
-
-// void		handle_archive(t_file *file)
-// {
-// 	char			*member_name;
-// 	size_t			member_name_size;
-// 	size_t			offset;
-// 	struct ar_hdr	*header;
-
-// 	offset = SARMAG;
-// 	if (file->size == SARMAG)
-// 		return ;
-// 	while (file->size > offset)
-// 	{
-// 		header = (struct ar_hdr *)(file->ptr + offset);
-// 		offset += sizeof(struct ar_hdr);
-// 		member_name = header->ar_name;
-// 		member_name_size = size_ar_name(header);
-// 		if (is_extended(header))
-// 		{
-// 			member_name = file->ptr + offset;
-// 			member_name_size = ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1);
-// 		}
-// 		if (ft_strncmp(member_name, SYMDEF, member_name_size) && ft_strncmp(member_name, SYMDEF_SORTED, member_name_size))
-// 		{
-// 			if (is_extended(header))
-// 				ft_nm(file->ptr + offset + member_name_size, format_archive_name(file->name, member_name, MIN((size_t)member_name_size, ft_strlen(member_name))), ft_atoi(header->ar_size) - member_name_size, TRUE);
-// 			else
-// 				ft_nm(file->ptr + offset, format_archive_name(file->name, member_name, member_name_size), ft_atoi(header->ar_size), TRUE);
-// 		}
-// 		offset += ft_atoi(header->ar_size);
-// 	}
-// }

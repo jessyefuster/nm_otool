@@ -6,13 +6,13 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/13 15:18:38 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/25 15:41:38 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./ft_nm_otool.h"
 
-enum check_result	filecheck_error(char *filename, char *error)
+enum e_check_result	filecheck_error(char *filename, char *error)
 {
 	fprintf(stderr, "%s: %s\n", filename, error);
 	return (CHECK_BAD);
