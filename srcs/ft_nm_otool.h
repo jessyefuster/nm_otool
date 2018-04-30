@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/25 16:32:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:42:06 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ typedef struct segment_command		t_seg;
 typedef struct segment_command_64	t_seg_64;
 
 # define MIN(a, b)	(a <= b ? a : b)
-
-# define S_32(num, file_type) rev_uint32(num, file_type)
-# define S_64(num, file_type) rev_uint64(num, file_type)
 
 # define SYMBOL_SIZE(is_32) (is_32 ? sizeof(t_nlist) : sizeof(t_nlist_64))
 # define SECTION_SIZE(is_32) (is_32 ? sizeof(t_sect) : sizeof(t_sect_64))
@@ -210,11 +207,9 @@ struct fat_arch		*find_arch(struct fat_header *fat_header, cpu_type_t arch);
 /*
 **	tools.c
 */
-void				exit_error(char *error);
 enum e_check_result	filecheck_error(char *filename, char *error);
+enum e_status		program_error(char *error, char *file, int line);
 uint32_t			swap_uint32(uint32_t num);
 uint64_t			swap_uint64(uint64_t num);
-uint32_t			rev_uint32(uint32_t num, t_filetype_t file_type);
-uint64_t			rev_uint64(uint64_t num, t_filetype_t file_type);
 
 #endif

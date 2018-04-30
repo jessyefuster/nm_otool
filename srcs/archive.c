@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/10 16:24:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:04:17 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char			*format_archive_name(char *archive_name, char *member_name,
 	archive_name_len = ft_strlen(archive_name);
 	name_len = archive_name_len + member_name_len;
 	if ((new_name = (char *)malloc(sizeof(char) * (name_len + 2 + 1))) == NULL)
-		exit_error("malloc error");
+		return (NULL);
 	new_name[name_len + 2] = 0;
 	ft_strcpy(new_name, archive_name);
 	new_name[archive_name_len] = '(';

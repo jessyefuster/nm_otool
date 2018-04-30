@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/25 14:37:49 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:50:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	note : this function handles endianess
 */
 
-void		handle_macho(t_file *file, t_symbols **symbols)
+enum e_status			handle_macho(t_file *file, t_symbols **symbols)
 {
 	size_t					i;
 	size_t					ncmds;
@@ -35,19 +35,20 @@ void		handle_macho(t_file *file, t_symbols **symbols)
 	{
 		if (load_cmds->cmd == LC_SYMTAB)
 		{
-			store_symbols(file, (struct symtab_command *)load_cmds, symbols);
-			break ;
+			return (store_symbols(file, (struct symtab_command *)load_cmds,
+			symbols));
 		}
 		load_cmds = (void *)load_cmds + load_cmds->cmdsize;
 		i++;
 	}
+	return (S_SUCCESS);
 }
 
 /*
 **	Iterate over arch headers in FAT file and nm each binary
 */
 
-void		handle_fat(t_file *file)
+enum e_status			handle_fat(t_file *file)
 {
 	size_t				i;
 	char				*name;
@@ -56,7 +57,8 @@ void		handle_fat(t_file *file)
 
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
-		ft_nm(file->ptr + fat_arch->offset, file->name, fat_arch->size, FALSE);
+		return (ft_nm(file->ptr + fat_arch->offset, file->name, fat_arch->size,
+		FALSE));
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -64,11 +66,13 @@ void		handle_fat(t_file *file)
 		while (i < fat_header->nfat_arch)
 		{
 			name = ft_strjoin(file->name, arch_name(fat_arch->cputype));
-			ft_nm(file->ptr + fat_arch->offset, name, fat_arch->size, TRUE);
-			free(name);
+			if (name == NULL || ft_nm(file->ptr + fat_arch->offset, name,
+			fat_arch->size, TRUE) == S_FAILURE)
+				return (S_FAILURE);
 			fat_arch++;
 			i++;
 		}
+		return (S_SUCCESS);
 	}
 }
 
@@ -76,14 +80,14 @@ void		handle_fat(t_file *file)
 **	Archive handling
 */
 
-static void	set_member(t_ar_member *m, char *name, size_t name_size)
+static void				set_member(t_ar_member *m, char *name, size_t name_size)
 {
 	m->name = name;
 	m->name_size = name_size;
 }
 
-static void	call_nm(t_file *file, struct ar_hdr *header, size_t offset,
-			t_ar_member m)
+static enum e_status	call_nm(t_file *file, struct ar_hdr *header,
+size_t offset, t_ar_member m)
 {
 	char	*filename;
 	size_t	size;
@@ -92,18 +96,22 @@ static void	call_nm(t_file *file, struct ar_hdr *header, size_t offset,
 	{
 		filename = format_archive_name(file->name, m.name,
 					MIN((size_t)(m.name_size), ft_strlen(m.name)));
+		if (filename == NULL)
+			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size) - m.name_size;
-		ft_nm(file->ptr + offset + m.name_size, filename, size, TRUE);
+		return (ft_nm(file->ptr + offset + m.name_size, filename, size, TRUE));
 	}
 	else
 	{
 		filename = format_archive_name(file->name, m.name, m.name_size);
+		if (filename == NULL)
+			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size);
-		ft_nm(file->ptr + offset, filename, size, TRUE);
+		return (ft_nm(file->ptr + offset, filename, size, TRUE));
 	}
 }
 
-void		handle_archive(t_file *file)
+enum e_status			handle_archive(t_file *file)
 {
 	struct ar_hdr	*header;
 	t_ar_member		member;
@@ -111,7 +119,7 @@ void		handle_archive(t_file *file)
 
 	offset = SARMAG;
 	if (file->size == SARMAG)
-		return ;
+		return (S_SUCCESS);
 	while (file->size > offset)
 	{
 		header = (struct ar_hdr *)(file->ptr + offset);
@@ -122,7 +130,11 @@ void		handle_archive(t_file *file)
 			ft_atoi(header->ar_name + sizeof(AR_EFMT1) - 1));
 		if (ft_strncmp(member.name, SYMDEF, member.name_size) &&
 		ft_strncmp(member.name, SYMDEF_SORTED, member.name_size))
-			call_nm(file, header, offset, member);
+		{
+			if (call_nm(file, header, offset, member) == S_FAILURE)
+				return (S_FAILURE);
+		}
 		offset += ft_atoi(header->ar_size);
 	}
+	return (S_SUCCESS);
 }

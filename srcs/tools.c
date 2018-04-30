@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/25 15:41:38 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:40:40 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@ enum e_check_result	filecheck_error(char *filename, char *error)
 	return (CHECK_BAD);
 }
 
-/*
-**	TO-DO: Move __FILE__ and __LINE_ to parameters
-*/
-
-void				exit_error(char *error)
+enum e_status		program_error(char *error, char *file, int line)
 {
-	fprintf(stderr, "EXIT: %s in %s at line %d\n", error, __FILE__, __LINE__);
-	exit(EXIT_FAILURE);
+	fprintf(stderr, "%s in %s at line %d\n", error, file, line);
+	return (S_FAILURE);
 }
 
 uint32_t			swap_uint32(uint32_t num)

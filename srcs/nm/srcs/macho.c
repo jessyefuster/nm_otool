@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 18:47:30 by jessye            #+#    #+#             */
-/*   Updated: 2018/04/10 16:23:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 15:39:32 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 **	note : this function handles endianess
 */
 
-void		store_symbols(t_file *file,
+enum e_status	store_symbols(t_file *file,
 				struct symtab_command *symtab_cmd, t_symbols **symbols)
 {
 	size_t			i;
 	void			*symbol;
 	char			*string_table;
+	enum e_status	status;
 
 	string_table = file->ptr + symtab_cmd->stroff;
 	symbol = file->ptr + symtab_cmd->symoff;
@@ -31,11 +32,14 @@ void		store_symbols(t_file *file,
 	while (i < symtab_cmd->nsyms)
 	{
 		if (F_IS_32(file->type) && !(((struct nlist *)symbol)->n_type & N_STAB))
-			store_symbol(file, symbols, symbol, string_table);
+			status = store_symbol(file, symbols, symbol, string_table);
 		else if (F_IS_64(file->type) && !(((struct nlist_64 *)symbol)->n_type &
 					N_STAB))
-			store_symbol(file, symbols, symbol, string_table);
+			status = store_symbol(file, symbols, symbol, string_table);
+		if (status == S_FAILURE)
+			return (S_FAILURE);
 		symbol += SYMBOL_SIZE(F_IS_32(file->type));
 		i++;
 	}
+	return (S_SUCCESS);
 }

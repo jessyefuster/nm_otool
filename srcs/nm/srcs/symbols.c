@@ -6,13 +6,15 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/13 16:22:02 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:51:25 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm.h"
 
-char		type_letter(char **sections, t_symbols *symbol)
+typedef struct mach_header	t_mh;
+
+char			type_letter(char **sections, t_symbols *symbol)
 {
 	char	type_letter;
 
@@ -43,12 +45,13 @@ char		type_letter(char **sections, t_symbols *symbol)
 **	note : this function handles both 32bit and 64bit symbol
 */
 
-void		print_symbols(t_file *file, t_symbols *symbol)
+enum e_status	print_symbols(t_file *file, t_symbols *symbol)
 {
 	char	type;
 	char	**sections;
 
-	sections = get_sections((struct mach_header *)file->ptr, file->type);
+	if ((sections = get_sections((t_mh *)file->ptr, file->type)) == NULL)
+		return (program_error("Malloc error", __FILE__, __LINE__));
 	while (symbol != NULL)
 	{
 		type = type_letter(sections, symbol);
@@ -68,4 +71,5 @@ void		print_symbols(t_file *file, t_symbols *symbol)
 		}
 		symbol = symbol->next;
 	}
+	return (S_SUCCESS);
 }

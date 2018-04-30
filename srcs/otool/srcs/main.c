@@ -6,40 +6,41 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/25 14:21:28 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/04/30 16:35:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
-void			init_file_info(t_file *file_info, char *file, char *filename,
+enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
 				size_t file_size)
 {
-	file_info->ptr = file;
-	file_info->size = file_size;
-	file_info->name = filename;
-	file_info->type = 0;
+	if (((*file_info = (t_file *)malloc(sizeof(t_file))) == NULL))
+		return (program_error("Malloc error", __FILE__, __LINE__));
+	(*file_info)->ptr = file;
+	(*file_info)->size = file_size;
+	(*file_info)->name = filename;
+	(*file_info)->type = get_file_type(*file_info);
+	return (S_SUCCESS);
 }
 
 enum e_status	ft_otool(char *ptr, char *filename, size_t file_size)
 {
 	t_file		*file;
 
-	if (((file = (t_file *)malloc(sizeof(t_file))) == NULL))
-		exit_error("malloc error");
-	init_file_info(file, ptr, filename, file_size);
-	file->type = get_file_type(file);
+	if (init_file_info(&file, ptr, filename, file_size) == S_FAILURE)
+		return (S_FAILURE);
 	if (file->type & F_MACHO)
 	{
 		printf("%s:\n", file->name);
 		handle_macho(file);
 	}
 	else if (file->type & F_FAT)
-		handle_fat(file);
+		return (handle_fat(file));
 	else if (file->type & F_ARCHIVE)
-		handle_archive(file);
+		return (handle_archive(file));
 	else
-		exit(EXIT_FAILURE);
+		return (S_FAILURE);
 	return (S_SUCCESS);
 }
 
