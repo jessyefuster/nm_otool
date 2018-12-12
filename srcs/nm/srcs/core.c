@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/11 16:41:32 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/12 16:29:13 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ enum e_status			handle_fat(t_file *file)
 			// if (name == NULL || ft_nm(file->ptr + fat_arch->offset, name,
 			// fat_arch->size, TRUE) == S_FAILURE)
 			// 	return (S_FAILURE);
-			if (name == NULL || ft_nm(file->ptr + fat_arch->offset, name,
+			if (name == NULL || ft_nm(file->ptr + fat_arch->offset, fat_header->nfat_arch > 1 ? name : file->name,
 			fat_arch->size, TRUE) == S_FAILURE)
 				status = S_FAILURE;
 			fat_arch++;
