@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:18:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/11 16:41:52 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ enum e_status	ft_nm(char *ptr, char *filename, size_t file_size,
 	t_symbols	*symbols;
 
 	symbols = NULL;
+	// printf("CHECK\n");
 	if (init_file_info(&file, ptr, filename, file_size) == S_FAILURE)
 		return (S_FAILURE);
 	if (file->type & F_MACHO)
 	{
+		// printf("MACHO\n");
 		if (handle_macho(file, &symbols) == S_FAILURE)
 			return (S_FAILURE);
 		if (print_filename)
@@ -43,9 +45,15 @@ enum e_status	ft_nm(char *ptr, char *filename, size_t file_size,
 			return (S_FAILURE);
 	}
 	else if (file->type & F_FAT)
+	{
+		// printf("FAT\n");
 		return (handle_fat(file));
+	}
 	else if (file->type & F_ARCHIVE)
+	{
+		// printf("ARCHIVE\n");
 		return (handle_archive(file));
+	}
 	else
 		return (S_FAILURE);
 	return (S_SUCCESS);

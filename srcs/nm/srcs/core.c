@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:50:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/11 16:41:32 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ enum e_status			handle_fat(t_file *file)
 	char				*name;
 	struct fat_header	*fat_header;
 	struct fat_arch		*fat_arch;
+	char				status;
 
+	status = S_SUCCESS;
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
 		return (ft_nm(file->ptr + fat_arch->offset, file->name, fat_arch->size,
@@ -66,13 +68,16 @@ enum e_status			handle_fat(t_file *file)
 		while (i < fat_header->nfat_arch)
 		{
 			name = ft_strjoin(file->name, arch_name(fat_arch->cputype));
+			// if (name == NULL || ft_nm(file->ptr + fat_arch->offset, name,
+			// fat_arch->size, TRUE) == S_FAILURE)
+			// 	return (S_FAILURE);
 			if (name == NULL || ft_nm(file->ptr + fat_arch->offset, name,
 			fat_arch->size, TRUE) == S_FAILURE)
-				return (S_FAILURE);
+				status = S_FAILURE;
 			fat_arch++;
 			i++;
 		}
-		return (S_SUCCESS);
+		return (status);
 	}
 }
 
