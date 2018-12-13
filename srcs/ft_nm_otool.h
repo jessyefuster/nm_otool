@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:42:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/13 16:30:44 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct segment_command_64	t_seg_64;
 # define F_IS_64(type) (F_ARCH(type) == F_64)
 # define F_IS_LITTLE(type) (F_ENDIAN(type) == F_LITTLE)
 # define F_IS_BIG(type) (F_ENDIAN(type) == F_BIG)
+
+# define P_REGULAR (P_NAME | P_NEWLINE)
 
 /*
 **	File flags	t_filetype_t (uint32_t)
@@ -106,6 +108,16 @@ enum				e_status
 {
 	S_FAILURE,
 	S_SUCCESS
+};
+
+/*
+**	Filename printing options
+*/
+enum				e_print
+{
+	P_NONE = 0,
+	P_NAME = 1,
+	P_NEWLINE = 2
 };
 
 /*

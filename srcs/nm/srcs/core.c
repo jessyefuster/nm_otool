@@ -6,11 +6,12 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 15:25:04 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/12 16:29:13 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/13 16:55:38 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm.h"
+#define	IS_ONE(value) (value == 1)
 
 /*
 **	Search for SYMTAB load command in Mach-o file
@@ -60,7 +61,7 @@ enum e_status			handle_fat(t_file *file)
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
 		return (ft_nm(file->ptr + fat_arch->offset, file->name, fat_arch->size,
-		FALSE));
+		P_NONE));
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -72,7 +73,7 @@ enum e_status			handle_fat(t_file *file)
 			// fat_arch->size, TRUE) == S_FAILURE)
 			// 	return (S_FAILURE);
 			if (name == NULL || ft_nm(file->ptr + fat_arch->offset, fat_header->nfat_arch > 1 ? name : file->name,
-			fat_arch->size, TRUE) == S_FAILURE)
+			fat_arch->size, (IS_ONE(fat_header->nfat_arch) ? P_NAME : P_REGULAR)) == S_FAILURE)
 				status = S_FAILURE;
 			fat_arch++;
 			i++;

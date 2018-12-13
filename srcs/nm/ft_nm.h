@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:12:22 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:16:13 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/13 16:31:19 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ enum e_status	print_symbols(t_file *file, t_symbols *ptr);
 **	main.c
 */
 char			*map_file(char *filename, struct stat *file_info);
-enum e_status	nm_if_valid_file(char *filename, bool print_filename);
+enum e_status	nm_if_valid_file(char *filename, enum e_print print);
 enum e_status	ft_nm(char *file, char *filename, size_t file_size,
-				bool print_filename);
+				enum e_print print);
 
 #endif

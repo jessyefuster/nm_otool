@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/11 16:41:52 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/13 17:00:17 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
 }
 
 enum e_status	ft_nm(char *ptr, char *filename, size_t file_size,
-				bool print_filename)
+				enum e_print print)
 {
 	t_file		*file;
 	t_symbols	*symbols;
@@ -39,8 +39,13 @@ enum e_status	ft_nm(char *ptr, char *filename, size_t file_size,
 		// printf("MACHO\n");
 		if (handle_macho(file, &symbols) == S_FAILURE)
 			return (S_FAILURE);
-		if (print_filename)
-			printf("\n%s:\n", file->name);
+		if (print)
+		{
+			if (print & P_NEWLINE)
+				printf("\n");
+			if (print & P_NAME)
+				printf("%s:\n", file->name);
+		}
 		if (print_symbols(file, symbols) == S_FAILURE)
 			return (S_FAILURE);
 	}
@@ -75,7 +80,7 @@ char			*map_file(char *filename, struct stat *file_info)
 	return (file);
 }
 
-enum e_status	nm_if_valid_file(char *filename, bool print_filename)
+enum e_status	nm_if_valid_file(char *filename, enum e_print print)
 {
 	char			*ptr;
 	struct stat		file_info;
@@ -84,7 +89,7 @@ enum e_status	nm_if_valid_file(char *filename, bool print_filename)
 	ptr = map_file(filename, &file_info);
 	if (ptr)
 	{
-		status = ft_nm(ptr, filename, file_info.st_size, print_filename);
+		status = ft_nm(ptr, filename, file_info.st_size, print);
 		munmap(ptr, file_info.st_size);
 		return (status);
 	}
@@ -106,14 +111,14 @@ int				main(int argc, char **argv)
 		i = 1;
 		while (i < argc)
 		{
-			errors += !nm_if_valid_file(argv[i], TRUE);
+			errors += !nm_if_valid_file(argv[i], P_REGULAR);
 			i++;
 		}
 	}
 	else if (argc == 2)
-		errors = !nm_if_valid_file(argv[1], FALSE);
+		errors = !nm_if_valid_file(argv[1], P_NONE);
 	else
-		errors = !nm_if_valid_file("a.out", FALSE);
+		errors = !nm_if_valid_file("a.out", P_NONE);
 	if (errors)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
