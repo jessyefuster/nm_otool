@@ -6,11 +6,12 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/30 16:38:11 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/18 17:00:09 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
+#define	IS_ONE(value) (value == 1)
 
 /*
 **	Search for __text section in Mach-o file
@@ -60,7 +61,7 @@ enum e_status			handle_fat(t_file *file)
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
 		return (ft_otool(file->ptr + fat_arch->offset, file->name,
-		fat_arch->size));
+		fat_arch->size, P_NAME));
 	else
 	{
 		fat_arch = (struct fat_arch *)(fat_header + 1);
@@ -69,7 +70,7 @@ enum e_status			handle_fat(t_file *file)
 		{
 			name = ft_strjoin(file->name, arch_name_short(fat_arch->cputype));
 			if (name == NULL || ft_otool(file->ptr + fat_arch->offset,
-			name, fat_arch->size) == S_FAILURE)
+			fat_header->nfat_arch > 1 ? name : file->name, fat_arch->size, P_NAME) == S_FAILURE)
 				return (S_FAILURE);
 			fat_arch++;
 			i++;
@@ -102,7 +103,7 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size) - m.name_size;
-		return (ft_otool(file->ptr + offset + m.name_size, filename, size));
+		return (ft_otool(file->ptr + offset + m.name_size, filename, size, P_REGULAR));
 	}
 	else
 	{
@@ -110,7 +111,7 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size);
-		return (ft_otool(file->ptr + offset, filename, size));
+		return (ft_otool(file->ptr + offset, filename, size, P_REGULAR));
 	}
 }
 
