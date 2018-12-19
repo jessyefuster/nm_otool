@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 15:14:43 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/25 16:14:33 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/19 16:53:19 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ enum e_check_result				check_symtab_command(t_file *file,
 		return (filecheck_error(file->name, "LC_SYMTAB stroff out of file"));
 	if (st->stroff + st->strsize > file->size)
 		return (filecheck_error(file->name, "no size for string table"));
+	if (file->ft == OTOOL && check_symbols(file, st) == CHECK_BAD)
+		return (CHECK_BAD);
 	return (CHECK_GOOD);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/18 16:52:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/19 16:38:03 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
 	(*file_info)->ptr = file;
 	(*file_info)->size = file_size;
 	(*file_info)->name = filename;
+	(*file_info)->ft = OTOOL;
 	(*file_info)->type = get_file_type(*file_info);
 	return (S_SUCCESS);
 }

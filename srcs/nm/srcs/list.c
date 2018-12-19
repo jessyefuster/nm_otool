@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:13:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/19 16:25:00 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_symbols		*new_node(t_file *file, void *s, char *st)
 	}
 	else
 	{
+		// printf("symbol name index %d\n", ((struct nlist_64 *)s)->n_un.n_strx);
 		if (st + ((struct nlist_64 *)s)->n_un.n_strx <= file->ptr + file->size)
 			new->name = st + ((struct nlist_64 *)s)->n_un.n_strx;
 		new->value = ((struct nlist_64 *)s)->n_value;

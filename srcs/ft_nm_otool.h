@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/13 16:30:44 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/19 16:57:41 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <mach-o/ranlib.h>
 
 typedef uint32_t					t_filetype_t;
+typedef uint8_t						t_function_t;
 typedef struct load_command			t_lc;
 typedef struct symtab_command		t_sym;
 typedef struct nlist				t_nlist;
@@ -86,6 +87,9 @@ enum				e_file_flags
 	F_BIG = 0x800,
 };
 
+/*
+**	Function flags	t_function_t (uint8_t)
+*/
 enum				e_function
 {
 	NM,
@@ -152,6 +156,8 @@ typedef struct		s_file
 	char				*name;
 
 	t_filetype_t		type;
+	t_function_t		ft;
+
 }					t_file;
 
 /*
@@ -208,6 +214,11 @@ void				swap_section_64(struct section_64 *section);
 void				swap_symtab(struct symtab_command *symtab);
 void				swap_nlist(struct nlist *symbol);
 void				swap_nlist_64(struct nlist_64 *symbol);
+
+/*
+**		symbols.c
+*/
+enum e_check_result	check_symbols(t_file *file, struct symtab_command *st);
 
 /*
 **	fat.c
