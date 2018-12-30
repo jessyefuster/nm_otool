@@ -6,25 +6,27 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:35:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 17:11:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
 enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
-				size_t file_size)
+	size_t file_size)
 {
 	if (((*file_info = (t_file *)malloc(sizeof(t_file))) == NULL))
 		return (program_error("Malloc error", __FILE__, __LINE__));
 	(*file_info)->ptr = file;
 	(*file_info)->size = file_size;
 	(*file_info)->name = filename;
+	(*file_info)->ft = OTOOL;
 	(*file_info)->type = get_file_type(*file_info);
 	return (S_SUCCESS);
 }
 
-enum e_status	ft_otool(char *ptr, char *filename, size_t file_size)
+enum e_status	ft_otool(char *ptr, char *filename, size_t file_size,
+	enum e_print print)
 {
 	t_file		*file;
 
@@ -32,7 +34,13 @@ enum e_status	ft_otool(char *ptr, char *filename, size_t file_size)
 		return (S_FAILURE);
 	if (file->type & F_MACHO)
 	{
-		printf("%s:\n", file->name);
+		if (print)
+		{
+			if (print & P_NEWLINE)
+				printf("\n");
+			if (print & P_NAME)
+				printf("%s:\n", file->name);
+		}
 		handle_macho(file);
 	}
 	else if (file->type & F_FAT)
@@ -60,7 +68,7 @@ char			*map_file(char *filename, struct stat *file_info)
 	return (file);
 }
 
-enum e_status	otool_if_valid_file(char *filename)
+enum e_status	otool_if_valid_file(char *filename, enum e_print print)
 {
 	char			*ptr;
 	struct stat		file_info;
@@ -69,7 +77,7 @@ enum e_status	otool_if_valid_file(char *filename)
 	ptr = map_file(filename, &file_info);
 	if (ptr)
 	{
-		status = ft_otool(ptr, filename, file_info.st_size);
+		status = ft_otool(ptr, filename, file_info.st_size, print);
 		munmap(ptr, file_info.st_size);
 		return (status);
 	}
@@ -84,17 +92,25 @@ int				main(int argc, char **argv)
 {
 	int		i;
 
-	if (argc > 1)
+	if (argc > 2)
 	{
 		i = 1;
 		while (i < argc)
 		{
-			if (otool_if_valid_file(argv[i]) == S_FAILURE)
+			if (otool_if_valid_file(argv[i], P_NAME) == S_FAILURE)
 				return (EXIT_FAILURE);
 			i++;
 		}
 	}
-	else if (otool_if_valid_file("a.out") == S_FAILURE)
+	else if (argc == 2)
+	{
+		if (otool_if_valid_file(argv[1], P_NAME) == S_FAILURE)
+			return (EXIT_FAILURE);
+	}
+	else
+	{
+		filecheck_error("ft_otool", "no file specified");
 		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }

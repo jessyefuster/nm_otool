@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:42:06 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 16:47:43 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <mach-o/ranlib.h>
 
 typedef uint32_t					t_filetype_t;
+typedef uint8_t						t_function_t;
 typedef struct load_command			t_lc;
 typedef struct symtab_command		t_sym;
 typedef struct nlist				t_nlist;
@@ -55,6 +56,8 @@ typedef struct segment_command_64	t_seg_64;
 # define F_IS_64(type) (F_ARCH(type) == F_64)
 # define F_IS_LITTLE(type) (F_ENDIAN(type) == F_LITTLE)
 # define F_IS_BIG(type) (F_ENDIAN(type) == F_BIG)
+
+# define P_REGULAR (P_NAME | P_NEWLINE)
 
 /*
 **	File flags	t_filetype_t (uint32_t)
@@ -84,6 +87,9 @@ enum				e_file_flags
 	F_BIG = 0x800,
 };
 
+/*
+**	Function flags	t_function_t (uint8_t)
+*/
 enum				e_function
 {
 	NM,
@@ -106,6 +112,16 @@ enum				e_status
 {
 	S_FAILURE,
 	S_SUCCESS
+};
+
+/*
+**	Filename printing options
+*/
+enum				e_print
+{
+	P_NONE = 0,
+	P_NAME = 1,
+	P_NEWLINE = 2
 };
 
 /*
@@ -140,11 +156,14 @@ typedef struct		s_file
 	char				*name;
 
 	t_filetype_t		type;
+	t_function_t		ft;
+
 }					t_file;
 
 /*
 **	archive.c
 */
+void				set_member(t_ar_member *m, char *name, size_t name_size);
 char				*format_archive_name(char *archive_name, char *member_name,
 					size_t member_name_len);
 
@@ -196,6 +215,11 @@ void				swap_section_64(struct section_64 *section);
 void				swap_symtab(struct symtab_command *symtab);
 void				swap_nlist(struct nlist *symbol);
 void				swap_nlist_64(struct nlist_64 *symbol);
+
+/*
+**		symbols.c
+*/
+enum e_check_result	check_symbols(t_file *file, struct symtab_command *st);
 
 /*
 **	fat.c

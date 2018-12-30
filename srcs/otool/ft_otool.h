@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:30:33 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/18 15:58:14 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void			print_text_section(t_file *file, void *section);
 /*
 **	main.c
 */
-enum e_status	ft_otool(char *ptr, char *filename, size_t file_size);
+enum e_status	ft_otool(char *ptr, char *filename, size_t file_size,
+				enum e_print print);
 
 #endif

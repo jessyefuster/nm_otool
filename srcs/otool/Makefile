@@ -19,6 +19,7 @@ SRCS =	srcs/main.c \
 		../checks/swap.c \
 		../checks/swap_32.c \
 		../checks/swap_64.c \
+		../checks/symbols.c
 
 SRCO = $(SRCS:.c=.o)
 

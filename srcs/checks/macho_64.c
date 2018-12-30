@@ -6,28 +6,34 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 20:55:03 by jessye            #+#    #+#             */
-/*   Updated: 2018/04/25 16:30:46 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 16:21:57 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm_otool.h"
 
 static enum e_check_result	check_segment_command_64(t_file *file,
+	struct mach_header_64 *mh, struct load_command *lc,
 	struct segment_command_64 *sg)
 {
 	size_t				i;
+	char				*p;
 	struct section_64	*s;
 
 	if (sg->cmdsize != sizeof(t_seg_64) + sg->nsects * sizeof(t_sect_64))
 		return (filecheck_error(file->name, "LC_SEGMENT64 incorrect cmdsize"));
 	s = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
+	p = (char *)s;
 	i = 0;
 	while (i < sg->nsects)
 	{
 		if (F_IS_BIG(file->type))
 			swap_section_64(s);
-		if (s->offset > file->size || s->offset + s->size > file->size)
-			return (filecheck_error(file->name, "section offset out of file"));
+		if (p + sizeof(struct section_64) > (char *)lc + mh->sizeofcmds)
+		{
+			return (filecheck_error(file->name,
+			"section offset out of load commands"));
+		}
 		s++;
 		i++;
 	}
@@ -65,7 +71,7 @@ static enum e_check_result	check_segment_64(t_file *file,
 	if ((void *)l + sizeof(t_seg_64) + sg->nsects * sizeof(t_sect_64) >
 	(void *)lc + mh->sizeofcmds)
 		return (filecheck_error(file->name, "LC_SEGMENT sections out of cmds"));
-	if (check_segment_command_64(file, sg) == CHECK_BAD)
+	if (check_segment_command_64(file, mh, lc, sg) == CHECK_BAD)
 		return (CHECK_BAD);
 	return (CHECK_GOOD);
 }
@@ -103,7 +109,8 @@ enum e_check_result			check_load_commands_64(t_file *file,
 	i = 0;
 	while (i < mh->ncmds)
 	{
-		check_command_64(file, mh, l);
+		if (check_command_64(file, mh, l) == CHECK_BAD)
+			return (CHECK_BAD);
 		if (l->cmd == LC_SYMTAB &&
 		check_symtab_64(file, mh, &st, l) == CHECK_BAD)
 			return (CHECK_BAD);

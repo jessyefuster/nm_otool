@@ -6,11 +6,12 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/04/30 16:38:11 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 17:32:15 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
+#define IS_ONE(value) (value == 1)
 
 /*
 **	Search for __text section in Mach-o file
@@ -50,44 +51,46 @@ void					handle_macho(t_file *file)
 **	Iterate over arch headers in FAT file and otool each binary
 */
 
-enum e_status			handle_fat(t_file *file)
+static enum e_status	handle_fat_core(t_file *file,
+	struct fat_header *fat_header)
 {
 	size_t				i;
 	char				*name;
+	struct fat_arch		*fat_arch;
+
+	fat_arch = (struct fat_arch *)(fat_header + 1);
+	i = 0;
+	while (i < fat_header->nfat_arch)
+	{
+		name = ft_strjoin(file->name, arch_name_short(fat_arch->cputype));
+		if (name == NULL || ft_otool(file->ptr + fat_arch->offset,
+		fat_header->nfat_arch > 1 ? name : file->name, fat_arch->size, P_NAME)
+		== S_FAILURE)
+		{
+			return (S_FAILURE);
+		}
+		fat_arch++;
+		i++;
+	}
+	return (S_SUCCESS);
+}
+
+enum e_status			handle_fat(t_file *file)
+{
 	struct fat_header	*fat_header;
 	struct fat_arch		*fat_arch;
 
 	fat_header = (struct fat_header *)file->ptr;
 	if ((fat_arch = find_arch(fat_header, CPU_TYPE_X86_64)))
 		return (ft_otool(file->ptr + fat_arch->offset, file->name,
-		fat_arch->size));
+		fat_arch->size, P_NAME));
 	else
-	{
-		fat_arch = (struct fat_arch *)(fat_header + 1);
-		i = 0;
-		while (i < fat_header->nfat_arch)
-		{
-			name = ft_strjoin(file->name, arch_name_short(fat_arch->cputype));
-			if (name == NULL || ft_otool(file->ptr + fat_arch->offset,
-			name, fat_arch->size) == S_FAILURE)
-				return (S_FAILURE);
-			fat_arch++;
-			i++;
-		}
-		return (S_SUCCESS);
-	}
+		return (handle_fat_core(file, fat_header));
 }
 
 /*
 **	Archive handling
 */
-
-static void				set_member(t_ar_member *m, char *name,
-size_t name_size)
-{
-	m->name = name;
-	m->name_size = name_size;
-}
 
 static enum e_status	call_otool(t_file *file, struct ar_hdr *header,
 size_t offset, t_ar_member m)
@@ -102,7 +105,8 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size) - m.name_size;
-		return (ft_otool(file->ptr + offset + m.name_size, filename, size));
+		return (ft_otool(file->ptr + offset + m.name_size, filename, size,
+		P_NAME));
 	}
 	else
 	{
@@ -110,7 +114,7 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size);
-		return (ft_otool(file->ptr + offset, filename, size));
+		return (ft_otool(file->ptr + offset, filename, size, P_NAME));
 	}
 }
 

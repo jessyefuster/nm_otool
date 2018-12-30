@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:13:04 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 17:03:04 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,19 @@ enum e_status	store_symbol(t_file *file, t_symbols **symbols, void *symbol,
 	if ((new = new_node(file, symbol, string_table)) == NULL)
 		return (program_error("Malloc error", __FILE__, __LINE__));
 	ptr = (*symbols);
-	if ((*symbols) == NULL || (ft_strcmp((*symbols)->name, new->name) >= 0))
+	if ((*symbols) == NULL || (ft_strcmp(new->name, (*symbols)->name) < 0 ||
+	(ft_strcmp(new->name, (*symbols)->name) == 0 &&
+	new->value < (*symbols)->value)))
 	{
 		new->next = (*symbols);
 		(*symbols) = new;
 	}
 	else
 	{
-		while (ptr->next != NULL && (ft_strcmp(ptr->next->name, new->name) < 0))
+		while (ptr->next != NULL &&
+		(ft_strcmp(new->name, ptr->next->name) > 0 ||
+		(ft_strcmp(new->name, ptr->next->name) == 0 &&
+		new->value > ptr->next->value)))
 			ptr = ptr->next;
 		new->next = ptr->next;
 		ptr->next = new;
