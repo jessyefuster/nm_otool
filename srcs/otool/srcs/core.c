@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/12/18 17:00:09 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 15:12:18 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size) - m.name_size;
-		return (ft_otool(file->ptr + offset + m.name_size, filename, size, P_REGULAR));
+		return (ft_otool(file->ptr + offset + m.name_size, filename, size, P_NAME));
 	}
 	else
 	{
@@ -111,7 +111,7 @@ size_t offset, t_ar_member m)
 		if (filename == NULL)
 			return (program_error("Malloc error", __FILE__, __LINE__));
 		size = ft_atoi(header->ar_size);
-		return (ft_otool(file->ptr + offset, filename, size, P_REGULAR));
+		return (ft_otool(file->ptr + offset, filename, size, P_NAME));
 	}
 }
 
