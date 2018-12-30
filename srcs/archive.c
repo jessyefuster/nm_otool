@@ -6,11 +6,17 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 12:01:25 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:04:17 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 16:47:13 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./ft_nm_otool.h"
+
+void			set_member(t_ar_member *m, char *name, size_t name_size)
+{
+	m->name = name;
+	m->name_size = name_size;
+}
 
 char			*format_archive_name(char *archive_name, char *member_name,
 						size_t member_name_len)

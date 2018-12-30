@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 23:56:49 by jessye            #+#    #+#             */
-/*   Updated: 2018/12/11 16:31:48 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/30 16:10:10 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ static t_filetype_t		guess_file_type(t_file *file)
 t_filetype_t			get_file_type(t_file *file)
 {
 	file->type = guess_file_type(file);
-	// ft_utob(file->type, 2, "01");
-	// printf("\n");
-	// printf("type  (pre check): %X\n", file->type);
 	if (F_TYPE(file->type) == F_NONE)
 	{
 		filecheck_error(file->name, "is not an object file");
@@ -90,6 +87,5 @@ t_filetype_t			get_file_type(t_file *file)
 		return (F_NONE);
 	else if (F_TYPE(file->type) == F_MACHO && check_macho(file) == CHECK_BAD)
 		return (F_NONE);
-	// write(1, "no error\n", 9);
 	return (file->type);
 }

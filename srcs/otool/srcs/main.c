@@ -6,14 +6,14 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 16:30:08 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/19 16:38:03 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 17:11:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_otool.h"
 
 enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
-				size_t file_size)
+	size_t file_size)
 {
 	if (((*file_info = (t_file *)malloc(sizeof(t_file))) == NULL))
 		return (program_error("Malloc error", __FILE__, __LINE__));
@@ -25,7 +25,8 @@ enum e_status	init_file_info(t_file **file_info, char *file, char *filename,
 	return (S_SUCCESS);
 }
 
-enum e_status	ft_otool(char *ptr, char *filename, size_t file_size, enum e_print print)
+enum e_status	ft_otool(char *ptr, char *filename, size_t file_size,
+	enum e_print print)
 {
 	t_file		*file;
 
@@ -33,7 +34,6 @@ enum e_status	ft_otool(char *ptr, char *filename, size_t file_size, enum e_print
 		return (S_FAILURE);
 	if (file->type & F_MACHO)
 	{
-		// printf("%s:\n", file->name);
 		if (print)
 		{
 			if (print & P_NEWLINE)

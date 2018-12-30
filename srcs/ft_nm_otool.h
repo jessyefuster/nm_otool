@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/19 16:57:41 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 16:47:43 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ typedef struct		s_file
 /*
 **	archive.c
 */
+void				set_member(t_ar_member *m, char *name, size_t name_size);
 char				*format_archive_name(char *archive_name, char *member_name,
 					size_t member_name_len);
 

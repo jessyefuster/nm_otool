@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/28 17:05:00 by jfuster           #+#    #+#             */
-/*   Updated: 2015/11/30 09:31:56 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 16:08:02 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char		*ft_itoa(int n)
 {
 	int		len;
 	int		sign;
-	char		*str;
+	char	*str;
 
 	if (n == INT_MIN)
 		return (ft_strdup("-2147483648"));

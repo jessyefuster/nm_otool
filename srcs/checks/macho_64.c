@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   macho_64.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 20:55:03 by jessye            #+#    #+#             */
-/*   Updated: 2018/12/11 16:31:28 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/30 16:21:57 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_nm_otool.h"
 
 static enum e_check_result	check_segment_command_64(t_file *file,
-	struct mach_header_64 *mh, struct load_command *lc, struct segment_command_64 *sg)
+	struct mach_header_64 *mh, struct load_command *lc,
+	struct segment_command_64 *sg)
 {
 	size_t				i;
 	char				*p;
 	struct section_64	*s;
 
-
-	// printf("64 SEGNAME : %s\n", sg->segname);
 	if (sg->cmdsize != sizeof(t_seg_64) + sg->nsects * sizeof(t_sect_64))
 		return (filecheck_error(file->name, "LC_SEGMENT64 incorrect cmdsize"));
 	s = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
@@ -28,17 +27,13 @@ static enum e_check_result	check_segment_command_64(t_file *file,
 	i = 0;
 	while (i < sg->nsects)
 	{
-		// printf("sect %zu, name .%s.\n", i, s->sectname);
 		if (F_IS_BIG(file->type))
 			swap_section_64(s);
-
 		if (p + sizeof(struct section_64) > (char *)lc + mh->sizeofcmds)
-			return (filecheck_error(file->name, "section offset out of load commands"));
-		// if (!ft_strcmp(s->sectname, "__bss") && (s->offset > file->size || s->offset + s->size > file->size))
-		// {
-		// 	printf("s offset %d, s->offset + s->size %llu,file size %zu\n", s->offset, s->offset + s->size, file->size);
-		// 	return (filecheck_error(file->name, "section offset out of file"));
-		// }
+		{
+			return (filecheck_error(file->name,
+			"section offset out of load commands"));
+		}
 		s++;
 		i++;
 	}

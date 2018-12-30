@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macho_32.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 20:54:36 by jessye            #+#    #+#             */
-/*   Updated: 2018/12/11 16:31:38 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/30 16:20:51 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static enum e_check_result	check_segment_command_32(t_file *file,
 	char				*p;
 	struct section		*s;
 
-	// printf("SEGNAME : %s\n", sg->segname);
 	if (sg->cmdsize != sizeof(t_seg) + sg->nsects * sizeof(t_sect))
 		return (filecheck_error(file->name, "LC_SEGMENT incorrect cmdsize"));
 	s = (struct section *)((void *)sg + sizeof(struct segment_command));
@@ -27,16 +26,13 @@ static enum e_check_result	check_segment_command_32(t_file *file,
 	i = 0;
 	while (i < sg->nsects)
 	{
-		// printf("sect %zu\n", i);
 		if (F_IS_BIG(file->type))
 			swap_section(s);
 		if (p + sizeof(struct section) > (char *)lc + mh->sizeofcmds)
-			return (filecheck_error(file->name, "section offset out of load commands"));
-		// if (s->offset > file->size || s->offset + s->size > file->size)
-		// {
-		// 	printf("s offset %d, s->offset + s->size %u,file size %zu\n", s->offset, s->offset + s->size, file->size);
-		// 	return (filecheck_error(file->name, "section offset out of file"));
-		// }
+		{
+			return (filecheck_error(file->name,
+			"section offset out of load commands"));
+		}
 		s++;
 		i++;
 	}
