@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -33,8 +34,10 @@ char			type_letter(char **sections, t_symbols *symbol)
 		type_letter = 'A';
 	else if ((symbol->type & N_TYPE) == N_INDR)
 		type_letter = 'I';
-	else if (symbol->type & N_SECT)
+	else if ((symbol->type & N_TYPE) == N_SECT)
 		type_letter = section_letter(sections[symbol->sect]);
+	else
+		type_letter = '?';
 	if (!(symbol->type & N_EXT))
 		type_letter = ft_tolower(type_letter);
 	return (type_letter);
