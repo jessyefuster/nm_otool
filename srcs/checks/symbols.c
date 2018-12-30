@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:43:44 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/19 17:02:55 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/12/30 13:12:43 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ enum e_check_result			check_symbols(t_file *file, struct symtab_command *st)
 {
 	size_t			i;
 	void			*s;
-	char			*string_table;
+	char			*str;
 
-	string_table = file->ptr + st->stroff;
+	str = file->ptr + st->stroff;
 	s = file->ptr + st->symoff;
 	i = 0;
 	while (i < st->nsyms)
@@ -50,12 +50,12 @@ enum e_check_result			check_symbols(t_file *file, struct symtab_command *st)
 		try_swap_symbol(file, s);
 		if (F_IS_32(file->type))
 		{
-			if ((char *)(st + ((struct nlist *)s)->n_un.n_strx) > file->ptr + file->size)
+			if ((char *)(str + ((struct nlist *)s)->n_un.n_strx) > file->ptr + file->size)
 				return (filecheck_error(file->name, "symbol index out of file"));
 		}
 		else
 		{
-			if ((char *)(st + ((struct nlist_64 *)s)->n_un.n_strx) > file->ptr + file->size)
+			if ((char *)(str + ((struct nlist_64 *)s)->n_un.n_strx) > file->ptr + file->size)
 				return (filecheck_error(file->name, "symbol index out of file"));
 		}
 		s += SYMBOL_SIZE(F_IS_32(file->type));
