@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:52:19 by jfuster           #+#    #+#             */
-/*   Updated: 2018/04/30 16:40:40 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/17 13:52:10 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 enum e_check_result	filecheck_error(char *filename, char *error)
 {
-	fprintf(stderr, "%s: %s\n", filename, error);
+	ft_fprint(2, "%s: %s\n", filename, error);
 	return (CHECK_BAD);
 }
 
 enum e_status		program_error(char *error, char *file, int line)
 {
-	fprintf(stderr, "%s in %s at line %d\n", error, file, line);
+	ft_fprint(2, "%s in %s at line %d\n", error, file, line);
 	return (S_FAILURE);
 }
 

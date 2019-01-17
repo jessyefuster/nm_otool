@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 11:39:48 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/30 17:06:21 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/17 13:53:52 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ enum e_status	ft_nm(char *ptr, char *filename, size_t file_size,
 		if (handle_macho(file, &symbols) == S_FAILURE)
 			return (S_FAILURE);
 		if (print & P_NEWLINE)
-			printf("\n");
+			ft_fprint(1, "\n");
 		if (print & P_NAME)
-			printf("%s:\n", file->name);
+			ft_fprint(1, "%s:\n", file->name);
 		if (print_symbols(file, symbols) == S_FAILURE)
 			return (S_FAILURE);
 	}

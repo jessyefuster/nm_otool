@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:55:12 by jfuster           #+#    #+#             */
-/*   Updated: 2015/11/24 15:57:00 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/17 13:51:52 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 
 int		get_next_line(int const fd, char **line);
+int		ft_fprint(int fd, const char *format, ...);
 
 int		ft_numlen(long value, int base);
 int		ft_atoi(const char *str);

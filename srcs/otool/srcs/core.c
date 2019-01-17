@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   core.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 20:35:09 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/12/30 17:32:15 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/17 13:52:40 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void					handle_macho(t_file *file)
 	struct load_command		*lc;
 	void					*text_section;
 
-	printf("Contents of (__TEXT,__text) section\n");
+	ft_fprint(1, "Contents of (__TEXT,__text) section\n");
 	ncmds = ((struct mach_header *)file->ptr)->ncmds;
 	lc = (struct load_command *)(((struct mach_header_64 *)file->ptr) + 1);
 	if (F_IS_32(file->type))
@@ -124,7 +124,7 @@ enum e_status			handle_archive(t_file *file)
 	t_ar_member		member;
 	size_t			offset;
 
-	printf("Archive : %s\n", file->name);
+	ft_fprint(1, "Archive : %s\n", file->name);
 	offset = SARMAG;
 	if (file->size == SARMAG)
 		return (S_SUCCESS);

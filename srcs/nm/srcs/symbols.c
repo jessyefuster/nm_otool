@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   symbols.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/30 17:07:50 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/17 13:54:08 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ enum e_status	print_symbols(t_file *file, t_symbols *symbol)
 		if (F_IS_32(file->type))
 		{
 			if (symbol->value || type != 'U')
-				printf("%08llx %c %s\n", symbol->value, type, symbol->name);
+				ft_fprint(1, "%08llx %c %s\n", symbol->value, type, symbol->name);
 			else
-				printf("         %c %s\n", type, symbol->name);
+				ft_fprint(1, "         %c %s\n", type, symbol->name);
 		}
 		else
 		{
 			if (symbol->value || type != 'U')
-				printf("%016llx %c %s\n", symbol->value, type, symbol->name);
+				ft_fprint(1, "%016llx %c %s\n", symbol->value, type, symbol->name);
 			else
-				printf("                 %c %s\n", type, symbol->name);
+				ft_fprint(1, "                 %c %s\n", type, symbol->name);
 		}
 		symbol = symbol->next;
 	}
