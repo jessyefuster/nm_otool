@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfuster <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/11/23 12:47:10 by jfuster           #+#    #+#              #
-#    Updated: 2015/11/26 15:08:42 by jfuster          ###   ########.fr        #
+#    Updated: 2019/01/17 13:45:13 by jessyefuster     ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,11 @@ SRCS = ft_memset.c \
 		ft_strsplit.c \
 		ft_numlen.c \
 		ft_usage.c \
-		get_next_line.c
+		get_next_line.c \
+		fprint/ft_fprint.c \
+		fprint/print.c \
+		fprint/checks.c \
+		fprint/tools.c
 
 
 OBJ = $(SRCS:%.c=%.o)
