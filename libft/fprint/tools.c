@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 13:34:03 by jessyefuster      #+#    #+#             */
-/*   Updated: 2019/01/17 13:44:49 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2019/01/31 15:43:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		print_precision(int *modifiers, int len)
 	}
 }
 
-void		right_align(int *modifiers, int len, int force_space)
+void		r_align(int *modifiers, int len, int force_space)
 {
 	char	fill_char;
 	int		n_fills;
@@ -44,7 +44,7 @@ void		right_align(int *modifiers, int len, int force_space)
 	}
 }
 
-void		left_align(int *modifiers, int len)
+void		l_align(int *modifiers, int len)
 {
 	char	fill_char;
 	int		n_fills;
@@ -63,7 +63,6 @@ void		left_align(int *modifiers, int len)
 
 uintmax_t	convert_uvalue(uintmax_t value, int conversions)
 {
-
 	if (conversions & L)
 		value = (unsigned long)value;
 	else if (conversions & LL)
@@ -79,7 +78,6 @@ uintmax_t	convert_uvalue(uintmax_t value, int conversions)
 
 intmax_t	convert_svalue(intmax_t value, int conversions)
 {
-
 	if (conversions & L)
 		value = (long)value;
 	else if (conversions & LL)

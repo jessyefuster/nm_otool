@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fprint.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/01/31 15:23:15 by jfuster           #+#    #+#             */
+/*   Updated: 2019/01/31 15:42:38 by jfuster          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_FPRINT_H
 # define FT_FPRINT_H
 # include "../../includes/libft.h"
@@ -10,7 +22,7 @@
 **	FLAGS INDEX
 */
 
-enum	flags {
+enum	e_flags {
 	PRECISION,
 	SPACES,
 	SHOW_SIGN,
@@ -22,7 +34,7 @@ enum	flags {
 	CONVERSION
 };
 
-enum	conversion {
+enum	e_conversion {
 	H = 1,
 	HH,
 	L,
@@ -32,7 +44,6 @@ enum	conversion {
 };
 
 int			ft_fprint(int fd, const char *format, ...);
-
 
 /*
 **		CHECKS.C
@@ -56,8 +67,8 @@ void		print_hexa(va_list args, char type, int *flags);
 **		TOOLS.C
 */
 void		print_precision(int *modifiers, int len);
-void		right_align(int *modifiers, int len, int force_space);
-void		left_align(int *modifiers, int len);
+void		r_align(int *modifiers, int len, int force_space);
+void		l_align(int *modifiers, int len);
 uintmax_t	convert_uvalue(uintmax_t value, int conversions);
 intmax_t	convert_svalue(intmax_t value, int conversions);
 

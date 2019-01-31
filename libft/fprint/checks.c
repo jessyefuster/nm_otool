@@ -3,37 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 14:08:04 by jessyefuster      #+#    #+#             */
-/*   Updated: 2019/01/17 13:46:09 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2019/01/31 15:50:39 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_fprint.h"
 
-bool	is_type(char c)
-{
-	if (ft_strchr("cCsSdDuUxXoOip%", c))
-		return (true);
-	return (false);
-}
+/*
+** bool	is_type(char c)
+** {
+** 		if (ft_strchr("cCsSdDuUxXoOip%", c))
+**			return (true);
+**		return (false);
+** }
+*/
 
-bool	is_modifier(char c)
+bool		is_modifier(char c)
 {
 	if (ft_strchr("0123456789-+#. ", c))
 		return (true);
 	return (false);
 }
 
-bool	is_conversion(char c)
+bool		is_conversion(char c)
 {
 	if (ft_strchr("lhjz", c))
 		return (true);
 	return (false);
 }
 
-char	*check_modifiers(char *ptr, int *flags)
+static char	*check_modifiers_norme(char *ptr, int *flags)
+{
+	flags[PRECISION_EXISTS] = 1;
+	flags[PRECISION] = ft_atoi(ptr);
+	while (ft_isdigit(*ptr))
+		ptr++;
+	return (ptr);
+}
+
+char		*check_modifiers(char *ptr, int *flags)
 {
 	while (*ptr && is_modifier(*ptr))
 	{
@@ -44,12 +55,7 @@ char	*check_modifiers(char *ptr, int *flags)
 		else if (*ptr == '#' && ptr++)
 			flags[HASHTAG] = 1;
 		else if (*ptr == '.' && ptr++ && *ptr != '-')
-		{
-			flags[PRECISION_EXISTS] = 1;
-			flags[PRECISION] = ft_atoi(ptr);
-			while (ft_isdigit(*ptr))
-				ptr++;
-		}
+			ptr = check_modifiers_norme(ptr, flags);
 		else if (*ptr == '+' && ptr++)
 			flags[SHOW_SIGN] = 1;
 		else if (*ptr == ' ' && ptr++)
@@ -66,7 +72,7 @@ char	*check_modifiers(char *ptr, int *flags)
 	return (ptr);
 }
 
-char	*check_conversions(char *ptr, int *flags)
+char		*check_conversions(char *ptr, int *flags)
 {
 	if (ptr[0] == 'l' && ptr[1] == 'l')
 		flags[CONVERSION] = LL;

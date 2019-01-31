@@ -6,14 +6,13 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 14:07:29 by jfuster           #+#    #+#             */
-/*   Updated: 2018/12/30 16:47:43 by jfuster          ###   ########.fr       */
+/*   Updated: 2019/01/31 16:40:11 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_NM_OTOOL_H
 # define FT_NM_OTOOL_H
 # include "../libft/includes/libft.h"
-# include <stdio.h>
 # include <stdbool.h>
 
 # include <unistd.h>

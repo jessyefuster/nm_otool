@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   symbols.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/16 16:05:21 by jfuster           #+#    #+#             */
-/*   Updated: 2019/01/17 13:54:08 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2019/01/31 15:52:11 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,31 +47,31 @@ char			type_letter(char **sections, t_symbols *symbol)
 **	note : this function handles both 32bit and 64bit symbol
 */
 
-enum e_status	print_symbols(t_file *file, t_symbols *symbol)
+enum e_status	print_symbols(t_file *file, t_symbols *sym)
 {
 	char	type;
 	char	**sections;
 
 	if ((sections = get_sections((t_mh *)file->ptr, file->type)) == NULL)
 		return (program_error("Malloc error", __FILE__, __LINE__));
-	while (symbol != NULL)
+	while (sym != NULL)
 	{
-		type = type_letter(sections, symbol);
+		type = type_letter(sections, sym);
 		if (F_IS_32(file->type))
 		{
-			if (symbol->value || type != 'U')
-				ft_fprint(1, "%08llx %c %s\n", symbol->value, type, symbol->name);
+			if (sym->value || type != 'U')
+				ft_fprint(1, "%08llx %c %s\n", sym->value, type, sym->name);
 			else
-				ft_fprint(1, "         %c %s\n", type, symbol->name);
+				ft_fprint(1, "         %c %s\n", type, sym->name);
 		}
 		else
 		{
-			if (symbol->value || type != 'U')
-				ft_fprint(1, "%016llx %c %s\n", symbol->value, type, symbol->name);
+			if (sym->value || type != 'U')
+				ft_fprint(1, "%016llx %c %s\n", sym->value, type, sym->name);
 			else
-				ft_fprint(1, "                 %c %s\n", type, symbol->name);
+				ft_fprint(1, "                 %c %s\n", type, sym->name);
 		}
-		symbol = symbol->next;
+		sym = sym->next;
 	}
 	return (S_SUCCESS);
 }

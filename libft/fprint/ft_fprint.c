@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fprint.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 13:34:03 by jessyefuster      #+#    #+#             */
-/*   Updated: 2019/01/17 13:49:01 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2019/01/31 15:27:40 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*parse_option(int fd, va_list args, char *ptr)
 	return (ptr + 1);
 }
 
-static int	analyse(int fd, va_list args, const char* format)
+static int	analyse(int fd, va_list args, const char *format)
 {
 	char	*ptr;
 	char	*start;

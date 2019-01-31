@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 14:26:55 by jessyefuster      #+#    #+#             */
-/*   Updated: 2019/01/17 13:48:17 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2019/01/31 16:36:11 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 
 void	print_percent(int *flags)
 {
-	right_align(flags, 1, 1);
+	r_align(flags, 1, 1);
 	ft_putchar('%');
-	left_align(flags, 1);
+	l_align(flags, 1);
 }
 
 void	print_string(int fd, va_list args, int *flags)
 {
-	(void)flags;
-	
 	char	*str;
 	int		len;
 
+	(void)flags;
 	str = va_arg(args, char *);
 	len = ft_strlen(str);
 	ft_putstr_fd(str, fd);
@@ -36,18 +35,16 @@ void	print_char(va_list args, int *flags)
 	int		c;
 
 	c = va_arg(args, int);
-
-	right_align(flags, 1, 1);
+	r_align(flags, 1, 1);
 	ft_putchar(c);
-	left_align(flags, 1);
+	l_align(flags, 1);
 }
 
 void	print_integer(int fd, va_list args, int *flags)
 {
-	(void)flags;
-	
 	int		i;
 
+	(void)flags;
 	i = va_arg(args, int);
 	if (i < 0)
 		ft_putchar('-');
@@ -74,14 +71,11 @@ void	print_hexa(va_list args, char type, int *flags)
 	len = ft_strlen(str);
 	len_bis = flags[PRECISION] > len ? flags[PRECISION] : len;
 	len_bis += flags[HASHTAG] ? 2 : 0;
-
-	!flags[ZERO_SPACES] ? right_align(flags, len_bis, flags[PRECISION] > len) : 0;
-	if (flags[HASHTAG] && type == 'x' && value != 0)
-			ft_putstr("0x");
-	else if (flags[HASHTAG] && type == 'X' && value != 0)
-			ft_putstr("0X");
-	flags[ZERO_SPACES] ? right_align(flags, len_bis, flags[PRECISION] > len) : 0;
+	!flags[ZERO_SPACES] ? r_align(flags, len_bis, flags[PRECISION] > len) : 0;
+	if (flags[HASHTAG] && (type == 'x' || type == 'X') && value != 0)
+		type == 'x' ? ft_putstr("0x") : ft_putstr("0X");
+	flags[ZERO_SPACES] ? r_align(flags, len_bis, flags[PRECISION] > len) : 0;
 	print_precision(flags, len);
 	ft_putstr(str);
-	left_align(flags, len_bis);
+	l_align(flags, len_bis);
 }
